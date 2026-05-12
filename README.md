@@ -1,0 +1,1 @@
+# biome-plugin-suitescript
