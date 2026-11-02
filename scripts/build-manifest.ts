@@ -37,6 +37,8 @@ const recommended = [
   "noDynamicSuiteQL",
   "noSuiteScript1Api",
   "noModuleScopeApiCalls",
+  "noWrongScriptTypeModules",
+  "noBrowserGlobals",
 ];
 
 const manifest = {
@@ -50,6 +52,9 @@ const manifest = {
         "entryPoints",
         "noRecordInLoop",
         "noNativeIterators",
+        "noBeforeSubmitRecordReload",
+        "noEmptyEntryPoints",
+        "noMapReduceSearchResults",
       ],
       minimal: ["noExtraModules", "noInvalidModules"],
       recommended,

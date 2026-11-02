@@ -15,12 +15,13 @@ import {
   inferScriptType,
   typeByName,
 } from "../lib/inference.ts";
+import { misplacedModule, sideOf } from "../lib/module-script-types.ts";
 
 const API_VERSION = "2.1";
 const UPGRADABLE = new Set(["1.0", "2.0", "2.x"]);
 
 export interface Diagnostic {
-  rule: "apiVersion" | "scriptType" | "entryPoints" | "parse";
+  rule: "apiVersion" | "scriptType" | "entryPoints" | "modules" | "parse";
   message: string;
   line: number;
   column: number;
@@ -135,12 +136,15 @@ function exportedNames(node: ExportNamedDeclaration): string[] {
 
 interface Inspection {
   isScript: boolean;
+  /** `N/` modules loaded through define() or import. */
+  modules: string[];
   /** Undefined when the returned entry points cannot be determined statically. */
   returned: string[] | undefined;
 }
 
 function inspectProgram(program: Program): Inspection {
   let isScript = false;
+  const modules: string[] = [];
   const returned: string[] = [];
   let opaque = false;
   // Only trust `returned` when an inline define() callback or ES syntax was seen;
@@ -152,8 +156,13 @@ function inspectProgram(program: Program): Inspection {
       node.type === "ExportNamedDeclaration"
     )
       known = true;
-    if (node.type === "ImportDeclaration" && /^N(\/|$)/.test(node.source.value))
+    if (
+      node.type === "ImportDeclaration" &&
+      /^N(\/|$)/.test(node.source.value)
+    ) {
       isScript = true;
+      modules.push(node.source.value);
+    }
     if (node.type === "ExportNamedDeclaration")
       returned.push(...exportedNames(node));
     if (
@@ -163,6 +172,16 @@ function inspectProgram(program: Program): Inspection {
       const call = node.expression;
       if (call.callee.type === "Identifier" && call.callee.name === "define") {
         isScript = true;
+        const dependencies = call.arguments.at(-2);
+        if (dependencies?.type === "ArrayExpression") {
+          for (const element of dependencies.elements) {
+            if (
+              element?.type === "Literal" &&
+              typeof element.value === "string"
+            )
+              modules.push(element.value);
+          }
+        }
         const callback = call.arguments.at(-1);
         if (isCallback(callback)) {
           const names = amdReturnedNames(callback);
@@ -178,7 +197,11 @@ function inspectProgram(program: Program): Inspection {
       }
     }
   }
-  return { isScript, returned: opaque || !known ? undefined : returned };
+  return {
+    isScript,
+    modules,
+    returned: opaque || !known ? undefined : returned,
+  };
 }
 
 interface Tag {
@@ -236,7 +259,7 @@ export function analyzeSource(filename: string, source: string): Analysis {
 
   const apiVersion = findTag(parsed.comments, "@NApiVersion");
   const scriptType = findTag(parsed.comments, "@NScriptType");
-  const { isScript, returned } = inspectProgram(parsed.program);
+  const { isScript, modules, returned } = inspectProgram(parsed.program);
   const inferred = isScript && returned ? inferScriptType(returned) : undefined;
 
   // Not a script: no tags and nothing that implies an entry point.
@@ -294,6 +317,16 @@ export function analyzeSource(filename: string, source: string): Analysis {
       : inferredProblems(returned);
     for (const message of problems)
       report("entryPoints", message, scriptType?.offset ?? 0);
+  }
+
+  // The declared type wins; otherwise fall back to what the entry points imply.
+  const declaredType = declared ? typeByName(declared) : undefined;
+  const side = sideOf(declaredType ? [declaredType] : (inferred?.types ?? []));
+  if (side) {
+    for (const module of modules) {
+      const message = misplacedModule(side, module);
+      if (message) report("modules", message, scriptType?.offset ?? 0);
+    }
   }
   return { diagnostics, upgrade };
 }

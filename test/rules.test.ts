@@ -118,6 +118,38 @@ test("noMissingModules requires N/log when log is used", () => {
   assert.match(out, /'log' is used but N\/log is not loaded/);
 });
 
+test("modules are checked against the inferred script side", () => {
+  const client = lint(ALL, "side-client.js");
+  assert.match(client, /N\/file is only available in server scripts/);
+  assert.doesNotMatch(client, /N\/currentRecord is only/);
+  const server = lint(ALL, "side-server.js");
+  assert.match(server, /N\/currentRecord is only available in client scripts/);
+  assert.match(server, /N\/ui\/dialog is only available in client scripts/);
+  assert.doesNotMatch(server, /N\/record is only/);
+});
+
+test("browser globals are flagged in server scripts only when unbound", () => {
+  const out = lint(ALL, "side-server.js");
+  assert.match(out, /'document' does not exist in server scripts/);
+  assert.doesNotMatch(out, /'window' does not exist/);
+});
+
+test("beforeSubmit reload of the saved record and empty entry points", () => {
+  const out = lint(ALL, "ue.js");
+  assert.match(out, /not allowed in beforeSubmit/);
+  assert.equal((out.match(/not allowed in beforeSubmit/g) ?? []).length, 1);
+  assert.match(out, /Entry point 'afterSubmit' is empty/);
+});
+
+test("getInputData returning search results is flagged", () => {
+  const out = lint(ALL, "mr-search.js");
+  assert.equal(
+    (out.match(/Return the search object from getInputData/g) ?? []).length,
+    1,
+    "only the getInputData return, not the unrelated arrow",
+  );
+});
+
 test("script type is inferred and required entry points are checked", () => {
   const out = lint(ALL, "mr.js");
   assert.match(out, /MapReduceScript requires entry point map or reduce/);
