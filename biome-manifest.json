@@ -87,6 +87,9 @@
         "noGlobalShadowing": "./dist/rules/noGlobalShadowing.js"
       },
       {
+        "noHardcodedSecrets": "./dist/rules/noHardcodedSecrets.js"
+      },
+      {
         "noInvalidModules": "./dist/rules/noInvalidModules.js"
       },
       {

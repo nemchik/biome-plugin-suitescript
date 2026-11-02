@@ -150,6 +150,17 @@ test("getInputData returning search results is flagged", () => {
   );
 });
 
+test("noHardcodedSecrets is opt-in and flags only secret-like literals", () => {
+  const out = lint(
+    ["biome-plugin-suitescript/noHardcodedSecrets"],
+    "secrets.js",
+  );
+  assert.equal((out.match(/Do not hard-code/g) ?? []).length, 3);
+  for (const name of ["password", "apiKey", "clientSecret"])
+    assert.match(out, new RegExp(`Do not hard-code '${name}'`));
+  assert.equal(count(lint(ALL, "secrets.js")), 0, "no preset enables it");
+});
+
 test("script type is inferred and required entry points are checked", () => {
   const out = lint(ALL, "mr.js");
   assert.match(out, /MapReduceScript requires entry point map or reduce/);
