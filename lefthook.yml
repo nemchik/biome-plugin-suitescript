@@ -10,9 +10,9 @@ pre-commit:
 post-checkout:
   commands:
     git-pull-run:
-      run: npx -- git-pull-run --install
+      run: npx -- git-pull-run --install || true
 
 post-merge:
   commands:
     git-pull-run:
-      run: npx -- git-pull-run --install
+      run: npx -- git-pull-run --install || true
