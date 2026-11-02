@@ -25,6 +25,13 @@ test("clean files exit 0", () => {
   assert.match(r.out, /No problems found/);
 });
 
+test("modules from the wrong side of the declared script type are reported", () => {
+  const r = run(["check", fx("tags-side.js")]);
+  assert.equal(r.code, 1);
+  assert.match(r.out, /modules {2}N\/file is only available in server scripts/);
+  assert.doesNotMatch(r.out, /N\/currentRecord is only/);
+});
+
 test("old version, bad entry points and missing tags exit 1", () => {
   const r = run(["check", fx("tags-bad.js"), fx("tags-missing.ts")]);
   assert.equal(r.code, 1);

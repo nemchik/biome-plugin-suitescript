@@ -21,9 +21,14 @@
         "noDynamicSuiteQL",
         "noSuiteScript1Api",
         "noModuleScopeApiCalls",
+        "noWrongScriptTypeModules",
+        "noBrowserGlobals",
         "entryPoints",
         "noRecordInLoop",
-        "noNativeIterators"
+        "noNativeIterators",
+        "noBeforeSubmitRecordReload",
+        "noEmptyEntryPoints",
+        "noMapReduceSearchResults"
       ],
       "minimal": ["noExtraModules", "noInvalidModules"],
       "recommended": [
@@ -39,7 +44,9 @@
         "noEval",
         "noDynamicSuiteQL",
         "noSuiteScript1Api",
-        "noModuleScopeApiCalls"
+        "noModuleScopeApiCalls",
+        "noWrongScriptTypeModules",
+        "noBrowserGlobals"
       ]
     },
     "rules": [
@@ -59,7 +66,16 @@
         "noAmdName": "./dist/rules/noAmdName.grit"
       },
       {
+        "noBeforeSubmitRecordReload": "./dist/rules/noBeforeSubmitRecordReload.js"
+      },
+      {
+        "noBrowserGlobals": "./dist/rules/noBrowserGlobals.js"
+      },
+      {
         "noDynamicSuiteQL": "./dist/rules/noDynamicSuiteQL.js"
+      },
+      {
+        "noEmptyEntryPoints": "./dist/rules/noEmptyEntryPoints.js"
       },
       {
         "noEval": "./dist/rules/noEval.js"
@@ -75,6 +91,9 @@
       },
       {
         "noLogModule": "./dist/rules/noLogModule.js"
+      },
+      {
+        "noMapReduceSearchResults": "./dist/rules/noMapReduceSearchResults.js"
       },
       {
         "noMissingModules": "./dist/rules/noMissingModules.js"
@@ -93,6 +112,9 @@
       },
       {
         "noSuiteScript1Api": "./dist/rules/noSuiteScript1Api.js"
+      },
+      {
+        "noWrongScriptTypeModules": "./dist/rules/noWrongScriptTypeModules.js"
       }
     ]
   },

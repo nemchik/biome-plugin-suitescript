@@ -37,33 +37,38 @@ npx biome-plugin-suitescript check
 Each rule has one fixed severity: `error` for things that fail at runtime or on upload, `warn` for conventions.
 Biome plugins cannot be reconfigured per project, so you choose by enabling rules, scoping them, or generating one.
 
-| Rule                           | Severity | Description                                                                        | ESLint equivalent           |
-| ------------------------------ | -------- | ---------------------------------------------------------------------------------- | --------------------------- |
-| `noAmdName` (fixable)          | error    | No module id as the first `define` argument                                        | `no-amd-name`               |
-| `noExtraModules`               | error    | Dependency array and callback parameters must match in count                       | `no-extra-modules`          |
-| `noInvalidModules`             | error    | Unknown `N/...` modules                                                            | `no-invalid-modules`        |
-| `noModuleExtensions` (fixable) | error    | No `.js` in `define` dependency names                                              | `no-module-extensions`      |
-| `moduleVars`                   | warn     | Conventional identifier per `N/` module (`N/record` → `record`)                    | `module-vars`               |
-| `logRequireTitle`              | warn     | `log.debug/audit/error/emergency({...})` needs `title`                             | `log-args` `requireTitle`   |
-| `logRequireDetails`            | warn     | ...needs `details`                                                                 | `log-args` `requireDetails` |
-| `noLogModule`                  | warn     | Opt-in opposite of `noMissingModules`: use the global `log`, not `N/log`           | `no-log-module`             |
-| `entryPoints`                  | error    | Returned entry points must belong to one script type and include its required ones | `entry-points`              |
-| `noMissingModules`             | error    | A module used (`record.load()`, `log.debug()`) must be loaded in `define`/`import` | none (from Oracle's skills) |
-| `noGlobalShadowing`            | warn     | No variable named `log` or `util` other than the N/log, N/util module itself       | none (from Oracle's skills) |
-| `noEval`                       | error    | No `eval`, `new Function` or string-form `setTimeout`/`setInterval`                | none (OWASP skill)          |
-| `noDynamicSuiteQL`             | warn     | `runSuiteQL` queries use `?` placeholders, not concatenation or template literals  | none (OWASP skill)          |
-| `noSuiteScript1Api`            | error    | No `nlapi*`/`nlobj*` (SuiteScript 1.0) leftovers                                   | none (upgrade skill)        |
-| `noModuleScopeApiCalls`        | warn     | No `N/` API calls while the `define` callback runs; initialize from entry points   | none (SAFE guide)           |
-| `noRecordInLoop`               | warn     | No `record.load`/`record.create` inside loops or `forEach`/`each`/`map` callbacks  | none (SAFE guide)           |
-| `noNativeIterators`            | warn     | No generator functions or `Symbol.iterator` (GraalJS)                              | none (SAFE guide)           |
+| Rule                           | Severity | Description                                                                                                          | ESLint equivalent           |
+| ------------------------------ | -------- | -------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| `noAmdName` (fixable)          | error    | No module id as the first `define` argument                                                                          | `no-amd-name`               |
+| `noExtraModules`               | error    | Dependency array and callback parameters must match in count                                                         | `no-extra-modules`          |
+| `noInvalidModules`             | error    | Unknown `N/...` modules                                                                                              | `no-invalid-modules`        |
+| `noModuleExtensions` (fixable) | error    | No `.js` in `define` dependency names                                                                                | `no-module-extensions`      |
+| `moduleVars`                   | warn     | Conventional identifier per `N/` module (`N/record` → `record`)                                                      | `module-vars`               |
+| `logRequireTitle`              | warn     | `log.debug/audit/error/emergency({...})` needs `title`                                                               | `log-args` `requireTitle`   |
+| `logRequireDetails`            | warn     | ...needs `details`                                                                                                   | `log-args` `requireDetails` |
+| `noLogModule`                  | warn     | Opt-in opposite of `noMissingModules`: use the global `log`, not `N/log`                                             | `no-log-module`             |
+| `entryPoints`                  | error    | Returned entry points must belong to one script type and include its required ones                                   | `entry-points`              |
+| `noMissingModules`             | error    | A module used (`record.load()`, `log.debug()`) must be loaded in `define`/`import`                                   | none (from Oracle's skills) |
+| `noGlobalShadowing`            | warn     | No variable named `log` or `util` other than the N/log, N/util module itself                                         | none (from Oracle's skills) |
+| `noEval`                       | error    | No `eval`, `new Function` or string-form `setTimeout`/`setInterval`                                                  | none (OWASP skill)          |
+| `noDynamicSuiteQL`             | warn     | `runSuiteQL` queries use `?` placeholders, not concatenation or template literals                                    | none (OWASP skill)          |
+| `noSuiteScript1Api`            | error    | No `nlapi*`/`nlobj*` (SuiteScript 1.0) leftovers                                                                     | none (upgrade skill)        |
+| `noModuleScopeApiCalls`        | warn     | No `N/` API calls while the `define` callback runs; initialize from entry points                                     | none (SAFE guide)           |
+| `noRecordInLoop`               | warn     | No `record.load`/`record.create` inside loops or `forEach`/`each`/`map` callbacks                                    | none (SAFE guide)           |
+| `noNativeIterators`            | warn     | No generator functions or `Symbol.iterator` (GraalJS)                                                                | none (SAFE guide)           |
+| `noWrongScriptTypeModules`     | error    | No client-only module (`N/currentRecord`, `N/ui/dialog`) in a server script, or a server-only one in a client script | none (Oracle docs)          |
+| `noBrowserGlobals`             | error    | No `document`, `window`, `localStorage`, `XMLHttpRequest`, `alert` or `navigator` in server scripts                  | none (Oracle docs)          |
+| `noBeforeSubmitRecordReload`   | error    | No `record.load`/`submitFields`/`delete` of `context.newRecord.id` inside `beforeSubmit`                             | none (Oracle docs)          |
+| `noEmptyEntryPoints`           | warn     | A returned entry point with an empty body                                                                            | none (Oracle docs)          |
+| `noMapReduceSearchResults`     | warn     | `getInputData` returns the search object, not `getRange()` results                                                   | none (Oracle docs)          |
 
 `noAmdName`, `noExtraModules` and `noModuleExtensions` only apply to `define()`. The rest cover `import` too.
 
-| Preset                | Contents                                                                                              |
-| --------------------- | ----------------------------------------------------------------------------------------------------- |
-| `presets/recommended` | every rule above except `noLogModule`, `entryPoints`, `noRecordInLoop` and `noNativeIterators`        |
-| `presets/minimal`     | `noExtraModules`, `noInvalidModules`                                                                  |
-| `presets/all`         | `recommended` + `entryPoints` + `noRecordInLoop` + `noNativeIterators` (not `noLogModule`, see below) |
+| Preset                | Contents                                                                                                                                                                       |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `presets/recommended` | every rule above except `noLogModule`, `entryPoints`, `noRecordInLoop`, `noNativeIterators`, `noBeforeSubmitRecordReload`, `noEmptyEntryPoints` and `noMapReduceSearchResults` |
+| `presets/minimal`     | `noExtraModules`, `noInvalidModules`                                                                                                                                           |
+| `presets/all`         | `recommended` + `entryPoints` + the five rules above it omits (not `noLogModule`, see below)                                                                                   |
 
 Suppress a diagnostic with `// biome-ignore lint/plugin: reason`.
 
@@ -73,6 +78,15 @@ Oracle's own agent skills disagree on whether `N/log` must be loaded: one says t
 recommended, another says it is not global. This package takes the consistent position that a module you use
 should be loaded, so `noMissingModules` requires `N/log` when `log.` is called. `noLogModule` is the opposite style
 for projects that prefer the global, so enable only one of the two (`presets/all` omits `noLogModule`).
+
+### Rules drawn from Oracle's documentation
+
+`noWrongScriptTypeModules`, `noBrowserGlobals`, `noBeforeSubmitRecordReload`, `noEmptyEntryPoints` and
+`noMapReduceSearchResults` come from Oracle's SuiteScript help-center pages and cover what type checking against
+`@hitc/netsuite-types` cannot (the typings accept every signature involved). The client-only and server-only module
+lists are copied from Oracle's module reference table, and `noWrongScriptTypeModules` and `noBrowserGlobals` only fire
+when the script type can be inferred from the returned entry points. `noBeforeSubmitRecordReload` only matches calls
+whose `id` is `...newRecord.id`. `noMapReduceSearchResults` only detects `.getRange()` results.
 
 ### Rules drawn from Oracle's agent skills
 
@@ -122,6 +136,7 @@ It reports:
 
 - `@NApiVersion` other than `2.1` (2.0, 2.x, 1.0 and invalid values), or missing when the file is a script.
 - `@NScriptType` with no or an invalid value, or missing when the returned entry points imply one.
+- A module from the wrong side of the declared script type (for example `N/file` in a client script).
 - A declared script type that does not match the returned entry points, or lacks its required ones.
 
 Files with no tags and no implied entry points (libraries) are skipped. For scripts still on 1.0, 2.0 or 2.x, the
