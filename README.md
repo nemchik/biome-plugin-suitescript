@@ -142,7 +142,8 @@ npm test               # builds first, then tests the built package
 Git hooks (lefthook) run Biome on staged files before commit and reinstall dependencies after checkout or merge.
 
 Commits follow [Conventional Commits](https://www.conventionalcommits.org); release-please opens a release PR and
-publishes to npm when it is merged (needs the `NPM_TOKEN` secret). Dependencies are managed by Renovate: dev
+publishes to npm when it is merged, using npm trusted publishing (OIDC, no token; the package settings on npmjs.com
+allow this repo and `release.yml`). Dependencies are managed by Renovate: dev
 dependencies are pinned, the `@biomejs/biome` peer range stays a caret, and Biome and `@biomejs/runtime` update together.
 
 MIT licensed. Module and script-type data and rule behavior derive from the MIT-licensed ESLint plugins above.
