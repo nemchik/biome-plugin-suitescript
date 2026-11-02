@@ -61,6 +61,7 @@ Biome plugins cannot be reconfigured per project, so you choose by enabling rule
 | `noBeforeSubmitRecordReload`   | error    | No `record.load`/`submitFields`/`delete` of `context.newRecord.id` inside `beforeSubmit`                             | none (Oracle docs)          |
 | `noEmptyEntryPoints`           | warn     | A returned entry point with an empty body                                                                            | none (Oracle docs)          |
 | `noMapReduceSearchResults`     | warn     | `getInputData` returns the search object, not `getRange()` results                                                   | none (Oracle docs)          |
+| `noHardcodedSecrets`           | error    | Opt-in only: no string literal assigned to `password`, `secret`, `apiKey`, ...                                       | none (Oracle docs)          |
 
 `noAmdName`, `noExtraModules` and `noModuleExtensions` only apply to `define()`. The rest cover `import` too.
 
@@ -71,6 +72,18 @@ Biome plugins cannot be reconfigured per project, so you choose by enabling rule
 | `presets/all`         | `recommended` + `entryPoints` + the five rules above it omits (not `noLogModule`, see below)                                                                                   |
 
 Suppress a diagnostic with `// biome-ignore lint/plugin: reason`.
+
+### Opt-in rules and typings
+
+`noHardcodedSecrets` is in no preset. It guesses from names (`password`, `passwd`, `pwd`, `secret`, `apiKey`,
+`clientSecret`, `tokenSecret`, `consumerSecret`, exact match only) rather than knowing a value is a credential, so it
+can misfire on look-alike names, and you should decide whether that trade is worth it: add
+`"biome-plugin-suitescript/noHardcodedSecrets"` to `plugins` yourself. Oracle says "Do not hard-code any passwords
+in scripts."
+
+The rules assume you type-check against [`@hitc/netsuite-types`](https://github.com/headintheclouddev/typings-suitescript-2.0),
+which already rejects wrong option names, missing parameters and positional-argument calls to N/ methods (their
+signatures take an options object). Plain JavaScript projects get none of that from these rules.
 
 ### Logging and `N/log`
 
