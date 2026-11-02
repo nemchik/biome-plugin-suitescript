@@ -1,0 +1,21 @@
+{
+  "$id": "https://github.com/nemchik/biome-plugin-suitescript/schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Configuration for the `biome-plugin-suitescript check` command.",
+  "properties": {
+    "$schema": { "type": "string" },
+    "includes": {
+      "description": "Glob patterns of SuiteScript source files to check: files deployed to the file cabinet, or the sources they are transpiled from (not the transpiled output). Prefix a pattern with ! to exclude, as in Biome's `includes`.",
+      "examples": [
+        ["src/TypeScripts/**/*.{js,ts}", "!**/*.d.ts", "!**/*.test.*"]
+      ],
+      "items": { "minLength": 1, "type": "string" },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": ["includes"],
+  "title": "biome-plugin-suitescript configuration",
+  "type": "object"
+}

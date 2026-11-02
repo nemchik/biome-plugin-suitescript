@@ -1,0 +1,5 @@
+{
+  "javascript": {
+    "globals": ["define", "require", "log", "util"]
+  }
+}

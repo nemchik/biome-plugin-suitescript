@@ -1,0 +1,83 @@
+{
+  "name": "biome-plugin-suitescript",
+  "version": "0.1.0",
+  "description": "Biome lint plugins and configs for NetSuite SuiteScript 1.0/2.x, inspired by eslint-plugin-suitescript.",
+  "keywords": [
+    "biome-plugin",
+    "biome",
+    "suitescript",
+    "netsuite",
+    "lint"
+  ],
+  "homepage": "https://github.com/nemchik/biome-plugin-suitescript#readme",
+  "bugs": "https://github.com/nemchik/biome-plugin-suitescript/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nemchik/biome-plugin-suitescript.git"
+  },
+  "license": "MIT",
+  "author": "Eric Nemchik",
+  "type": "module",
+  "exports": {
+    "./schema.json": "./schema.json",
+    "biome": "./biome-manifest.json"
+  },
+  "bin": {
+    "biome-plugin-suitescript": "./dist/bin/biome-plugin-suitescript.js"
+  },
+  "files": [
+    "biome-manifest.json",
+    "configs",
+    "dist",
+    "schema.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "prebuild": "node -e \"require(\\\"node:fs\\\").rmSync(\\\"dist\\\",{recursive:true,force:true})\"",
+    "build": "tsc -p tsconfig.build.json && node scripts/build-manifest.ts",
+    "check": "biome check",
+    "preformat": "npm run typecheck",
+    "format": "biome check --write",
+    "lint": "biome lint",
+    "prepack": "npm run build",
+    "sync-modules": "node scripts/sync-modules.ts",
+    "pretest": "npm run build",
+    "test": "node --test test/*.test.ts",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "oxc-parser": "^0.156.0",
+    "tinyglobby": "^0.2.17"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.4",
+    "@biomejs/runtime": "2.6.4",
+    "@hitc/netsuite-types": "^2026.2.4",
+    "@types/node": "24.19.2",
+    "git-pull-run": "2.1.0",
+    "lefthook": "2.2.2",
+    "typescript": "7.0.2"
+  },
+  "peerDependencies": {
+    "@biomejs/biome": "^2.6.4"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.22.2",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": "12.2.1",
+      "onFail": "warn"
+    }
+  },
+  "allowScripts": {
+    "lefthook": true
+  }
+}
