@@ -11,7 +11,13 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!dist", "!test/fixtures", "!package-lock.json"]
+    "includes": [
+      "**",
+      "!CHANGELOG.md",
+      "!dist",
+      "!test/fixtures",
+      "!package-lock.json"
+    ]
   },
   "formatter": {
     "enabled": true,
