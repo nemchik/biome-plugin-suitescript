@@ -44,6 +44,10 @@ export const SCRIPT_TYPES: ScriptType[] = [
     name: "CustomGLPlugin",
   },
   {
+    entryPoints: [],
+    name: "CustomTool",
+  },
+  {
     entryPoints: ["createDataset"],
     name: "DatasetBuilderPlugin",
   },
@@ -91,6 +95,14 @@ export const SCRIPT_TYPES: ScriptType[] = [
   {
     entryPoints: ["run"],
     name: "SDFInstallationScript",
+  },
+  {
+    entryPoints: ["run"],
+    name: "SpaClientScript",
+  },
+  {
+    entryPoints: ["initializeSpa"],
+    name: "SpaServerScript",
   },
   {
     entryPoints: ["onRequest"],

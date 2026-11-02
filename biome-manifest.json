@@ -15,8 +15,15 @@
         "moduleVars",
         "logRequireTitle",
         "logRequireDetails",
-        "noLogModule",
-        "entryPoints"
+        "noMissingModules",
+        "noGlobalShadowing",
+        "noEval",
+        "noDynamicSuiteQL",
+        "noSuiteScript1Api",
+        "noModuleScopeApiCalls",
+        "entryPoints",
+        "noRecordInLoop",
+        "noNativeIterators"
       ],
       "minimal": ["noExtraModules", "noInvalidModules"],
       "recommended": [
@@ -26,7 +33,13 @@
         "noModuleExtensions",
         "moduleVars",
         "logRequireTitle",
-        "logRequireDetails"
+        "logRequireDetails",
+        "noMissingModules",
+        "noGlobalShadowing",
+        "noEval",
+        "noDynamicSuiteQL",
+        "noSuiteScript1Api",
+        "noModuleScopeApiCalls"
       ]
     },
     "rules": [
@@ -46,7 +59,16 @@
         "noAmdName": "./dist/rules/noAmdName.grit"
       },
       {
+        "noDynamicSuiteQL": "./dist/rules/noDynamicSuiteQL.js"
+      },
+      {
+        "noEval": "./dist/rules/noEval.js"
+      },
+      {
         "noExtraModules": "./dist/rules/noExtraModules.js"
+      },
+      {
+        "noGlobalShadowing": "./dist/rules/noGlobalShadowing.js"
       },
       {
         "noInvalidModules": "./dist/rules/noInvalidModules.js"
@@ -55,7 +77,22 @@
         "noLogModule": "./dist/rules/noLogModule.js"
       },
       {
+        "noMissingModules": "./dist/rules/noMissingModules.js"
+      },
+      {
         "noModuleExtensions": "./dist/rules/noModuleExtensions.grit"
+      },
+      {
+        "noModuleScopeApiCalls": "./dist/rules/noModuleScopeApiCalls.js"
+      },
+      {
+        "noNativeIterators": "./dist/rules/noNativeIterators.js"
+      },
+      {
+        "noRecordInLoop": "./dist/rules/noRecordInLoop.js"
+      },
+      {
+        "noSuiteScript1Api": "./dist/rules/noSuiteScript1Api.js"
       }
     ]
   },

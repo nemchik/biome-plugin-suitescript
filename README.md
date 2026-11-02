@@ -46,18 +46,42 @@ Biome plugins cannot be reconfigured per project, so you choose by enabling rule
 | `moduleVars`                   | warn     | Conventional identifier per `N/` module (`N/record` → `record`)                    | `module-vars`               |
 | `logRequireTitle`              | warn     | `log.debug/audit/error/emergency({...})` needs `title`                             | `log-args` `requireTitle`   |
 | `logRequireDetails`            | warn     | ...needs `details`                                                                 | `log-args` `requireDetails` |
-| `noLogModule`                  | warn     | Use the global `log`, not `N/log`                                                  | `no-log-module`             |
+| `noLogModule`                  | warn     | Opt-in opposite of `noMissingModules`: use the global `log`, not `N/log`           | `no-log-module`             |
 | `entryPoints`                  | error    | Returned entry points must belong to one script type and include its required ones | `entry-points`              |
+| `noMissingModules`             | error    | A module used (`record.load()`, `log.debug()`) must be loaded in `define`/`import` | none (from Oracle's skills) |
+| `noGlobalShadowing`            | warn     | No variable named `log` or `util` other than the N/log, N/util module itself       | none (from Oracle's skills) |
+| `noEval`                       | error    | No `eval`, `new Function` or string-form `setTimeout`/`setInterval`                | none (OWASP skill)          |
+| `noDynamicSuiteQL`             | warn     | `runSuiteQL` queries use `?` placeholders, not concatenation or template literals  | none (OWASP skill)          |
+| `noSuiteScript1Api`            | error    | No `nlapi*`/`nlobj*` (SuiteScript 1.0) leftovers                                   | none (upgrade skill)        |
+| `noModuleScopeApiCalls`        | warn     | No `N/` API calls while the `define` callback runs; initialize from entry points   | none (SAFE guide)           |
+| `noRecordInLoop`               | warn     | No `record.load`/`record.create` inside loops or `forEach`/`each`/`map` callbacks  | none (SAFE guide)           |
+| `noNativeIterators`            | warn     | No generator functions or `Symbol.iterator` (GraalJS)                              | none (SAFE guide)           |
 
 `noAmdName`, `noExtraModules` and `noModuleExtensions` only apply to `define()`. The rest cover `import` too.
 
-| Preset                | Contents                                                                                                    |
-| --------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `presets/recommended` | every rule above except `noLogModule` and `entryPoints` (no false positives on libraries or client scripts) |
-| `presets/minimal`     | `noExtraModules`, `noInvalidModules`                                                                        |
-| `presets/all`         | `recommended` + `noLogModule` + `entryPoints`                                                               |
+| Preset                | Contents                                                                                              |
+| --------------------- | ----------------------------------------------------------------------------------------------------- |
+| `presets/recommended` | every rule above except `noLogModule`, `entryPoints`, `noRecordInLoop` and `noNativeIterators`        |
+| `presets/minimal`     | `noExtraModules`, `noInvalidModules`                                                                  |
+| `presets/all`         | `recommended` + `entryPoints` + `noRecordInLoop` + `noNativeIterators` (not `noLogModule`, see below) |
 
 Suppress a diagnostic with `// biome-ignore lint/plugin: reason`.
+
+### Logging and `N/log`
+
+Oracle's own agent skills disagree on whether `N/log` must be loaded: one says the global exists but loading is
+recommended, another says it is not global. This package takes the consistent position that a module you use
+should be loaded, so `noMissingModules` requires `N/log` when `log.` is called. `noLogModule` is the opposite style
+for projects that prefer the global, so enable only one of the two (`presets/all` omits `noLogModule`).
+
+### Rules drawn from Oracle's agent skills
+
+`noMissingModules`, `noGlobalShadowing`, `noEval`, `noDynamicSuiteQL`, `noSuiteScript1Api`, `noModuleScopeApiCalls`,
+`noRecordInLoop` and `noNativeIterators` come from Oracle's
+[agent skills](https://github.com/oracle/netsuite-suitecloud-sdk/tree/master/packages/agent-skills) (SuiteScript
+upgrade, OWASP secure coding and the SAFE guide). `noMissingModules` leaves `util` alone because it is a global.
+`noDynamicSuiteQL` does not flag a bare variable, whose contents it cannot see. `noRecordInLoop` is opt-in because
+a Map/Reduce `map` entry point legitimately handles one record per call.
 
 ### `entryPoints` and script types
 

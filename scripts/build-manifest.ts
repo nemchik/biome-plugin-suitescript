@@ -31,6 +31,12 @@ const recommended = [
   "moduleVars",
   "logRequireTitle",
   "logRequireDetails",
+  "noMissingModules",
+  "noGlobalShadowing",
+  "noEval",
+  "noDynamicSuiteQL",
+  "noSuiteScript1Api",
+  "noModuleScopeApiCalls",
 ];
 
 const manifest = {
@@ -38,7 +44,13 @@ const manifest = {
   configs: [{ suitescript2: "./configs/suitescript2.json" }],
   plugins: {
     presets: {
-      all: [...recommended, "noLogModule", "entryPoints"],
+      // noLogModule is the opposite style to noMissingModules, so `all` omits it.
+      all: [
+        ...recommended,
+        "entryPoints",
+        "noRecordInLoop",
+        "noNativeIterators",
+      ],
       minimal: ["noExtraModules", "noInvalidModules"],
       recommended,
     },
