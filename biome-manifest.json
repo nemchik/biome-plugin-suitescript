@@ -23,12 +23,19 @@
         "noModuleScopeApiCalls",
         "noWrongScriptTypeModules",
         "noBrowserGlobals",
+        "noUserEventContextSave",
+        "noInsecureHttpsUrl",
         "entryPoints",
         "noRecordInLoop",
         "noNativeIterators",
         "noBeforeSubmitRecordReload",
         "noEmptyEntryPoints",
-        "noMapReduceSearchResults"
+        "noMapReduceSearchResults",
+        "requireCustpagePrefix",
+        "noHeaderUnderscores",
+        "noQueryColumnFieldAndFormula",
+        "requireClientValidateReturn",
+        "noClientLog"
       ],
       "minimal": ["noExtraModules", "noInvalidModules"],
       "recommended": [
@@ -46,7 +53,9 @@
         "noSuiteScript1Api",
         "noModuleScopeApiCalls",
         "noWrongScriptTypeModules",
-        "noBrowserGlobals"
+        "noBrowserGlobals",
+        "noUserEventContextSave",
+        "noInsecureHttpsUrl"
       ]
     },
     "rules": [
@@ -72,6 +81,9 @@
         "noBrowserGlobals": "./dist/rules/noBrowserGlobals.js"
       },
       {
+        "noClientLog": "./dist/rules/noClientLog.js"
+      },
+      {
         "noDynamicSuiteQL": "./dist/rules/noDynamicSuiteQL.js"
       },
       {
@@ -88,6 +100,12 @@
       },
       {
         "noHardcodedSecrets": "./dist/rules/noHardcodedSecrets.js"
+      },
+      {
+        "noHeaderUnderscores": "./dist/rules/noHeaderUnderscores.js"
+      },
+      {
+        "noInsecureHttpsUrl": "./dist/rules/noInsecureHttpsUrl.js"
       },
       {
         "noInvalidModules": "./dist/rules/noInvalidModules.js"
@@ -111,13 +129,25 @@
         "noNativeIterators": "./dist/rules/noNativeIterators.js"
       },
       {
+        "noQueryColumnFieldAndFormula": "./dist/rules/noQueryColumnFieldAndFormula.js"
+      },
+      {
         "noRecordInLoop": "./dist/rules/noRecordInLoop.js"
       },
       {
         "noSuiteScript1Api": "./dist/rules/noSuiteScript1Api.js"
       },
       {
+        "noUserEventContextSave": "./dist/rules/noUserEventContextSave.js"
+      },
+      {
         "noWrongScriptTypeModules": "./dist/rules/noWrongScriptTypeModules.js"
+      },
+      {
+        "requireClientValidateReturn": "./dist/rules/requireClientValidateReturn.js"
+      },
+      {
+        "requireCustpagePrefix": "./dist/rules/requireCustpagePrefix.js"
       }
     ]
   },

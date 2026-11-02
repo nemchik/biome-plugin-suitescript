@@ -63,3 +63,22 @@ export function misplacedModule(
     return `${module} is only available in server scripts.`;
   return undefined;
 }
+
+const CUSTOM_TOOL_UNSUPPORTED = new Set([
+  "N/http",
+  "N/https",
+  "N/llm",
+  "N/sftp",
+]);
+
+/** A message when a single script type cannot load `module` at all. */
+export function unsupportedModule(
+  scriptType: string,
+  module: string,
+): string | undefined {
+  if (scriptType === "CustomTool" && CUSTOM_TOOL_UNSUPPORTED.has(module))
+    return `${module} is not supported in custom tool scripts.`;
+  if (scriptType === "BundleInstallationScript" && !/^N(\/|$)/.test(module))
+    return "Custom modules are not supported in bundle installation scripts.";
+  return undefined;
+}
