@@ -32,6 +32,13 @@ test("modules from the wrong side of the declared script type are reported", () 
   assert.doesNotMatch(r.out, /N\/currentRecord is only/);
 });
 
+test("modules a script type does not support are reported", () => {
+  const r = run(["check", fx("tags-tool.js")]);
+  assert.equal(r.code, 1);
+  assert.match(r.out, /N\/https is not supported in custom tool scripts/);
+  assert.doesNotMatch(r.out, /N\/record is not supported/);
+});
+
 test("old version, bad entry points and missing tags exit 1", () => {
   const r = run(["check", fx("tags-bad.js"), fx("tags-missing.ts")]);
   assert.equal(r.code, 1);

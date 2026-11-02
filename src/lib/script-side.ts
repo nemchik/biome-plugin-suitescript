@@ -5,13 +5,14 @@ import { parseDefine } from "./define.ts";
 import { amdReturnedNames } from "./entry-points.ts";
 import { inferScriptType } from "./inference.ts";
 import { type ScriptSide, sideOf } from "./module-script-types.ts";
+import type { ScriptType } from "./script-types.ts";
 
 /**
- * Whether the module containing `node` (a define() call or an ES module) is a
- * client or server script, judged from the entry points it returns. Undefined
- * for libraries and for entry points that cannot be analysed or are mixed.
+ * Script types the module containing `node` (a define() call or an ES module)
+ * could be, judged from the entry points it returns. Undefined for libraries
+ * and for entry points that cannot be analysed.
  */
-export function scriptSide(node: AnyJsAstNode): ScriptSide | undefined {
+export function inferredTypes(node: AnyJsAstNode): ScriptType[] | undefined {
   for (const candidate of [node, ...node.ancestors()]) {
     let names: string[] | undefined;
     if (candidate.kind === "JS_CALL_EXPRESSION") {
@@ -23,10 +24,15 @@ export function scriptSide(node: AnyJsAstNode): ScriptSide | undefined {
     } else {
       continue;
     }
-    const inferred = names && inferScriptType(names);
-    return inferred ? sideOf(inferred.types) : undefined;
+    return (names && inferScriptType(names))?.types;
   }
   return undefined;
+}
+
+/** Whether that module is a client or server script. Undefined when unknown or mixed. */
+export function scriptSide(node: AnyJsAstNode): ScriptSide | undefined {
+  const types = inferredTypes(node);
+  return types && sideOf(types);
 }
 
 const FUNCTION_KINDS = [

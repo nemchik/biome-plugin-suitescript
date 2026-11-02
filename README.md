@@ -62,14 +62,21 @@ Biome plugins cannot be reconfigured per project, so you choose by enabling rule
 | `noEmptyEntryPoints`           | warn     | A returned entry point with an empty body                                                                            | none (Oracle docs)          |
 | `noMapReduceSearchResults`     | warn     | `getInputData` returns the search object, not `getRange()` results                                                   | none (Oracle docs)          |
 | `noHardcodedSecrets`           | error    | Opt-in only: no string literal assigned to `password`, `secret`, `apiKey`, ...                                       | none (Oracle docs)          |
+| `noUserEventContextSave`       | error    | No `.save()` on `context.newRecord` or `context.oldRecord` in user events                                            | none (Oracle docs)          |
+| `noInsecureHttpsUrl`           | error    | No `http://` URL passed to `https.*` (N/https refuses plain HTTP)                                                    | none (Oracle docs)          |
+| `requireCustpagePrefix`        | warn     | The `id` of a UI object added to a form (`addField`, `addTab`, ...) starts with `custpage`                           | none (Oracle docs)          |
+| `noHeaderUnderscores`          | warn     | No underscore in a custom `https.*` header name                                                                      | none (Oracle docs)          |
+| `noQueryColumnFieldAndFormula` | error    | A query column cannot set both `fieldId` and `formula`                                                               | none (Oracle docs)          |
+| `requireClientValidateReturn`  | warn     | `saveRecord` and `validate*` return a value (only a body with no `return <value>` is flagged)                        | none (Oracle docs)          |
+| `noClientLog`                  | warn     | `log.*` is ignored in client scripts attached to a form; use `console`                                               | none (Oracle docs)          |
 
 `noAmdName`, `noExtraModules` and `noModuleExtensions` only apply to `define()`. The rest cover `import` too.
 
-| Preset                | Contents                                                                                                                                                                       |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `presets/recommended` | every rule above except `noLogModule`, `entryPoints`, `noRecordInLoop`, `noNativeIterators`, `noBeforeSubmitRecordReload`, `noEmptyEntryPoints` and `noMapReduceSearchResults` |
-| `presets/minimal`     | `noExtraModules`, `noInvalidModules`                                                                                                                                           |
-| `presets/all`         | `recommended` + `entryPoints` + the five rules above it omits (not `noLogModule`, see below)                                                                                   |
+| Preset                | Contents                                                                                                                                                                                                                                                                                                                               |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `presets/recommended` | every rule above except the opt-in `noLogModule` and `noHardcodedSecrets` and the ones `presets/all` adds                                                                                                                                                                                                                              |
+| `presets/minimal`     | `noExtraModules`, `noInvalidModules`                                                                                                                                                                                                                                                                                                   |
+| `presets/all`         | `recommended` plus `entryPoints`, `noRecordInLoop`, `noNativeIterators`, `noBeforeSubmitRecordReload`, `noEmptyEntryPoints`, `noMapReduceSearchResults`, `requireCustpagePrefix`, `noHeaderUnderscores`, `noQueryColumnFieldAndFormula`, `requireClientValidateReturn` and `noClientLog` (never `noLogModule` or `noHardcodedSecrets`) |
 
 Suppress a diagnostic with `// biome-ignore lint/plugin: reason`.
 
@@ -95,7 +102,7 @@ for projects that prefer the global, so enable only one of the two (`presets/all
 ### Rules drawn from Oracle's documentation
 
 `noWrongScriptTypeModules`, `noBrowserGlobals`, `noBeforeSubmitRecordReload`, `noEmptyEntryPoints` and
-`noMapReduceSearchResults` come from Oracle's SuiteScript help-center pages and cover what type checking against
+`noMapReduceSearchResults`, plus the later additions listed in the table above marked Oracle docs, come from Oracle's SuiteScript help-center pages and cover what type checking against
 `@hitc/netsuite-types` cannot (the typings accept every signature involved). The client-only and server-only module
 lists are copied from Oracle's module reference table, and `noWrongScriptTypeModules` and `noBrowserGlobals` only fire
 when the script type can be inferred from the returned entry points. `noBeforeSubmitRecordReload` only matches calls
@@ -149,7 +156,7 @@ It reports:
 
 - `@NApiVersion` other than `2.1` (2.0, 2.x, 1.0 and invalid values), or missing when the file is a script.
 - `@NScriptType` with no or an invalid value, or missing when the returned entry points imply one.
-- A module from the wrong side of the declared script type (for example `N/file` in a client script).
+- A module from the wrong side of the declared script type (for example `N/file` in a client script), or one the declared type does not support at all (`N/http`, `N/https`, `N/llm` and `N/sftp` in a custom tool; custom modules in a bundle installation script).
 - A declared script type that does not match the returned entry points, or lacks its required ones.
 
 Files with no tags and no implied entry points (libraries) are skipped. For scripts still on 1.0, 2.0 or 2.x, the

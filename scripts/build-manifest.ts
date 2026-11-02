@@ -39,6 +39,8 @@ const recommended = [
   "noModuleScopeApiCalls",
   "noWrongScriptTypeModules",
   "noBrowserGlobals",
+  "noUserEventContextSave",
+  "noInsecureHttpsUrl",
 ];
 
 const manifest = {
@@ -55,6 +57,11 @@ const manifest = {
         "noBeforeSubmitRecordReload",
         "noEmptyEntryPoints",
         "noMapReduceSearchResults",
+        "requireCustpagePrefix",
+        "noHeaderUnderscores",
+        "noQueryColumnFieldAndFormula",
+        "requireClientValidateReturn",
+        "noClientLog",
       ],
       minimal: ["noExtraModules", "noInvalidModules"],
       recommended,

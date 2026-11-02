@@ -15,7 +15,11 @@ import {
   inferScriptType,
   typeByName,
 } from "../lib/inference.ts";
-import { misplacedModule, sideOf } from "../lib/module-script-types.ts";
+import {
+  misplacedModule,
+  sideOf,
+  unsupportedModule,
+} from "../lib/module-script-types.ts";
 
 const API_VERSION = "2.1";
 const UPGRADABLE = new Set(["1.0", "2.0", "2.x"]);
@@ -322,9 +326,14 @@ export function analyzeSource(filename: string, source: string): Analysis {
   // The declared type wins; otherwise fall back to what the entry points imply.
   const declaredType = declared ? typeByName(declared) : undefined;
   const side = sideOf(declaredType ? [declaredType] : (inferred?.types ?? []));
-  if (side) {
+  const single =
+    declaredType ??
+    (inferred?.types.length === 1 ? inferred.types[0] : undefined);
+  if (side || single) {
     for (const module of modules) {
-      const message = misplacedModule(side, module);
+      const message =
+        (side && misplacedModule(side, module)) ||
+        (single && unsupportedModule(single.name, module));
       if (message) report("modules", message, scriptType?.offset ?? 0);
     }
   }

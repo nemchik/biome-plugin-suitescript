@@ -161,6 +161,30 @@ test("noHardcodedSecrets is opt-in and flags only secret-like literals", () => {
   assert.equal(count(lint(ALL, "secrets.js")), 0, "no preset enables it");
 });
 
+test("rules from the script type and module pages report what they should", () => {
+  const out = lint(ALL, "pages-bad.js");
+  assert.equal((out.match(/must start with 'custpage'/g) ?? []).length, 1);
+  assert.match(out, /N\/https does not allow http:\/\/ URLs/);
+  assert.equal((out.match(/Header names must not contain/g) ?? []).length, 1);
+  assert.equal(
+    (out.match(/cannot set both fieldId and formula/g) ?? []).length,
+    1,
+  );
+  const save = lint(ALL, "ue-save.js");
+  assert.equal(
+    (save.match(/is not allowed; the context record/g) ?? []).length,
+    1,
+  );
+  const client = lint(ALL, "client-validate.js");
+  assert.match(client, /'saveRecord' must return true or false/);
+  assert.doesNotMatch(client, /'validateField' must return/);
+  assert.match(client, /log\.debug\(\) is ignored in client scripts/);
+  assert.match(
+    lint(ALL, "bundle.js"),
+    /Custom modules are not supported in bundle installation scripts/,
+  );
+});
+
 test("script type is inferred and required entry points are checked", () => {
   const out = lint(ALL, "mr.js");
   assert.match(out, /MapReduceScript requires entry point map or reduce/);
