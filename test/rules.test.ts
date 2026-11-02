@@ -46,10 +46,11 @@ function lint(plugins: string[], fixture: string): string {
 }
 
 const ALL = ["biome-plugin-suitescript/presets/all"];
+const WITH_LOG_MODULE = [...ALL, "biome-plugin-suitescript/noLogModule"];
 const count = (out: string) => (out.match(/plugin ━/g) ?? []).length;
 
 test("AMD problems are reported", () => {
-  const out = lint(ALL, "bad.js");
+  const out = lint(WITH_LOG_MODULE, "bad.js");
   for (const msg of [
     "No AMD module name",
     "Invalid NetSuite module 'N/bogus'",
@@ -65,7 +66,7 @@ test("AMD problems are reported", () => {
 });
 
 test("ES import/export problems are reported", () => {
-  const out = lint(ALL, "es.ts");
+  const out = lint(WITH_LOG_MODULE, "es.ts");
   for (const msg of [
     "Use global log",
     "Identifier for N/record should be 'record'",
@@ -75,6 +76,46 @@ test("ES import/export problems are reported", () => {
   ]) {
     assert.match(out, new RegExp(msg), msg);
   }
+});
+
+test("rules drawn from Oracle's agent skills report what they should", () => {
+  const out = lint(ALL, "skills-bad.js");
+  for (const msg of [
+    "'email' is used but N/email is not loaded",
+    "'log' shadows the global log",
+    "Do not use eval()",
+    "Do not pass a string to setTimeout()",
+    "Build SuiteQL with \\? placeholders",
+    "'nlapiGetContext' is SuiteScript 1.0",
+    "record.load\\(\\) runs at module scope",
+    "record.load\\(\\) inside a loop",
+    "Avoid generator functions",
+    "Avoid Symbol.iterator",
+  ]) {
+    assert.match(out, new RegExp(msg), msg);
+  }
+  assert.equal(
+    (out.match(/Build SuiteQL/g) ?? []).length,
+    2,
+    "concatenation and template literal are both flagged",
+  );
+  assert.equal(
+    (out.match(/inside a loop/g) ?? []).length,
+    2,
+    "for-of and forEach are both flagged",
+  );
+});
+
+test("compliant skills code is not flagged", () => {
+  assert.equal(count(lint(ALL, "skills-good.js")), 0);
+});
+
+test("noMissingModules requires N/log when log is used", () => {
+  const out = lint(
+    ["biome-plugin-suitescript/noMissingModules"],
+    "missing-log.js",
+  );
+  assert.match(out, /'log' is used but N\/log is not loaded/);
 });
 
 test("script type is inferred and required entry points are checked", () => {
