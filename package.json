@@ -54,7 +54,7 @@
     "@biomejs/biome": "2.6.4",
     "@biomejs/runtime": "2.6.4",
     "@hitc/netsuite-types": "2026.2.4",
-    "@types/node": "24.19.2",
+    "@types/node": "26.6.6",
     "git-pull-run": "2.1.0",
     "lefthook": "2.2.2",
     "typescript": "7.0.2"
@@ -68,7 +68,7 @@
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": "24.22.2",
+      "version": "26.13.0",
       "onFail": "error"
     },
     "packageManager": {
