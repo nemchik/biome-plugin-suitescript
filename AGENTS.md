@@ -22,4 +22,4 @@ Source is TypeScript in `src/` and compiles to `dist/` (gitignored, published). 
 
 ## Releases
 
-Publishing uses npm trusted publishing (OIDC) from `.github/workflows/release.yml`; do not add an `NPM_TOKEN`. npm tokens that bypass 2FA lose publishing around January 2027. `release-please-config.json` sets `release-as: 0.1.0` for the first release only; remove it (and keep the manifest in sync) once 0.1.0 is published, or every release will be proposed as 0.1.0.
+Publishing uses npm trusted publishing (OIDC) from `.github/workflows/release.yml`; do not add an `NPM_TOKEN`. npm tokens that bypass 2FA lose publishing around January 2027.
