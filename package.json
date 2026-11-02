@@ -1,7 +1,7 @@
 {
   "name": "biome-plugin-suitescript",
   "version": "0.1.0",
-  "description": "Biome lint plugins and configs for NetSuite SuiteScript 1.0/2.x, inspired by eslint-plugin-suitescript.",
+  "description": "Biome lint plugins and a tag checker for NetSuite SuiteScript 2.1, ported from eslint-plugin-suitescript.",
   "keywords": [
     "biome-plugin",
     "biome",
