@@ -1,0 +1,9 @@
+engine biome(1.0)
+language js(typescript, jsx)
+
+// Anonymous AMD modules only: NetSuite/bundlers assign the module ID.
+`define($id, $deps, $cb)` as $call where {
+  $id <: JsStringLiteralExpression(),
+  register_diagnostic(span=$id, message="No AMD module name should be provided.", severity="error", fix_kind="safe"),
+  $call => `define($deps, $cb)`
+}

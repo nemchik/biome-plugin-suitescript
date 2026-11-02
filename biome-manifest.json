@@ -1,0 +1,63 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/manifest_schema.json",
+  "configs": [
+    {
+      "suitescript2": "./configs/suitescript2.json"
+    }
+  ],
+  "plugins": {
+    "presets": {
+      "all": [
+        "noAmdName",
+        "noExtraModules",
+        "noInvalidModules",
+        "noModuleExtensions",
+        "moduleVars",
+        "logRequireTitle",
+        "logRequireDetails",
+        "noLogModule",
+        "entryPoints"
+      ],
+      "minimal": ["noExtraModules", "noInvalidModules"],
+      "recommended": [
+        "noAmdName",
+        "noExtraModules",
+        "noInvalidModules",
+        "noModuleExtensions",
+        "moduleVars",
+        "logRequireTitle",
+        "logRequireDetails"
+      ]
+    },
+    "rules": [
+      {
+        "entryPoints": "./dist/rules/entryPoints.js"
+      },
+      {
+        "logRequireDetails": "./dist/rules/logRequireDetails.js"
+      },
+      {
+        "logRequireTitle": "./dist/rules/logRequireTitle.js"
+      },
+      {
+        "moduleVars": "./dist/rules/moduleVars.js"
+      },
+      {
+        "noAmdName": "./dist/rules/noAmdName.grit"
+      },
+      {
+        "noExtraModules": "./dist/rules/noExtraModules.js"
+      },
+      {
+        "noInvalidModules": "./dist/rules/noInvalidModules.js"
+      },
+      {
+        "noLogModule": "./dist/rules/noLogModule.js"
+      },
+      {
+        "noModuleExtensions": "./dist/rules/noModuleExtensions.grit"
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "baseBranchPatterns": ["$default"],
+  "extends": [
+    "config:best-practices",
+    "config:js-lib",
+    "customManagers:biomeVersions",
+    "customManagers:githubActionsVersions",
+    ":automergeDigest",
+    ":automergeLinters",
+    ":automergePr",
+    ":automergeRequireAllStatusChecks",
+    ":automergeStableNonMajor",
+    ":automergeTesters",
+    ":automergeTypes",
+    ":disableRateLimiting",
+    ":enableVulnerabilityAlerts",
+    ":renovatePrefix"
+  ],
+  "lockFileMaintenance": { "automerge": true, "enabled": true },
+  "packageRules": [
+    {
+      "description": "Biome and its plugin runtime must always be the same version.",
+      "groupName": "biome",
+      "matchPackageNames": ["@biomejs/biome", "@biomejs/runtime"]
+    },
+    {
+      "description": "Runtime dependencies ship to consumers, so updating them releases a fix. Everything else is a chore.",
+      "matchDepTypes": ["dependencies"],
+      "semanticCommitType": "fix"
+    }
+  ],
+  "semanticCommits": "enabled",
+  "semanticCommitType": "chore"
+}

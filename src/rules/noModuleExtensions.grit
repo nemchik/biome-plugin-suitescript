@@ -1,0 +1,12 @@
+engine biome(1.0)
+language js(typescript, jsx)
+
+// Dependencies in the define() array must not carry a `.js` extension.
+`define($args)` where {
+  $args <: contains JsArrayExpression() as $deps,
+  $deps <: contains JsStringLiteralExpression() as $dep where {
+    $dep <: r"(['\"])(.*)\.js(['\"])"($q1, $name, $q2),
+    register_diagnostic(span=$dep, message="Module name should not include file extension.", severity="error", fix_kind="safe"),
+    $dep => `$q1$name$q2`
+  }
+}
