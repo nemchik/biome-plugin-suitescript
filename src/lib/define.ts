@@ -32,10 +32,40 @@ export function stringValue(
 }
 
 /**
+ * The array literal a variable is initialised with, for `var dependencies = [...]`
+ * followed by `define(dependencies, ...)`. The first matching declaration in the
+ * file wins; a variable that is not an array literal is not resolved.
+ */
+function declaredArray(
+  from: AnyJsAstNode,
+  name: string,
+): AnyJsAstNode | undefined {
+  const root = [...from.ancestors()].at(-1);
+  const visit = (node: AnyJsAstNode): AnyJsAstNode | undefined => {
+    if (node.kind === "JS_VARIABLE_DECLARATOR") {
+      const children = node.children();
+      const id = children.find((c) => c.kind === "JS_IDENTIFIER_BINDING");
+      const init = children.find((c) => c.kind === "JS_INITIALIZER_CLAUSE");
+      const value = init?.children()[0];
+      if (id?.text === name && value?.kind === "JS_ARRAY_EXPRESSION") {
+        return value;
+      }
+    }
+    for (const child of node.children()) {
+      const found = visit(child);
+      if (found) return found;
+    }
+    return undefined;
+  };
+  return root ? visit(root) : undefined;
+}
+
+/**
  * Parses an AMD `define([...], function (...) {})` call.
  *
- * Returns undefined unless `call` is `define(...)` with a dependency array
- * followed by a function callback (the optional leading module id is allowed).
+ * Returns undefined unless `call` is `define(...)` with a dependency array (a
+ * literal, or a variable initialised with one) followed by a function callback (the
+ * optional leading module id is allowed).
  */
 export function parseDefine(call: JsCallExpression): ParsedDefine | undefined {
   if (call.callee?.text !== "define") return undefined;
@@ -43,10 +73,14 @@ export function parseDefine(call: JsCallExpression): ParsedDefine | undefined {
   const args = call.arguments?.children()[0]?.children() ?? [];
   if (args.length < 2 || args.length > 3) return undefined;
 
-  const deps = args[args.length - 2];
+  const given = args[args.length - 2];
   const callback = args[args.length - 1];
-  if (!deps || !callback) return undefined;
-  if (deps.kind !== "JS_ARRAY_EXPRESSION") return undefined;
+  if (!given || !callback) return undefined;
+  const deps =
+    given.kind === "JS_IDENTIFIER_EXPRESSION"
+      ? declaredArray(call, given.text)
+      : given;
+  if (deps?.kind !== "JS_ARRAY_EXPRESSION") return undefined;
   if (!FUNCTION_KINDS.includes(callback.kind)) return undefined;
 
   const elements = deps.children()[0]?.children() ?? [];

@@ -37,7 +37,9 @@ function isModuleBinding(node: AnyJsAstNode, module: string): boolean {
 export const noGlobalShadowing = defineRule({
   query: ast("JS_IDENTIFIER_BINDING"),
   run(node) {
-    const module = GLOBALS[node.text];
+    const module = Object.hasOwn(GLOBALS, node.text)
+      ? GLOBALS[node.text]
+      : undefined;
     if (module && !isModuleBinding(node, module)) {
       registerDiagnostic(
         node,

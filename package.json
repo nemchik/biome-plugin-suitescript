@@ -43,6 +43,7 @@
     "prepack": "npm run build",
     "readme": "node scripts/rules-table.ts",
     "sync-modules": "node scripts/sync-modules.ts",
+    "sync-typings": "node scripts/sync-typings.ts",
     "pretest": "npm run build",
     "test": "node --test test/*.test.ts",
     "typecheck": "tsc"

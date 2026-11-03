@@ -14,7 +14,6 @@ export const NATIVE_RULES = [
     presets: ["recommended", "all"],
     severity: "error",
   },
-  { group: "security", name: "noSecrets", presets: ["all"], severity: "warn" },
   { group: "suspicious", name: "noVar", presets: ["all"], severity: "warn" },
   { group: "style", name: "useConst", presets: ["all"], severity: "warn" },
   { group: "style", name: "useTemplate", presets: ["all"], severity: "warn" },
