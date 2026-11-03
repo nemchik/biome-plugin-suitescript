@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0](https://github.com/nemchik/biome-plugin-suitescript/compare/biome-plugin-suitescript-v0.2.0...biome-plugin-suitescript-v0.3.0) (2026-11-03)
+
+
+### Features
+
+* add native Biome configs and rules from a full read of Oracle's sources ([#21](https://github.com/nemchik/biome-plugin-suitescript/issues/21)) ([40d0243](https://github.com/nemchik/biome-plugin-suitescript/commit/40d024384e6483c238ec5f8692ea67d733e465c7))
+* add rules generated from the type definitions for plain JavaScript projects ([#32](https://github.com/nemchik/biome-plugin-suitescript/issues/32)) ([8b147b3](https://github.com/nemchik/biome-plugin-suitescript/commit/8b147b3d32ba1ef72f84982cce60524b1c71f881))
+
 ## [0.2.0](https://github.com/nemchik/biome-plugin-suitescript/compare/biome-plugin-suitescript-v0.1.1...biome-plugin-suitescript-v0.2.0) (2026-11-02)
 
 
