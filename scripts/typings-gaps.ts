@@ -1,7 +1,8 @@
 // Options Oracle documents that @hitc/netsuite-types does not list yet. The
 // generated data adds them so noUnknownOptions does not report valid code. Each
 // entry cites Oracle's page; remove it once the typings have the option (the typings
-// test fails when one is no longer needed).
+// test fails when one is no longer needed). The render options are proposed upstream in
+// https://github.com/headintheclouddev/typings-suitescript-2.0/pull/382.
 export interface Gap {
   module: string;
   fn: string;
