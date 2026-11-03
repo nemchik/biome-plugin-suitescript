@@ -14,8 +14,10 @@ const FUNCTIONS = [
   "JS_METHOD_CLASS_MEMBER",
 ];
 
-// N/ APIs called while the define() callback runs (module scope) can fail on
-// deploy; initialize lazily from an entry point instead. N/log is exempt.
+// Oracle's SAFE guide: "All N/ API modules are unavailable during the `define()`
+// callback execution. Calling `runtime.getCurrentScript()`, `record.load()`, or
+// any N/ API at module scope causes deployment failure." Initialize lazily from an
+// entry point instead. N/log is exempt because log is a global.
 export const noModuleScopeApiCalls = defineRule({
   query: ast("JS_CALL_EXPRESSION"),
   run(node) {
@@ -37,7 +39,7 @@ export const noModuleScopeApiCalls = defineRule({
         if (object && aliases.has(object)) {
           registerDiagnostic(
             n,
-            "warning",
+            "error",
             `${callee?.text}() runs at module scope; call it from an entry point.`,
           );
         }

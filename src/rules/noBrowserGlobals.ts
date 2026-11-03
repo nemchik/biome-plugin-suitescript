@@ -13,6 +13,8 @@ const BROWSER_GLOBALS = new Set([
   "XMLHttpRequest",
   "alert",
   "navigator",
+  "URLSearchParams",
+  "fetch",
 ]);
 
 // Server scripts run outside a browser, but TypeScript's DOM library lets

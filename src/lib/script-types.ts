@@ -40,6 +40,10 @@ export const SCRIPT_TYPES: ScriptType[] = [
     name: "ClientScript",
   },
   {
+    entryPoints: [],
+    name: "ConsolidatedRateAdjustorPlugin",
+  },
+  {
     entryPoints: ["customizeGlImpact"],
     name: "CustomGLPlugin",
   },
@@ -52,21 +56,12 @@ export const SCRIPT_TYPES: ScriptType[] = [
     name: "DatasetBuilderPlugin",
   },
   {
-    entryPoints: [
-      "getConfigurationIFrameUrl",
-      "getAccounts",
-      "getTransactionData",
-    ],
-    name: "FiConnectivityPlugin",
+    entryPoints: [],
+    name: "EmailCapturePlugin",
   },
   {
-    entryPoints: [
-      "parseData",
-      "getStandardTransactionCodes",
-      "getExpenseCodes",
-      "getConfigurationPageUrl",
-    ],
-    name: "FiParserPlugin",
+    entryPoints: ["handle"],
+    name: "EventSubscriber",
   },
   {
     entryPoints: ["getInputData", "map", "reduce", "summarize"],
@@ -78,11 +73,19 @@ export const SCRIPT_TYPES: ScriptType[] = [
   },
   {
     entryPoints: [],
+    name: "PaymentGatewayPlugin",
+  },
+  {
+    entryPoints: [],
     name: "PluginTypeImpl",
   },
   {
     entryPoints: ["render"],
     name: "Portlet",
+  },
+  {
+    entryPoints: [],
+    name: "PromotionsPlugin",
   },
   {
     entryPoints: ["delete", "get", "post", "put"],
@@ -97,6 +100,10 @@ export const SCRIPT_TYPES: ScriptType[] = [
     name: "SDFInstallationScript",
   },
   {
+    entryPoints: [],
+    name: "ShippingPartnersPlugin",
+  },
+  {
     entryPoints: ["run"],
     name: "SpaClientScript",
   },
@@ -109,12 +116,16 @@ export const SCRIPT_TYPES: ScriptType[] = [
     name: "Suitelet",
   },
   {
+    entryPoints: [],
+    name: "TaxCalculationPlugin",
+  },
+  {
     entryPoints: ["afterSubmit", "beforeLoad", "beforeSubmit"],
     name: "UserEventScript",
   },
   {
     entryPoints: ["createWorkbook"],
-    name: "WorkbookBbuilderPlugin",
+    name: "WorkbookBuilderPlugin",
   },
   {
     entryPoints: ["onAction"],

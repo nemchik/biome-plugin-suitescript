@@ -1,20 +1,24 @@
 import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 
-// NetSuite runs GraalJS; Oracle's guidance is to use array methods, not
-// generators or Symbol.iterator.
+// Oracle's SAFE guide: "`function*` generators and `Symbol.iterator` usage passes
+// Jest/Node.js but fails in GraalJS; use standard array methods instead." Its own
+// samples use `for...of`, so that is not flagged. Generator methods (`*foo() {}`)
+// are generators too.
 export const noNativeIterators = defineRule({
   query: ast(
     "JS_FUNCTION_DECLARATION",
     "JS_FUNCTION_EXPRESSION",
+    "JS_METHOD_OBJECT_MEMBER",
+    "JS_METHOD_CLASS_MEMBER",
     "JS_STATIC_MEMBER_EXPRESSION",
   ),
   run(node) {
     if (node.kind === "JS_STATIC_MEMBER_EXPRESSION") {
       if (node.text === "Symbol.iterator") {
-        registerDiagnostic(node, "warning", "Avoid Symbol.iterator.");
+        registerDiagnostic(node, "error", "Avoid Symbol.iterator.");
       }
     } else if (node.starToken) {
-      registerDiagnostic(node, "warning", "Avoid generator functions.");
+      registerDiagnostic(node, "error", "Avoid generator functions.");
     }
   },
 });

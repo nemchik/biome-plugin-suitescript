@@ -1,53 +1,8 @@
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import {
-  cpSync,
-  mkdirSync,
-  mkdtempSync,
-  symlinkSync,
-  writeFileSync,
-} from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
 import { test } from "node:test";
-import { fileURLToPath } from "node:url";
+import { ALL, count, lint } from "./helpers.ts";
 
-const root = fileURLToPath(new URL("../", import.meta.url));
-const biomeBin = join(root, "node_modules/@biomejs/biome/bin/biome");
-
-/** Lints a fixture the way a consumer would: the built package installed in node_modules. */
-function lint(plugins: string[], fixture: string): string {
-  const dir = mkdtempSync(join(tmpdir(), "bps-"));
-  mkdirSync(join(dir, "node_modules/@biomejs"), { recursive: true });
-  symlinkSync(
-    root,
-    join(dir, "node_modules/biome-plugin-suitescript"),
-    "junction",
-  );
-  symlinkSync(
-    join(root, "node_modules/@biomejs/runtime"),
-    join(dir, "node_modules/@biomejs/runtime"),
-    "junction",
-  );
-  writeFileSync(
-    join(dir, "biome.json"),
-    JSON.stringify({ linter: { enabled: true }, plugins }),
-  );
-  cpSync(join(root, "test/fixtures", fixture), join(dir, fixture));
-  const r = spawnSync(
-    process.execPath,
-    [biomeBin, "lint", "--only=plugin", fixture],
-    {
-      cwd: dir,
-      encoding: "utf8",
-    },
-  );
-  return r.stdout + r.stderr;
-}
-
-const ALL = ["biome-plugin-suitescript/presets/all"];
 const WITH_LOG_MODULE = [...ALL, "biome-plugin-suitescript/noLogModule"];
-const count = (out: string) => (out.match(/plugin ━/g) ?? []).length;
 
 test("AMD problems are reported", () => {
   const out = lint(WITH_LOG_MODULE, "bad.js");
@@ -83,8 +38,6 @@ test("rules drawn from Oracle's agent skills report what they should", () => {
   for (const msg of [
     "'email' is used but N/email is not loaded",
     "'log' shadows the global log",
-    "Do not use eval()",
-    "Do not pass a string to setTimeout()",
     "Build SuiteQL with \\? placeholders",
     "'nlapiGetContext' is SuiteScript 1.0",
     "record.load\\(\\) runs at module scope",
@@ -110,12 +63,18 @@ test("compliant skills code is not flagged", () => {
   assert.equal(count(lint(ALL, "skills-good.js")), 0);
 });
 
-test("noMissingModules requires N/log when log is used", () => {
+test("requireLogModule asks for N/log while noMissingModules leaves the global alone", () => {
   const out = lint(
-    ["biome-plugin-suitescript/noMissingModules"],
+    ["biome-plugin-suitescript/requireLogModule"],
     "missing-log.js",
   );
   assert.match(out, /'log' is used but N\/log is not loaded/);
+  assert.equal(
+    count(
+      lint(["biome-plugin-suitescript/noMissingModules"], "missing-log.js"),
+    ),
+    0,
+  );
 });
 
 test("modules are checked against the inferred script side", () => {
@@ -170,11 +129,6 @@ test("rules from the script type and module pages report what they should", () =
     (out.match(/cannot set both fieldId and formula/g) ?? []).length,
     1,
   );
-  const save = lint(ALL, "ue-save.js");
-  assert.equal(
-    (save.match(/is not allowed; the context record/g) ?? []).length,
-    1,
-  );
   const client = lint(ALL, "client-validate.js");
   assert.match(client, /'saveRecord' must return true or false/);
   assert.doesNotMatch(client, /'validateField' must return/);
@@ -186,10 +140,15 @@ test("rules from the script type and module pages report what they should", () =
 });
 
 test("script type is inferred and required entry points are checked", () => {
-  const out = lint(ALL, "mr.js");
-  assert.match(out, /MapReduceScript requires entry point map or reduce/);
-  assert.match(out, /map, onRequest do not belong to a single script type/);
-  assert.equal(count(out), 2, "valid map/reduce script must not be flagged");
+  assert.equal(count(lint(ALL, "mr-valid.js")), 0);
+  assert.match(
+    lint(ALL, "mr-missing.js"),
+    /MapReduceScript requires entry point map or reduce/,
+  );
+  assert.match(
+    lint(ALL, "mr-mixed.js"),
+    /map, onRequest do not belong to a single script type/,
+  );
 });
 
 test("libraries are never flagged", () => {

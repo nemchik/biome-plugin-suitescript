@@ -1,0 +1,30 @@
+{
+  "javascript": {
+    "globals": ["define", "require", "log", "util"]
+  },
+  "linter": {
+    "rules": {
+      "correctness": {
+        "noUnusedFunctionParameters": "off"
+      },
+      "nursery": {
+        "noImpliedEval": "error",
+        "useIncludes": "warn"
+      },
+      "preset": "recommended",
+      "security": {
+        "noGlobalEval": "error",
+        "noSecrets": "warn"
+      },
+      "style": {
+        "useConst": "warn",
+        "useForOf": "warn",
+        "useTemplate": "warn"
+      },
+      "suspicious": {
+        "noVar": "warn"
+      }
+    }
+  },
+  "plugins": ["biome-plugin-suitescript/presets/all"]
+}

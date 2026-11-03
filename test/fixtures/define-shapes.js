@@ -1,0 +1,11 @@
+define();
+define(1);
+define('a', 'b', () => {});
+define(1, ['N/record'], (record) => record);
+define(['N/record'], 'x');
+define(['N/record'], (record) => record);
+define('name', ['N/record'], (record) => record);
+define({});
+define(factory);
+define(['N/record', 'N/search'], (record) => record);
+define(['N/record'], (record, search) => [record, search]);
