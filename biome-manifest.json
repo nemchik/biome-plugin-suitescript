@@ -52,17 +52,20 @@
         "noAuthorizationHeaderInInternalRequest",
         "noBlockedResponseHeader",
         "noBlockedHttpsHeader",
-        "requireHttpsOptions",
+        "requireOptions",
+        "noPositionalOptions",
+        "noUnknownModuleMember",
         "requireServerWidgetOptions",
         "requireQueryOptions",
         "requireServerResponseOptions",
         "noConflictingClientScriptProps",
         "noUnsupportedServerWidgetFieldType",
-        "noInvalidHttpsEnumMember",
         "noHardcodedAuthPasswords",
         "noSecretKeyGuidAndSecret",
         "requireOrderByForPagedSuiteQL",
         "logRequireDetails",
+        "noUnknownOptions",
+        "noInvalidEnumMember",
         "requireLogModule",
         "noRecordInLoop",
         "noMapReduceSearchResults",
@@ -105,13 +108,14 @@
         "noAuthorizationHeaderInInternalRequest",
         "noBlockedResponseHeader",
         "noBlockedHttpsHeader",
-        "requireHttpsOptions",
+        "requireOptions",
+        "noPositionalOptions",
+        "noUnknownModuleMember",
         "requireServerWidgetOptions",
         "requireQueryOptions",
         "requireServerResponseOptions",
         "noConflictingClientScriptProps",
         "noUnsupportedServerWidgetFieldType",
-        "noInvalidHttpsEnumMember",
         "noHardcodedAuthPasswords",
         "noSecretKeyGuidAndSecret",
         "requireOrderByForPagedSuiteQL"
@@ -194,7 +198,7 @@
         "noInvalidDefine": "./dist/rules/noInvalidDefine.js"
       },
       {
-        "noInvalidHttpsEnumMember": "./dist/rules/noInvalidHttpsEnumMember.js"
+        "noInvalidEnumMember": "./dist/rules/noInvalidEnumMember.js"
       },
       {
         "noInvalidModules": "./dist/rules/noInvalidModules.js"
@@ -222,6 +226,9 @@
       },
       {
         "noNativeIterators": "./dist/rules/noNativeIterators.js"
+      },
+      {
+        "noPositionalOptions": "./dist/rules/noPositionalOptions.js"
       },
       {
         "noPostMessageWildcard": "./dist/rules/noPostMessageWildcard.js"
@@ -260,6 +267,12 @@
         "noSuiteScript1Api": "./dist/rules/noSuiteScript1Api.js"
       },
       {
+        "noUnknownModuleMember": "./dist/rules/noUnknownModuleMember.js"
+      },
+      {
+        "noUnknownOptions": "./dist/rules/noUnknownOptions.js"
+      },
+      {
         "noUnsupportedServerWidgetFieldType": "./dist/rules/noUnsupportedServerWidgetFieldType.js"
       },
       {
@@ -281,10 +294,10 @@
         "requireEachReturn": "./dist/rules/requireEachReturn.js"
       },
       {
-        "requireHttpsOptions": "./dist/rules/requireHttpsOptions.js"
+        "requireLogModule": "./dist/rules/requireLogModule.js"
       },
       {
-        "requireLogModule": "./dist/rules/requireLogModule.js"
+        "requireOptions": "./dist/rules/requireOptions.js"
       },
       {
         "requireOrderByForPagedSuiteQL": "./dist/rules/requireOrderByForPagedSuiteQL.js"

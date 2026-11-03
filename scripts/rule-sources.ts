@@ -63,6 +63,12 @@ const skill = (label: string, name: string, path = "SKILL.md"): Source => ({
   tier: 1,
   url: `${SKILLS}${name}/${path}`,
 });
+/** The whole N/ directory, for rules generated from every module's declarations. */
+const typingsDirectory = (): Source => ({
+  label: "headintheclouddev `N/*`",
+  tier: 2,
+  url: "https://github.com/headintheclouddev/typings-suitescript-2.0/tree/master/N",
+});
 const owasp = (label = "OWASP skill", path = "SKILL.md") =>
   skill(label, "netsuite-owasp-secure-coding", path);
 const safe = (label = "SAFE guide", path = "SKILL.md") =>
@@ -211,14 +217,10 @@ export const RULES: Record<string, RuleInfo> = {
       "`define()` has one of the valid AMD shapes (a function or object factory, an optional name and dependency array)",
     sources: [amd("no-invalid-define")],
   },
-  noInvalidHttpsEnumMember: {
+  noInvalidEnumMember: {
     description:
-      "Only documented members of `https.Method`, `RedirectType`, `CacheDuration`, `Encoding` and `HashAlg`",
-    sources: [
-      typings("http"),
-      help("https.Method", "section_4567626997"),
-      help("ServerResponse.sendRedirect", "section_4567653054"),
-    ],
+      "A member of a module enum (`record.Type.CUSTOMR`) is one the type definitions list",
+    sources: [typingsDirectory()],
   },
   noInvalidModules: {
     description: "Unknown `N/...` modules",
@@ -269,6 +271,11 @@ export const RULES: Record<string, RuleInfo> = {
   noNativeIterators: {
     description: "No generator functions or `Symbol.iterator` (GraalJS)",
     sources: [safe()],
+  },
+  noPositionalOptions: {
+    description:
+      "No literal passed where a module function takes an options object (`record.load('customer', 1)`)",
+    sources: [typingsDirectory()],
   },
   noPostMessageWildcard: {
     description: "No `'*'` target origin in `postMessage`",
@@ -346,6 +353,16 @@ export const RULES: Record<string, RuleInfo> = {
       "No `nlapi*`/`nlobj*` or 1.0-only methods (`getFieldValue`, `getLineItemValue`, `e.getCode()`)",
     sources: [upgrade()],
   },
+  noUnknownModuleMember: {
+    description:
+      "Only members the type definitions export are read from an `N/` module (`record.loadRecord` is not one)",
+    sources: [typingsDirectory()],
+  },
+  noUnknownOptions: {
+    description:
+      "No option the type definitions do not list for a module function (`record.load({ typ: 'x' })`)",
+    sources: [typingsDirectory()],
+  },
   noUnsupportedServerWidgetFieldType: {
     description:
       "No `DATETIME` in `addField` and no unsupported type in `List.addColumn`",
@@ -387,15 +404,15 @@ export const RULES: Record<string, RuleInfo> = {
       "A `.run().each` or `.iterator().each` callback returns a value (`true` to continue)",
     sources: [upgrade(), learning()],
   },
-  requireHttpsOptions: {
-    description:
-      "Required `https.*` options (`url`, `body`, `scriptId`, ...) are present",
-    sources: [typings("http"), help("N/https", "section_4418229131")],
-  },
   requireLogModule: {
     description:
       "A used `log.*` needs `N/log` loaded (the upgrade skill recommends it; the global needs no loading)",
     sources: [upgrade(), learning()],
+  },
+  requireOptions: {
+    description:
+      "Every required option of a module function (`record.load`, `search.create`, `email.send`, ...) is present",
+    sources: [typingsDirectory()],
   },
   requireOrderByForPagedSuiteQL: {
     description: "A literal `runSuiteQLPaged` query has an `ORDER BY`",
