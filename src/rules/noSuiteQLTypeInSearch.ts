@@ -25,7 +25,9 @@ const ABBREVIATIONS = new Set([
 // Oracle's SAFE guide: "Passing a SuiteQL abbreviation to `search.create()` throws
 // a runtime error: `The record type [PURCHORD] is invalid.` Always use
 // `search.Type.*` enum values (or their lowercase string equivalents) in N/search,
-// and SuiteQL abbreviations only inside SuiteQL query strings."
+// and SuiteQL abbreviations only inside SuiteQL query strings." The failure claim
+// comes only from this skill and has not been checked against Oracle's
+// documentation."
 export const noSuiteQLTypeInSearch = defineRule({
   query: ast("JS_CALL_EXPRESSION"),
   run(node) {

@@ -4,7 +4,7 @@ How to decide where a new rule comes from, whether it belongs here at all, and w
 
 ## Source tiers
 
-Rules come from one of four tiers, highest priority first.
+Rules come from one of four tiers. The number says where a rule comes from; it is not the order of precedence when sources disagree (see [Conflicts](#conflicts)).
 
 1. **Oracle documentation**: the NetSuite help center (SuiteScript 2.1 module, script type and best-practice pages).
 2. **Oracle SuiteCloud SDK agent skills**: `packages/agent-skills` in `oracle/netsuite-suitecloud-sdk`. Skills rank in this order, and inside a skill the main `SKILL.md` outranks its `references/` and appendices:
@@ -19,9 +19,20 @@ Rules come from one of four tiers, highest priority first.
 
 ## Conflicts
 
-A higher tier wins over a lower one, and inside tier 2 the skill order above decides. Do not weaken or drop a higher-tier rule because a lower tier disagrees.
+When sources disagree, the order of precedence is:
 
-Overriding a higher tier is allowed only as a deliberate decision. Record it in the rule's source comment and in the README, with the reason and the source being overridden, as `noLogModule` and `noMissingModules` do for Oracle's contradictory `N/log` guidance.
+1. Oracle's agent skills (tier 2), in the skill order above.
+2. Oracle's documentation (tier 1).
+3. SuiteScript-specific rules (tier 3).
+4. Generic JavaScript rules (tier 4).
+
+The skills outrank the documentation for two reasons. Oracle's documentation has known mistakes (for example, the N/https default `Content-Type` table contradicts the `https.post` page, the `createSecretKey` sample uses an option the method page does not list, and the `sendRedirect` page says parameters must be prefixed `custparam` while its own sample does not). And the skills are written for agents, to steer code toward best practices that the documentation may not cover. The skills also contradict each other and sometimes themselves, which is why they are ranked among themselves and why `SKILL.md` outranks its references.
+
+Do not weaken or drop a rule because a lower-precedence source disagrees. When a skill's claim loses to a higher-precedence source (as the learning skill's "`N/log` is not global" does), say so in the rule's source comment.
+
+A rule that is `error` because a skill says the code fails, with nothing in the documentation to confirm it, keeps its severity. Its source comment says the claim comes only from the skill and has not been checked against the documentation, so a later check can confirm it or downgrade the rule.
+
+Overriding a higher-precedence source is allowed only as a deliberate decision. Record it in the rule's source comment and in the README, with the reason and the source being overridden.
 
 ## Severity and presets
 

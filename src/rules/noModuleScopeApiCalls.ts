@@ -17,7 +17,9 @@ const FUNCTIONS = [
 // Oracle's SAFE guide: "All N/ API modules are unavailable during the `define()`
 // callback execution. Calling `runtime.getCurrentScript()`, `record.load()`, or
 // any N/ API at module scope causes deployment failure." Initialize lazily from an
-// entry point instead. N/log is exempt because log is a global.
+// entry point instead. N/log is exempt because log is a global. The failure claim
+// comes only from this skill and has not been checked against Oracle's
+// documentation.
 export const noModuleScopeApiCalls = defineRule({
   query: ast("JS_CALL_EXPRESSION"),
   run(node) {
