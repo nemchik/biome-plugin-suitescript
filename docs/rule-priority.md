@@ -43,6 +43,14 @@ Do not add a generic JavaScript rule just because it is good practice. Add one o
 
 If Biome later ships an equivalent, remove or deprecate our rule.
 
+## SuiteScript version
+
+Always assume SuiteScript 2.1 explicitly. Do not consider SuiteScript 1.0, 2.0 or 2.x in current or future rules, configs, tests or documentation, because Oracle is deprecating them. Never document how to override or disable a rule to keep backwards compatibility with those versions. The one exception is a rule whose purpose is to flag 1.0 leftovers (such as `noSuiteScript1Api`).
+
+## Reading Oracle sources
+
+When reading Oracle documentation or agent skills, never truncate: read each page or file in full, page through anything long, and read every material it references. A summary, an excerpt or a search snippet is not a reading. Quote the source verbatim in the rule's comment and say which file or page it came from.
+
 ## Recording the source
 
 Every rule's source comment names its tier and source, and the README "Rule source" column links to it, prefixed with its tier.
