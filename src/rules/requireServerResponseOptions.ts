@@ -14,7 +14,8 @@ const REQUIRED: Record<string, string[]> = {
 };
 
 // Oracle (ServerResponse method pages): each method lists its required options and
-// throws SSS_MISSING_REQD_ARGUMENT without them. Only calls on a receiver named
+// throws SSS_MISSING_REQD_ARGUMENT without them. The type definitions
+// (N/http.d.ts) require the same options. Only calls on a receiver named
 // like a response, with an options object literal and no spread, are checked.
 export const requireServerResponseOptions = defineRule({
   query: ast("JS_CALL_EXPRESSION"),

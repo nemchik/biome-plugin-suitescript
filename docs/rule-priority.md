@@ -15,7 +15,7 @@ Process rules for agents (read sources in full, never truncate) are in `AGENTS.m
 
 ## Source tiers
 
-Rules come from one of four tiers of sources. When sources disagree, the lower tier number wins, and a Tier 0 decision wins over all of them.
+Rules come from one of five tiers of sources. When sources disagree, the lower tier number wins, and a Tier 0 decision wins over all of them.
 
 1. **Oracle SuiteCloud SDK agent skills**: `packages/agent-skills` in `oracle/netsuite-suitecloud-sdk`. Skills rank in this order, and inside a skill the main `SKILL.md` outranks its `references/` and appendices:
    1. `netsuite-owasp-secure-coding`
@@ -24,15 +24,16 @@ Rules come from one of four tiers of sources. When sources disagree, the lower t
    4. `netsuite-suitescript-learning` (last of the four because it contradicts the upgrade skill on `N/log`)
 
    Skills we have not drawn rules from (finance analyst, roles and permissions, records reference, UIF/SPA reference, project documentation, AI connector) rank below these four. Use them only if they state something that applies to SuiteScript source. A new rule that draws from a skill not ranked above must add that skill to the ranking in the same change, at the position its authority warrants.
-2. **Oracle documentation**: the NetSuite help center (SuiteScript 2.1 module, script type and best-practice pages).
-3. **SuiteScript-specific rules**: anything about SuiteScript that does not apply to JavaScript in general, from any other source (community plugins, our own experience of the platform).
-4. **Generic JavaScript rules**: JavaScript checks that benefit SuiteScript and that Biome does not already cover. See [Generic JavaScript rules](#generic-javascript-rules).
+2. **Type definitions**: community TypeScript definitions for the `N/` modules. They carry corrections for places where Oracle's documentation is inaccurate and tend to be more accurate than it, though they are not perfect, and a skill outranks them. A type definition can back a rule without confirmation from Oracle's documentation. The README names the project and says which version it is written for.
+3. **Oracle documentation**: the NetSuite help center (SuiteScript 2.1 module, script type and best-practice pages).
+4. **SuiteScript-specific rules**: anything about SuiteScript that does not apply to JavaScript in general, from any other source (community plugins, our own experience of the platform).
+5. **Generic JavaScript rules**: JavaScript checks that benefit SuiteScript and that Biome does not already cover. See [Generic JavaScript rules](#generic-javascript-rules).
 
 ## Conflicts
 
-The agent skills (tier 1) outrank Oracle's documentation (tier 2) for two reasons. Oracle's documentation has known mistakes (for example, the N/https default `Content-Type` table contradicts the `https.post` page, the `createSecretKey` sample uses an option the method page does not list, and the `sendRedirect` page says parameters must be prefixed `custparam` while its own sample does not). And the skills are written for agents, to steer code toward best practices that the documentation may not cover. The skills also contradict each other and sometimes themselves, which is why they are ranked among themselves and why `SKILL.md` outranks its references.
+The agent skills (tier 1) outrank the type definitions (tier 2), and the type definitions outrank Oracle's documentation (tier 3). Oracle's documentation has known mistakes (for example, the N/https default `Content-Type` table contradicts the `https.post` page, the `createSecretKey` sample uses an option the method page does not list, and the `sendRedirect` page says parameters must be prefixed `custparam` while its own sample does not), and the type definitions include corrections for such cases. The skills are written for agents, to steer code toward best practices that neither the documentation nor the type definitions cover. The skills also contradict each other and sometimes themselves, which is why they are ranked among themselves and why `SKILL.md` outranks its references.
 
-Do not weaken or drop a rule because a lower-ranked source disagrees. When a skill's claim loses to a higher-ranked source (as the learning skill's "`N/log` is not global" does), say so in the rule's source comment.
+Do not weaken or drop a rule because a lower-ranked source disagrees. When a source's claim loses to a higher-ranked one (as the learning skill's "`N/log` is not global" does, or a documentation page that a type definition contradicts), say so in the rule's source comment. Where a type definition and Oracle's documentation disagree, follow the type definition and note the disagreement there.
 
 A rule that is `error` because a skill says the code fails, with nothing in the documentation to confirm it, keeps its severity. Its source comment says the claim comes only from the skill and has not been checked against the documentation, so a later check can confirm it or downgrade the rule.
 
@@ -43,14 +44,14 @@ Overriding a higher-ranked source or Biome's behavior is allowed only as a Tier 
 Defaults, which a rule's author may override with a recorded reason:
 
 - A rule from any tier whose violation would fail at runtime or on upload is `error` and goes in `recommended`.
-- Tier 1 and 2 conventions are `warn`. They go in `recommended` when the source states them as a requirement ("must", "do not") and in `all` when it only recommends them.
-- Tier 3 conventions are `warn` and go in `all`.
-- Tier 4 rules are opt-in (in no preset) unless they would fail at runtime or on upload.
+- Tier 1, 2 and 3 conventions are `warn`. They go in `recommended` when the source states them as a requirement ("must", "do not") and in `all` when it only recommends them.
+- Tier 4 conventions are `warn` and go in `all`.
+- Tier 5 rules are opt-in (in no preset) unless they would fail at runtime or on upload.
 - A rule that guesses (a heuristic that can misfire) stays out of `recommended`, and out of every preset when a false positive would be costly.
 
 ## Native Biome rules
 
-When Biome already ships a rule for what an Oracle source asks, do not reimplement it. Turn the rule on in the preset configs (`NATIVE_RULES` in `scripts/build-manifest.ts`, which writes `configs/minimal.json`, `recommended.json` and `all.json`), even when Biome enables it by default or in its recommended set, and list it in the README rules table as Tier 4 with a link to Biome's documentation. List only the native rules enabled because a Tier 1 or Tier 2 source asks for them; the configs enable Biome's own recommended rules too, but those are not listed. Include nursery rules when they solve an Oracle concern, and note that they may change. Turn off any Biome rule that conflicts with one of ours (as `noUnusedFunctionParameters` is, because `noExtraParams` wants one callback parameter per dependency). A plugin cannot extend or scope a native rule, so a check that needs script-type awareness stays a plugin rule (`noBrowserGlobals` and Biome's `noAlert`).
+When Biome already ships a rule for what an Oracle source asks, do not reimplement it. Turn the rule on in the preset configs (`NATIVE_RULES` in `scripts/native-rules.ts`, which `scripts/build-manifest.ts` turns into `configs/minimal.json`, `recommended.json` and `all.json`), even when Biome enables it by default or in its recommended set, and list it in the README rules table as Tier 5 with a link to Biome's documentation. List only the native rules enabled because a Tier 1, 2 or 3 source asks for them; the configs enable Biome's own recommended rules too, but those are not listed. Include nursery rules when they solve an Oracle concern, and note that they may change. Turn off any Biome rule that conflicts with one of ours (as `noUnusedFunctionParameters` is, because `noExtraParams` wants one callback parameter per dependency). A plugin cannot extend or scope a native rule, so a check that needs script-type awareness stays a plugin rule (`noBrowserGlobals` and Biome's `noAlert`).
 
 ## Low-confidence rules
 
@@ -60,7 +61,7 @@ A rule whose source is clear but whose detection guesses (it reads names, sees o
 
 Do not add a generic JavaScript rule just because it is good practice. Add one only when all of these hold:
 
-- It has a SuiteScript-specific justification: a platform behavior (such as the GraalJS runtime) or a statement in a tier 1 or 2 source.
+- It has a SuiteScript-specific justification: a platform behavior (such as the GraalJS runtime) or a statement in a tier 1, 2 or 3 source.
 - Biome's built-in rules do not already cover it. Check Biome's rule list first, and prefer enabling the Biome rule in a consumer's config over reimplementing it.
 - The rule's source comment names that justification.
 
@@ -77,3 +78,5 @@ When reading Oracle documentation or agent skills, never truncate: read each pag
 ## Recording the source
 
 Every rule's source comment names its tier and source, and the README "Rule source" column links to it, prefixed with its tier. A rule shaped by a Tier 0 decision also names the ADR in its comment, and the README cell starts with `Tier 0: [ADR NNNN](...)`. Tier 0 does not change where the rule sorts in the table, which uses its lowest source tier.
+
+The README table is generated: add the rule's description, sources and any opt-in reason to `scripts/rule-sources.ts`, run `npm run build` and then `npm run readme`, and commit the result. `test/readme.test.ts` fails when the table is stale.

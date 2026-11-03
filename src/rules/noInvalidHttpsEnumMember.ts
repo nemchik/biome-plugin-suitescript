@@ -15,6 +15,8 @@ const MEMBERS: Record<string, string[]> = {
   RedirectType: ["MEDIA_ITEM", "RECORD", "RESTLET", "SUITELET", "TASK_LINK"],
 };
 
+// The member lists match the type definitions (N/http.d.ts, N/encode.d.ts and
+// N/crypto.d.ts) and Oracle's enumeration pages.
 // Oracle (N/https enumerations): "this error is thrown if an enum is misspelled
 // within a script. For example, you see this error if you use
 // http.RedirectType.TASKLINK instead of http.RedirectType.TASK_LINK". A misspelled

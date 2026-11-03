@@ -3,6 +3,7 @@
 import { copyFileSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { formatWithBiome } from "./biome.ts";
+import { NATIVE_RULES } from "./native-rules.ts";
 
 const root = new URL("../", import.meta.url);
 const sourceRules = new URL("src/rules/", root);
@@ -85,30 +86,6 @@ const all = [
 ];
 
 const minimal = ["noExtraDeps", "noExtraParams", "noInvalidModules"];
-
-// Native Biome rules the configs turn on because an Oracle source asks for what
-// they check (Tier 1 or 2). Biome's own recommended rules are enabled in every
-// config as well, but only these are listed in the README.
-export const NATIVE_RULES = [
-  {
-    group: "security",
-    name: "noGlobalEval",
-    presets: ["recommended", "all"],
-    severity: "error",
-  },
-  {
-    group: "nursery",
-    name: "noImpliedEval",
-    presets: ["recommended", "all"],
-    severity: "error",
-  },
-  { group: "security", name: "noSecrets", presets: ["all"], severity: "warn" },
-  { group: "suspicious", name: "noVar", presets: ["all"], severity: "warn" },
-  { group: "style", name: "useConst", presets: ["all"], severity: "warn" },
-  { group: "style", name: "useTemplate", presets: ["all"], severity: "warn" },
-  { group: "nursery", name: "useIncludes", presets: ["all"], severity: "warn" },
-  { group: "style", name: "useForOf", presets: ["all"], severity: "warn" },
-] as const;
 
 const presets = { all, minimal, recommended };
 
