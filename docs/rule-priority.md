@@ -13,7 +13,7 @@ Rules come from one of four tiers, highest priority first.
    3. `netsuite-suitescript-upgrade`
    4. `netsuite-suitescript-learning` (last of the four because it contradicts the upgrade skill on `N/log`)
 
-   Skills we have not drawn rules from (finance analyst, roles and permissions, records reference, UIF/SPA reference, project documentation, AI connector) rank below these four. Use them only if they state something that applies to SuiteScript source.
+   Skills we have not drawn rules from (finance analyst, roles and permissions, records reference, UIF/SPA reference, project documentation, AI connector) rank below these four. Use them only if they state something that applies to SuiteScript source. A new rule that draws from a skill not ranked above must add that skill to the ranking in the same change, at the position its authority warrants.
 3. **SuiteScript-specific rules**: anything about SuiteScript that does not apply to JavaScript in general, from any other source (community plugins, our own experience of the platform).
 4. **Generic JavaScript rules**: JavaScript checks that benefit SuiteScript and that Biome does not already cover. See [Generic JavaScript rules](#generic-javascript-rules).
 
