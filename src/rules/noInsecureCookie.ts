@@ -2,6 +2,7 @@ import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 import { headerCall } from "../lib/headers.ts";
 import { isStaticString } from "../lib/suitescript.ts";
 
+// Tier 0: docs/adr/0005-guessing-rules-are-in-no-preset.md.
 // Oracle's OWASP skill: "Cookies set without HttpOnly, Secure, and SameSite
 // attributes are vulnerable to theft via XSS, interception over HTTP, and
 // cross-site request forgery", and Suitelet cookies "must include security

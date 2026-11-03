@@ -22,7 +22,7 @@ Source is TypeScript in `src/` and compiles to `dist/` (gitignored, published). 
 
 ## Rules
 
-Before adding or changing a rule, follow `docs/rule-priority.md`: source tiers (Oracle agent skills, then Oracle docs, then SuiteScript-specific rules, then generic JavaScript; the lower tier wins a conflict), and default severity and preset placement. Do not add a generic JavaScript rule unless it explicitly benefits SuiteScript and Biome does not already cover it. Assume SuiteScript 2.1 only, and never document backwards compatibility overrides for 1.0, 2.0 or 2.x. Read Oracle docs and skills in full, with every referenced material, never truncated.
+Before adding or changing a rule, follow `docs/rule-priority.md`: source tiers (Oracle agent skills, then Oracle docs, then SuiteScript-specific rules, then generic JavaScript; the lower tier wins a conflict, and a Tier 0 ADR in `docs/adr/` overrides all of them), and default severity and preset placement. Do not add a generic JavaScript rule unless it explicitly benefits SuiteScript and Biome does not already cover it. Assume SuiteScript 2.1 only, and never document backwards compatibility overrides for 1.0, 2.0 or 2.x. Read Oracle docs and skills in full, with every referenced material, never truncated.
 
 ## Releases
 

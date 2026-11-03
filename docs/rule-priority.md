@@ -2,9 +2,20 @@
 
 How to decide where a new rule comes from, whether it belongs here at all, and which rule wins when two disagree. Read this before adding or changing a rule.
 
+## Tier 0: repository decisions
+
+Tier 0 holds decisions made in this repository that override every source: Oracle's skills and documentation, the ESLint plugins that inspired rules, type definitions and Biome's own behavior. It is not a source and has no external link. Every Tier 0 entry is an ADR in `docs/adr/`, so its reasons are recorded. The decisions today:
+
+- [ADR 0002](adr/0002-options-are-separate-rules.md): rule options are separate rules (`logRequireTitle`, `logRequireDetails`).
+- [ADR 0004](adr/0004-assume-suitescript-2-1-only.md): assume SuiteScript 2.1 only.
+- [ADR 0005](adr/0005-guessing-rules-are-in-no-preset.md): rules that guess are in no preset.
+- [ADR 0006](adr/0006-log-is-a-global-with-two-opposite-styles.md): `log` is a global, with two opposite styles.
+
+Process rules for agents (read sources in full, never truncate) are in `AGENTS.md`, not here, and the architecture ADRs 0001 and 0003 have no outside source to override. Add a Tier 0 ADR only when a decision departs from a source or from Biome's behavior and is hard to reverse, surprising without context and a real trade-off.
+
 ## Source tiers
 
-Rules come from one of four tiers. When sources disagree, the lower tier number wins.
+Rules come from one of four tiers of sources. When sources disagree, the lower tier number wins, and a Tier 0 decision wins over all of them.
 
 1. **Oracle SuiteCloud SDK agent skills**: `packages/agent-skills` in `oracle/netsuite-suitecloud-sdk`. Skills rank in this order, and inside a skill the main `SKILL.md` outranks its `references/` and appendices:
    1. `netsuite-owasp-secure-coding`
@@ -25,7 +36,7 @@ Do not weaken or drop a rule because a lower-ranked source disagrees. When a ski
 
 A rule that is `error` because a skill says the code fails, with nothing in the documentation to confirm it, keeps its severity. Its source comment says the claim comes only from the skill and has not been checked against the documentation, so a later check can confirm it or downgrade the rule.
 
-Overriding a higher-ranked source is allowed only as a deliberate decision. Record it in the rule's source comment and in the README, with the reason and the source being overridden.
+Overriding a higher-ranked source or Biome's behavior is allowed only as a Tier 0 decision: write the ADR, then cite it in the rule's source comment and in the README "Rule source" column, naming the source being overridden.
 
 ## Severity and presets
 
@@ -65,4 +76,4 @@ When reading Oracle documentation or agent skills, never truncate: read each pag
 
 ## Recording the source
 
-Every rule's source comment names its tier and source, and the README "Rule source" column links to it, prefixed with its tier.
+Every rule's source comment names its tier and source, and the README "Rule source" column links to it, prefixed with its tier. A rule shaped by a Tier 0 decision also names the ADR in its comment, and the README cell starts with `Tier 0: [ADR NNNN](...)`. Tier 0 does not change where the rule sorts in the table, which uses its lowest source tier.

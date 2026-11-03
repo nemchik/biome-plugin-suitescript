@@ -1,6 +1,7 @@
 import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 import { SUITEQL, staticSuiteql } from "../lib/suiteql.ts";
 
+// Tier 0: docs/adr/0005-guessing-rules-are-in-no-preset.md.
 // Oracle's SAFE guide: "`SystemNote` is an extremely high-volume table ... Joining
 // it in SuiteQL queries causes severe performance degradation and frequent query
 // timeouts", "never as a JOIN against a large result set". LOW CONFIDENCE, so no

@@ -66,7 +66,7 @@ test("the README rules table lists the presets each rule belongs to", () => {
 
 test("the README rules table is sorted by tier, severity, preset and name", () => {
   const tierOf = (source: string) =>
-    Number(/^Tier (\d)/.exec(source)?.[1] ?? 9);
+    Number(/Tier ([1-9])/.exec(source)?.[1] ?? 9);
   const rows = read("README.md")
     .split(/\r?\n/)
     .filter((line) => /^\| `\w+`/.test(line))

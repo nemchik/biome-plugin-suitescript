@@ -5,6 +5,7 @@ const SECRET_NAMES =
 
 const unquote = (text: string): string => text.replace(/^['"]|['"]$/g, "");
 
+// Tier 0: docs/adr/0005-guessing-rules-are-in-no-preset.md.
 // Oracle: "Don't hard-code any passwords in scripts." The OWASP skill agrees, but
 // its `SKILL.md` shows script parameters as the safe place while its
 // references/02 says script parameters are not a secret store and points to API

@@ -2,6 +2,7 @@ import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 import { headerCall } from "../lib/headers.ts";
 import { isStaticString } from "../lib/suitescript.ts";
 
+// Tier 0: docs/adr/0005-guessing-rules-are-in-no-preset.md.
 // Oracle's OWASP skill: "SAFE: use the documented redirect module instead of
 // writing raw headers", because an unvalidated value in a response header can
 // split the response. LOW CONFIDENCE, so no preset includes it: the value may

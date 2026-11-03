@@ -1,5 +1,6 @@
 import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 
+// Tier 0: docs/adr/0005-guessing-rules-are-in-no-preset.md.
 // Oracle's OWASP skill: uploads are stored in restricted folders and
 // `isOnline: false // Not publicly accessible by default`; its bad example sets
 // `fileObj.isOnline = true; // Publicly accessible!`. LOW CONFIDENCE, so no preset

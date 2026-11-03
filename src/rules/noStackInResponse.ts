@@ -1,6 +1,7 @@
 import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 import { descendants } from "../lib/script-side.ts";
 
+// Tier 0: docs/adr/0005-guessing-rules-are-in-no-preset.md.
 // Oracle's OWASP skill: "Returning stack traces, internal IDs, script file paths,
 // or record structure details in error responses gives attackers a map of the
 // system." LOW CONFIDENCE, so no preset includes it: only a `.stack` read inside
