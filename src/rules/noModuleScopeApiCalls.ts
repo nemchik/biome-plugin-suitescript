@@ -14,12 +14,17 @@ const FUNCTIONS = [
   "JS_METHOD_CLASS_MEMBER",
 ];
 
+const FACTORIES = /\.(createColumn|createFilter|createSort|createSetting)$/;
+
 // Oracle's SAFE guide: "All N/ API modules are unavailable during the `define()`
 // callback execution. Calling `runtime.getCurrentScript()`, `record.load()`, or
 // any N/ API at module scope causes deployment failure." Initialize lazily from an
 // entry point instead. N/log is exempt because log is a global. The failure claim
 // comes only from this skill and has not been checked against Oracle's
-// documentation.
+// documentation, and its examples are calls that do work (getCurrentScript, record.load).
+// Calls that only build an object (`search.createColumn`, `createFilter`,
+// `createSort`, `createSetting`) are skipped, because nothing says they fail; remove
+// them from FACTORIES if that turns out to be wrong.
 export const noModuleScopeApiCalls = defineRule({
   query: ast("JS_CALL_EXPRESSION"),
   run(node) {
@@ -38,7 +43,11 @@ export const noModuleScopeApiCalls = defineRule({
           callee?.kind === "JS_STATIC_MEMBER_EXPRESSION"
             ? callee.children()[0]?.text
             : undefined;
-        if (object && aliases.has(object)) {
+        if (
+          object &&
+          aliases.has(object) &&
+          !FACTORIES.test(callee?.text ?? "")
+        ) {
           registerDiagnostic(
             n,
             "error",

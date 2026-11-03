@@ -13,8 +13,7 @@
       },
       "preset": "recommended",
       "security": {
-        "noGlobalEval": "error",
-        "noSecrets": "warn"
+        "noGlobalEval": "error"
       },
       "style": {
         "useConst": "warn",

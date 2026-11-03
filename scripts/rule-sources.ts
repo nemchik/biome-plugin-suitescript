@@ -258,7 +258,7 @@ export const RULES: Record<string, RuleInfo> = {
   },
   noModuleScopeApiCalls: {
     description:
-      "No `N/` API calls while the `define` callback runs; initialize from entry points",
+      "No `N/` API calls while the `define` callback runs; initialize from entry points (calls that only build an object, `createColumn`, `createFilter`, `createSort` and `createSetting`, are skipped)",
     sources: [safe()],
   },
   noMultipleDefine: {
@@ -475,11 +475,6 @@ export const NATIVE_INFO: Record<
     description:
       "No `new Function()` or string-form `setTimeout`/`setInterval` (OWASP skill)",
     slug: "no-implied-eval",
-  },
-  noSecrets: {
-    description:
-      'Secret-looking string literals (OWASP skill: credentials "never hardcoded")',
-    slug: "no-secrets",
   },
   noVar: {
     description:

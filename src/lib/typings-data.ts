@@ -781,7 +781,6 @@ export const TYPINGS: Typings = {
           ],
         ],
       ],
-      delete: [[["id"], ["id"]]],
       load: 0,
     },
   },
@@ -929,10 +928,22 @@ export const TYPINGS: Typings = {
       format: [
         [
           ["type", "value"],
+          ["type", "value"],
+        ],
+        [
+          ["type", "value"],
           ["timezone", "type", "value"],
         ],
       ],
       parse: [
+        [
+          ["type", "value"],
+          ["timezone", "type", "value"],
+        ],
+        [
+          ["type", "value"],
+          ["type", "value"],
+        ],
         [
           ["type", "value"],
           ["type", "value"],
@@ -1756,7 +1767,13 @@ export const TYPINGS: Typings = {
     enums: {},
     exports: ["findImplementations", "loadImplementation"],
     functions: {
-      findImplementations: [[["type"], ["includeDefault", "type"]]],
+      findImplementations: [
+        [
+          ["includeDefault", "type"],
+          ["includeDefault", "type"],
+        ],
+        [["type"], ["includeDefault", "type"]],
+      ],
       loadImplementation: [[["type"], ["implementation", "type"]]],
     },
   },
@@ -2885,7 +2902,7 @@ export const TYPINGS: Typings = {
       "xmlToPdf",
     ],
     functions: {
-      bom: [[["entityId"], ["entityId", "printMode"]]],
+      bom: [[["entityId"], ["entityId", "inCustLocale", "printMode"]]],
       create: 0,
       glImpact: [
         [
@@ -2914,12 +2931,22 @@ export const TYPINGS: Typings = {
         ],
       ],
       packingSlip: [
-        [["entityId"], ["entityId", "formId", "fulfillmentId", "printMode"]],
+        [
+          ["entityId"],
+          ["entityId", "formId", "fulfillmentId", "inCustLocale", "printMode"],
+        ],
       ],
       pickingTicket: [
         [
           ["entityId"],
-          ["entityId", "formId", "location", "printMode", "shipgroup"],
+          [
+            "entityId",
+            "formId",
+            "inCustLocale",
+            "location",
+            "printMode",
+            "shipgroup",
+          ],
         ],
       ],
       statement: [
@@ -3575,6 +3602,44 @@ export const TYPINGS: Typings = {
     functions: {
       checkStatus: [[["taskId"], ["taskId"]]],
       create: [
+        [
+          ["taskType"],
+          [
+            "importFile",
+            "linkedFiles",
+            "mappingId",
+            "name",
+            "queueId",
+            "taskType",
+          ],
+        ],
+        [
+          ["taskType"],
+          [
+            "dedupeMode",
+            "entityType",
+            "masterRecordId",
+            "masterSelectionMode",
+            "recordIds",
+            "taskType",
+          ],
+        ],
+        [["taskType"], ["deploymentId", "params", "scriptId", "taskType"]],
+        [["taskType"], ["deploymentId", "params", "scriptId", "taskType"]],
+        [
+          ["taskType"],
+          ["params", "recordId", "recordType", "taskType", "workflowId"],
+        ],
+        [["taskType"], ["fileId", "filePath", "savedSearchId", "taskType"]],
+        [
+          ["query", "taskType"],
+          ["fileId", "filePath", "query", "taskType"],
+        ],
+        [
+          ["action", "condition", "params", "recordType", "taskType"],
+          ["action", "condition", "params", "recordType", "taskType"],
+        ],
+        [["taskType"], ["fileId", "filePath", "params", "query", "taskType"]],
         [
           ["taskType"],
           [

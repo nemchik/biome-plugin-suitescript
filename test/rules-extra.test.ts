@@ -39,6 +39,8 @@ const CASES: [string, string, number][] = [
   ["requireQueryOptions", "r-define-variable.js", 0],
   ["noExtraDeps", "r-define-variable.js", 0],
   ["noUnknownModuleMember", "r-typings-es.ts", 1],
+  ["noModuleScopeApiCalls", "r-factories.js", 1],
+  ["noUnknownOptions", "r-factories.js", 0],
   ["noRecordInLoop", "r-loops.js", 3],
   ["noDynamicSuiteQL", "r-suiteql.js", 2],
   ["noNativeIterators", "r-generators.js", 1],

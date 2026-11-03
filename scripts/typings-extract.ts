@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { parseSync } from "oxc-parser";
 import { MODULES } from "../src/lib/modules.ts";
 import type { Alternative, Typings } from "../src/lib/typings.ts";
+import { GAPS } from "./typings-gaps.ts";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const typesDir = join(root, "node_modules/@hitc/netsuite-types/N");
@@ -25,6 +26,8 @@ interface FileInfo {
   aliases: Map<string, Node>;
   enums: Map<string, string[]>;
   values: Map<string, Node>;
+  /** Every overload of a declared function, in order. */
+  functionDecls: Map<string, Node[]>;
   kinds: Map<string, "type" | "value">;
   exportedNames: string[];
   exportedValues: string[];
@@ -58,6 +61,7 @@ function readFile(path: string): FileInfo {
     enums: new Map(),
     exportedNames: [],
     exportedValues: [],
+    functionDecls: new Map(),
     interfaces: new Map(),
     kinds: new Map(),
     reexportSpecs: [],
@@ -94,6 +98,10 @@ function readFile(path: string): FileInfo {
       case "FunctionDeclaration":
       case "TSDeclareFunction":
         if (node.id) {
+          info.functionDecls.set(node.id.name, [
+            ...(info.functionDecls.get(node.id.name) ?? []),
+            node,
+          ]);
           info.values.set(node.id.name, node);
           info.kinds.set(node.id.name, "value");
           if (exported) info.exportedValues.push(node.id.name);
@@ -304,13 +312,11 @@ function shapeOfMembers(
 }
 
 /** The call shapes (parameter lists) of an exported function or function-typed constant. */
-function signaturesOf(value: Node, file: FileInfo): Node[][] | undefined {
+function signaturesOf(name: string, file: FileInfo): Node[][] | undefined {
+  const overloads = file.functionDecls.get(name);
+  if (overloads) return overloads.map((fn) => fn.params);
+  const value = file.values.get(name);
   if (!value) return undefined;
-  if (
-    value.type === "FunctionDeclaration" ||
-    value.type === "TSDeclareFunction"
-  )
-    return [value.params];
   if (value.type === "TSFunctionType") return [value.params];
   if (
     value.type === "TSTypeReference" &&
@@ -342,7 +348,7 @@ function alternativesOf(
   });
 }
 
-export function extractTypings(): Typings {
+export function extractTypings(applyGaps = true): Typings {
   const files = new Map<string, FileInfo>();
   for (const path of walk(typesDir)) {
     const name = `N/${relative(typesDir, path)
@@ -361,6 +367,8 @@ export function extractTypings(): Typings {
       const value = target.values.get(spec.local);
       if (value) {
         file.values.set(spec.exported, value);
+        const overloads = target.functionDecls.get(spec.local);
+        if (overloads) file.functionDecls.set(spec.exported, overloads);
         for (const [key, iface] of target.interfaces)
           file.interfaces.set(key, iface);
         for (const [key, alias] of target.aliases) file.aliases.set(key, alias);
@@ -376,7 +384,7 @@ export function extractTypings(): Typings {
     const functions: Record<string, Alternative[] | 0> = {};
     for (const name of file.exportedValues) {
       if (file.enums.has(name)) continue;
-      const signatures = signaturesOf(file.values.get(name), file);
+      const signatures = signaturesOf(name, file);
       if (!signatures) continue;
       const alternatives = signatures.map((params) =>
         alternativesOf(params, file, files),
@@ -397,6 +405,17 @@ export function extractTypings(): Typings {
         : { exports: [...new Set(file.exportedValues)].sort() }),
       functions,
     };
+  }
+  if (applyGaps) {
+    for (const gap of GAPS) {
+      const alternatives = out[gap.module]?.functions[gap.fn];
+      if (!alternatives) continue;
+      for (const alternative of alternatives) {
+        alternative[1] = [
+          ...new Set([...alternative[1], ...gap.options]),
+        ].sort();
+      }
+    }
   }
   return out;
 }
