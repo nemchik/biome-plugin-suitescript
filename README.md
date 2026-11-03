@@ -191,8 +191,9 @@ Biome plugins cannot read comments, so the script type is **inferred from what t
 (`pageInit` with `execute`) and missing required ones (Map/Reduce needs `getInputData` and `map` or `reduce`).
 Modules that return no distinctive entry point are libraries and are ignored. Generic names such as
 `get`, `post`, `map` and `run` alone never make a module a script. `noWrongScriptTypeModules` follows Oracle's
-"Supported Script Types" table, which lists `N/ui/message` as client-only even though one of Oracle's own Suitelet
-samples loads it.
+"Supported Script Types" table, except for `N/ui/message`: the table lists it as client-only, but Suitelets and user
+event `beforeLoad` scripts load it to build the message `Form.addPageInitMessage` shows, as Oracle's own FAQ sample
+does.
 
 ### Choosing what to enforce
 

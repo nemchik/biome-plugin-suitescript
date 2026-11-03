@@ -1,6 +1,10 @@
 // Which side of NetSuite a script type runs on, and the N/ modules that only
 // work on one side. From the "Supported Script Types" column of Oracle's SuiteScript
 // module reference; loading a module on the wrong side fails at runtime.
+// N/ui/message is not listed although the table marks it client-only: Oracle's
+// Form.addPageInitMessage (Suitelets and user event beforeLoad) takes a
+// message.create() object, its FAQ sample builds one in a Suitelet, and production
+// user event scripts load the module. Only its show() and hide() need a browser.
 // Pure logic shared by the Biome rules and the CLI.
 
 export type ScriptSide = "client" | "server";
@@ -9,7 +13,6 @@ export const CLIENT_ONLY_MODULES = new Set([
   "N/currentRecord",
   "N/portlet",
   "N/ui/dialog",
-  "N/ui/message",
 ]);
 
 export const SERVER_ONLY_MODULES = new Set([

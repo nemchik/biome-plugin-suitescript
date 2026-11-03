@@ -35,6 +35,9 @@ const CASES: [string, string, number][] = [
   ["noInvalidEnumMember", "r-typings.js", 2],
   ["noUnknownModuleMember", "r-typings.js", 1],
   ["requireOptions", "r-typings-es.ts", 1],
+  ["requireOptions", "r-define-variable.js", 1],
+  ["requireQueryOptions", "r-define-variable.js", 0],
+  ["noExtraDeps", "r-define-variable.js", 0],
   ["noUnknownModuleMember", "r-typings-es.ts", 1],
   ["noRecordInLoop", "r-loops.js", 3],
   ["noDynamicSuiteQL", "r-suiteql.js", 2],
@@ -48,6 +51,11 @@ const CASES: [string, string, number][] = [
   ["noDynamicRequire", "dynamic-require.js", 2],
   ["requireLogModule", "r-log.js", 1],
   ["noGlobalShadowing", "r-amd.js", 1],
+  ["noGlobalShadowing", "r-realworld.js", 0],
+  ["requireQueryOptions", "r-realworld.js", 0],
+  ["noUnknownModuleMember", "r-realworld.js", 0],
+  ["noUnknownOptions", "r-realworld.js", 0],
+  ["noPositionalOptions", "r-realworld.js", 1],
 ];
 
 for (const [name, fixture, expected] of CASES) {

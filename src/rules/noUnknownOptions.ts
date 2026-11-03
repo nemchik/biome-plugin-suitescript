@@ -1,4 +1,8 @@
-import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
+import {
+  defineRule,
+  registerDiagnostic,
+  semantic,
+} from "@biomejs/runtime/plugin";
 import { moduleCall } from "../lib/module-calls.ts";
 import { objectMembers, optionsObject } from "../lib/options.ts";
 
@@ -7,9 +11,9 @@ import { objectMembers, optionsObject } from "../lib/options.ts";
 // a required option is also caught by requireOptions. Functions whose options
 // type accepts any key are skipped.
 export const noUnknownOptions = defineRule({
-  query: ast("JS_CALL_EXPRESSION"),
-  run(node) {
-    const call = moduleCall(node);
+  query: semantic("JS_CALL_EXPRESSION"),
+  run(node, { model }) {
+    const call = moduleCall(node, model);
     if (!call || call.alternatives === 0) return;
     if (call.alternatives.some((alt) => alt[2])) return;
     const options = optionsObject(node);
