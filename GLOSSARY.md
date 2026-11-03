@@ -35,3 +35,11 @@ _Avoid_: Tag rule
 **Script source**:
 A file a consumer authors that ends up in the NetSuite file cabinet, either as-is or after transpiling. Build outputs are not script sources.
 _Avoid_: Deployed file (that is the transpiled output)
+
+**Source tier**:
+The priority level of where a rule's requirement comes from (Oracle documentation, Oracle agent skills, SuiteScript-specific rules, generic JavaScript rules). A higher tier wins when rules conflict.
+_Avoid_: Rule level, rule weight
+
+**Generic JavaScript rule**:
+A rule that applies to JavaScript in general rather than to SuiteScript. It is added only when it explicitly benefits SuiteScript and Biome does not already cover it.
+_Avoid_: General rule
