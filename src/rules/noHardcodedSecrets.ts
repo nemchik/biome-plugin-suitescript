@@ -5,7 +5,7 @@ const SECRET_NAMES =
 
 const unquote = (text: string): string => text.replace(/^['"]|['"]$/g, "");
 
-// Oracle: "Do not hard-code any passwords in scripts." A heuristic on names, so
+// Oracle: "Don't hard-code any passwords in scripts." A heuristic on names, so
 // no preset includes it; enable it explicitly. Only exact secret-like names with
 // a non-empty string literal are flagged (not `passwordId` or `tokenName`).
 export const noHardcodedSecrets = defineRule({
