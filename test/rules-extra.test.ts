@@ -77,7 +77,7 @@ test("noMissingModules no longer asks for N/log", () => {
   assert.equal(count(lint(rule("noMissingModules"), "r-log.js")), 0);
 });
 
-test("the Tier 1 rule severities fail the build and the house styles only warn", () => {
+test("Oracle runtime-failure rules fail the build and the low-confidence styles only warn", () => {
   const error = lint(rule("noSuiteQLTypeInSearch"), "r-server.js");
   assert.match(error, /×/);
   const warning = lint(rule("noWeakHash"), "r-server.js");

@@ -5,12 +5,14 @@ import {
 } from "@biomejs/runtime/plugin";
 import { inSuiteScriptModule } from "../lib/suitescript.ts";
 
-// House style, not an Oracle requirement: load N/log when you call log.*.
-// Oracle's help center says "NetSuite loads the log Object by default for all
-// script types. You do not need to load it manually", so this deliberately
-// overrides that Tier 1 statement (the upgrade skill only recommends loading it,
-// the learning skill says it is not global). It is the opposite style to
-// noLogModule, so enable only one of them.
+// Load N/log when you call log.*. Oracle's upgrade skill says `log` is global but
+// "explicitly including it in `define()` makes dependencies clearer and is
+// recommended", and that practice is what this rule enforces. The help center's
+// "NetSuite loads the log Object by default for all script types. You do not need
+// to load it manually" is why noMissingModules leaves `log` alone. The learning
+// skill's "not globally available" loses: the documentation and the higher-ranked
+// upgrade skill both say it is global. This is the opposite style to noLogModule,
+// so enable only one of them.
 export const requireLogModule = defineRule({
   query: semantic("JS_REFERENCE_IDENTIFIER"),
   run(node, { model }) {
