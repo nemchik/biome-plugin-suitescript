@@ -4,35 +4,28 @@ How to decide where a new rule comes from, whether it belongs here at all, and w
 
 ## Source tiers
 
-Rules come from one of four tiers. The number says where a rule comes from; it is not the order of precedence when sources disagree (see [Conflicts](#conflicts)).
+Rules come from one of four tiers. When sources disagree, the lower tier number wins.
 
-1. **Oracle documentation**: the NetSuite help center (SuiteScript 2.1 module, script type and best-practice pages).
-2. **Oracle SuiteCloud SDK agent skills**: `packages/agent-skills` in `oracle/netsuite-suitecloud-sdk`. Skills rank in this order, and inside a skill the main `SKILL.md` outranks its `references/` and appendices:
+1. **Oracle SuiteCloud SDK agent skills**: `packages/agent-skills` in `oracle/netsuite-suitecloud-sdk`. Skills rank in this order, and inside a skill the main `SKILL.md` outranks its `references/` and appendices:
    1. `netsuite-owasp-secure-coding`
    2. `netsuite-sdf-safe-guide`
    3. `netsuite-suitescript-upgrade`
    4. `netsuite-suitescript-learning` (last of the four because it contradicts the upgrade skill on `N/log`)
 
    Skills we have not drawn rules from (finance analyst, roles and permissions, records reference, UIF/SPA reference, project documentation, AI connector) rank below these four. Use them only if they state something that applies to SuiteScript source. A new rule that draws from a skill not ranked above must add that skill to the ranking in the same change, at the position its authority warrants.
+2. **Oracle documentation**: the NetSuite help center (SuiteScript 2.1 module, script type and best-practice pages).
 3. **SuiteScript-specific rules**: anything about SuiteScript that does not apply to JavaScript in general, from any other source (community plugins, our own experience of the platform).
 4. **Generic JavaScript rules**: JavaScript checks that benefit SuiteScript and that Biome does not already cover. See [Generic JavaScript rules](#generic-javascript-rules).
 
 ## Conflicts
 
-When sources disagree, the order of precedence is:
+The agent skills (tier 1) outrank Oracle's documentation (tier 2) for two reasons. Oracle's documentation has known mistakes (for example, the N/https default `Content-Type` table contradicts the `https.post` page, the `createSecretKey` sample uses an option the method page does not list, and the `sendRedirect` page says parameters must be prefixed `custparam` while its own sample does not). And the skills are written for agents, to steer code toward best practices that the documentation may not cover. The skills also contradict each other and sometimes themselves, which is why they are ranked among themselves and why `SKILL.md` outranks its references.
 
-1. Oracle's agent skills (tier 2), in the skill order above.
-2. Oracle's documentation (tier 1).
-3. SuiteScript-specific rules (tier 3).
-4. Generic JavaScript rules (tier 4).
-
-The skills outrank the documentation for two reasons. Oracle's documentation has known mistakes (for example, the N/https default `Content-Type` table contradicts the `https.post` page, the `createSecretKey` sample uses an option the method page does not list, and the `sendRedirect` page says parameters must be prefixed `custparam` while its own sample does not). And the skills are written for agents, to steer code toward best practices that the documentation may not cover. The skills also contradict each other and sometimes themselves, which is why they are ranked among themselves and why `SKILL.md` outranks its references.
-
-Do not weaken or drop a rule because a lower-precedence source disagrees. When a skill's claim loses to a higher-precedence source (as the learning skill's "`N/log` is not global" does), say so in the rule's source comment.
+Do not weaken or drop a rule because a lower-ranked source disagrees. When a skill's claim loses to a higher-ranked source (as the learning skill's "`N/log` is not global" does), say so in the rule's source comment.
 
 A rule that is `error` because a skill says the code fails, with nothing in the documentation to confirm it, keeps its severity. Its source comment says the claim comes only from the skill and has not been checked against the documentation, so a later check can confirm it or downgrade the rule.
 
-Overriding a higher-precedence source is allowed only as a deliberate decision. Record it in the rule's source comment and in the README, with the reason and the source being overridden.
+Overriding a higher-ranked source is allowed only as a deliberate decision. Record it in the rule's source comment and in the README, with the reason and the source being overridden.
 
 ## Severity and presets
 
