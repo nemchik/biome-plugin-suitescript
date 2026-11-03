@@ -10,7 +10,9 @@ import { inferredTypes } from "../lib/script-side.ts";
 // Loading a client-only module in a server script (or the reverse), or a module
 // a script type does not support, fails at runtime. The type comes from the
 // entry points the module returns, so libraries and uninferable modules are
-// never flagged.
+// never flagged. The lists follow Oracle's "Supported Script Types" table, which
+// marks N/ui/message client-only even though one of Oracle's own Suitelet samples
+// (in the SuiteScript FAQ) loads it; the table wins.
 export const noWrongScriptTypeModules = defineRule({
   query: ast("JS_CALL_EXPRESSION", "JS_IMPORT"),
   run(node) {

@@ -3,59 +3,118 @@
   "configs": [
     {
       "suitescript2": "./configs/suitescript2.json"
+    },
+    {
+      "minimal": "./configs/minimal.json"
+    },
+    {
+      "recommended": "./configs/recommended.json"
+    },
+    {
+      "all": "./configs/all.json"
     }
   ],
   "plugins": {
     "presets": {
       "all": [
         "noAmdName",
-        "noExtraModules",
+        "noExtraDeps",
+        "noExtraParams",
+        "noInvalidDefine",
         "noInvalidModules",
         "noModuleExtensions",
+        "noMultipleDefine",
+        "noRequireInsteadOfDefine",
+        "noDynamicRequire",
         "moduleVars",
         "logRequireTitle",
-        "logRequireDetails",
+        "entryPoints",
         "noMissingModules",
         "noGlobalShadowing",
-        "noEval",
         "noDynamicSuiteQL",
         "noSuiteScript1Api",
         "noModuleScopeApiCalls",
+        "noNativeIterators",
         "noWrongScriptTypeModules",
         "noBrowserGlobals",
-        "noUserEventContextSave",
         "noInsecureHttpsUrl",
-        "entryPoints",
-        "noRecordInLoop",
-        "noNativeIterators",
         "noBeforeSubmitRecordReload",
         "noEmptyEntryPoints",
-        "noMapReduceSearchResults",
         "requireCustpagePrefix",
         "noHeaderUnderscores",
         "noQueryColumnFieldAndFormula",
         "requireClientValidateReturn",
+        "noPostMessageWildcard",
+        "noInnerHtml",
+        "noWildcardCors",
+        "noSuiteQLTypeInSearch",
+        "requireEachReturn",
+        "noAuthorizationHeaderInInternalRequest",
+        "noBlockedResponseHeader",
+        "noBlockedHttpsHeader",
+        "requireHttpsOptions",
+        "requireServerWidgetOptions",
+        "requireQueryOptions",
+        "requireServerResponseOptions",
+        "noConflictingClientScriptProps",
+        "noUnsupportedServerWidgetFieldType",
+        "noInvalidHttpsEnumMember",
+        "noHardcodedAuthPasswords",
+        "noSecretKeyGuidAndSecret",
+        "requireOrderByForPagedSuiteQL",
+        "logRequireDetails",
+        "requireLogModule",
+        "noRecordInLoop",
+        "noMapReduceSearchResults",
         "noClientLog"
       ],
-      "minimal": ["noExtraModules", "noInvalidModules"],
+      "minimal": ["noExtraDeps", "noExtraParams", "noInvalidModules"],
       "recommended": [
         "noAmdName",
-        "noExtraModules",
+        "noExtraDeps",
+        "noExtraParams",
+        "noInvalidDefine",
         "noInvalidModules",
         "noModuleExtensions",
+        "noMultipleDefine",
+        "noRequireInsteadOfDefine",
+        "noDynamicRequire",
         "moduleVars",
         "logRequireTitle",
-        "logRequireDetails",
+        "entryPoints",
         "noMissingModules",
         "noGlobalShadowing",
-        "noEval",
         "noDynamicSuiteQL",
         "noSuiteScript1Api",
         "noModuleScopeApiCalls",
+        "noNativeIterators",
         "noWrongScriptTypeModules",
         "noBrowserGlobals",
-        "noUserEventContextSave",
-        "noInsecureHttpsUrl"
+        "noInsecureHttpsUrl",
+        "noBeforeSubmitRecordReload",
+        "noEmptyEntryPoints",
+        "requireCustpagePrefix",
+        "noHeaderUnderscores",
+        "noQueryColumnFieldAndFormula",
+        "requireClientValidateReturn",
+        "noPostMessageWildcard",
+        "noInnerHtml",
+        "noWildcardCors",
+        "noSuiteQLTypeInSearch",
+        "requireEachReturn",
+        "noAuthorizationHeaderInInternalRequest",
+        "noBlockedResponseHeader",
+        "noBlockedHttpsHeader",
+        "requireHttpsOptions",
+        "requireServerWidgetOptions",
+        "requireQueryOptions",
+        "requireServerResponseOptions",
+        "noConflictingClientScriptProps",
+        "noUnsupportedServerWidgetFieldType",
+        "noInvalidHttpsEnumMember",
+        "noHardcodedAuthPasswords",
+        "noSecretKeyGuidAndSecret",
+        "requireOrderByForPagedSuiteQL"
       ]
     },
     "rules": [
@@ -75,7 +134,16 @@
         "noAmdName": "./dist/rules/noAmdName.grit"
       },
       {
+        "noAuthorizationHeaderInInternalRequest": "./dist/rules/noAuthorizationHeaderInInternalRequest.js"
+      },
+      {
         "noBeforeSubmitRecordReload": "./dist/rules/noBeforeSubmitRecordReload.js"
+      },
+      {
+        "noBlockedHttpsHeader": "./dist/rules/noBlockedHttpsHeader.js"
+      },
+      {
+        "noBlockedResponseHeader": "./dist/rules/noBlockedResponseHeader.js"
       },
       {
         "noBrowserGlobals": "./dist/rules/noBrowserGlobals.js"
@@ -84,19 +152,28 @@
         "noClientLog": "./dist/rules/noClientLog.js"
       },
       {
+        "noConflictingClientScriptProps": "./dist/rules/noConflictingClientScriptProps.js"
+      },
+      {
+        "noDynamicRequire": "./dist/rules/noDynamicRequire.js"
+      },
+      {
         "noDynamicSuiteQL": "./dist/rules/noDynamicSuiteQL.js"
       },
       {
         "noEmptyEntryPoints": "./dist/rules/noEmptyEntryPoints.js"
       },
       {
-        "noEval": "./dist/rules/noEval.js"
+        "noExtraDeps": "./dist/rules/noExtraDeps.js"
       },
       {
-        "noExtraModules": "./dist/rules/noExtraModules.js"
+        "noExtraParams": "./dist/rules/noExtraParams.js"
       },
       {
         "noGlobalShadowing": "./dist/rules/noGlobalShadowing.js"
+      },
+      {
+        "noHardcodedAuthPasswords": "./dist/rules/noHardcodedAuthPasswords.js"
       },
       {
         "noHardcodedSecrets": "./dist/rules/noHardcodedSecrets.js"
@@ -105,10 +182,25 @@
         "noHeaderUnderscores": "./dist/rules/noHeaderUnderscores.js"
       },
       {
+        "noInnerHtml": "./dist/rules/noInnerHtml.js"
+      },
+      {
+        "noInsecureCookie": "./dist/rules/noInsecureCookie.js"
+      },
+      {
         "noInsecureHttpsUrl": "./dist/rules/noInsecureHttpsUrl.js"
       },
       {
+        "noInvalidDefine": "./dist/rules/noInvalidDefine.js"
+      },
+      {
+        "noInvalidHttpsEnumMember": "./dist/rules/noInvalidHttpsEnumMember.js"
+      },
+      {
         "noInvalidModules": "./dist/rules/noInvalidModules.js"
+      },
+      {
+        "noLocationHeader": "./dist/rules/noLocationHeader.js"
       },
       {
         "noLogModule": "./dist/rules/noLogModule.js"
@@ -126,7 +218,16 @@
         "noModuleScopeApiCalls": "./dist/rules/noModuleScopeApiCalls.js"
       },
       {
+        "noMultipleDefine": "./dist/rules/noMultipleDefine.js"
+      },
+      {
         "noNativeIterators": "./dist/rules/noNativeIterators.js"
+      },
+      {
+        "noPostMessageWildcard": "./dist/rules/noPostMessageWildcard.js"
+      },
+      {
+        "noPublicFileUpload": "./dist/rules/noPublicFileUpload.js"
       },
       {
         "noQueryColumnFieldAndFormula": "./dist/rules/noQueryColumnFieldAndFormula.js"
@@ -135,10 +236,37 @@
         "noRecordInLoop": "./dist/rules/noRecordInLoop.js"
       },
       {
+        "noRequireInsteadOfDefine": "./dist/rules/noRequireInsteadOfDefine.js"
+      },
+      {
+        "noSecretKeyGuidAndSecret": "./dist/rules/noSecretKeyGuidAndSecret.js"
+      },
+      {
+        "noSensitiveBrowserStorage": "./dist/rules/noSensitiveBrowserStorage.js"
+      },
+      {
+        "noStackInResponse": "./dist/rules/noStackInResponse.js"
+      },
+      {
+        "noSuiteQLSelectStar": "./dist/rules/noSuiteQLSelectStar.js"
+      },
+      {
+        "noSuiteQLSystemNoteJoin": "./dist/rules/noSuiteQLSystemNoteJoin.js"
+      },
+      {
+        "noSuiteQLTypeInSearch": "./dist/rules/noSuiteQLTypeInSearch.js"
+      },
+      {
         "noSuiteScript1Api": "./dist/rules/noSuiteScript1Api.js"
       },
       {
-        "noUserEventContextSave": "./dist/rules/noUserEventContextSave.js"
+        "noUnsupportedServerWidgetFieldType": "./dist/rules/noUnsupportedServerWidgetFieldType.js"
+      },
+      {
+        "noWeakHash": "./dist/rules/noWeakHash.js"
+      },
+      {
+        "noWildcardCors": "./dist/rules/noWildcardCors.js"
       },
       {
         "noWrongScriptTypeModules": "./dist/rules/noWrongScriptTypeModules.js"
@@ -148,6 +276,27 @@
       },
       {
         "requireCustpagePrefix": "./dist/rules/requireCustpagePrefix.js"
+      },
+      {
+        "requireEachReturn": "./dist/rules/requireEachReturn.js"
+      },
+      {
+        "requireHttpsOptions": "./dist/rules/requireHttpsOptions.js"
+      },
+      {
+        "requireLogModule": "./dist/rules/requireLogModule.js"
+      },
+      {
+        "requireOrderByForPagedSuiteQL": "./dist/rules/requireOrderByForPagedSuiteQL.js"
+      },
+      {
+        "requireQueryOptions": "./dist/rules/requireQueryOptions.js"
+      },
+      {
+        "requireServerResponseOptions": "./dist/rules/requireServerResponseOptions.js"
+      },
+      {
+        "requireServerWidgetOptions": "./dist/rules/requireServerWidgetOptions.js"
       }
     ]
   },

@@ -43,3 +43,7 @@ _Avoid_: Rule level, rule weight
 **Generic JavaScript rule**:
 A rule that applies to JavaScript in general rather than to SuiteScript. It is added only when it explicitly benefits SuiteScript and Biome does not already cover it.
 _Avoid_: General rule
+
+**Config**:
+A published `extends` entry (`configs/minimal`, `recommended`, `all`) that bundles a preset with the native Biome rules a source tier asks for and the SuiteScript globals.
+_Avoid_: Preset (a preset lists only this package's rules)

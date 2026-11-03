@@ -33,6 +33,14 @@ Defaults, which a rule's author may override with a recorded reason:
 - Tier 4 rules are opt-in (in no preset) unless they would fail at runtime or on upload.
 - A rule that guesses (a heuristic that can misfire) stays out of `recommended`, and out of every preset when a false positive would be costly.
 
+## Native Biome rules
+
+When Biome already ships a rule for what an Oracle source asks, do not reimplement it. Turn the rule on in the preset configs (`NATIVE_RULES` in `scripts/build-manifest.ts`, which writes `configs/minimal.json`, `recommended.json` and `all.json`), even when Biome enables it by default or in its recommended set, and list it in the README rules table as Tier 4 with a link to Biome's documentation. List only the native rules enabled because a Tier 1 or Tier 2 source asks for them; the configs enable Biome's own recommended rules too, but those are not listed. Include nursery rules when they solve an Oracle concern, and note that they may change. Turn off any Biome rule that conflicts with one of ours (as `noUnusedFunctionParameters` is, because `noExtraParams` wants one callback parameter per dependency). A plugin cannot extend or scope a native rule, so a check that needs script-type awareness stays a plugin rule (`noBrowserGlobals` and Biome's `noAlert`).
+
+## Low-confidence rules
+
+A rule whose source is clear but whose detection guesses (it reads names, sees only literals, or cannot tell intent) may still be written. Put it in no preset, mark it opt-in in the README rules table, and give the reason there. Do not write a rule when its sources contradict themselves or when it needs information a static AST cannot provide.
+
 ## Generic JavaScript rules
 
 Do not add a generic JavaScript rule just because it is good practice. Add one only when all of these hold:
@@ -42,6 +50,14 @@ Do not add a generic JavaScript rule just because it is good practice. Add one o
 - The rule's source comment names that justification.
 
 If Biome later ships an equivalent, remove or deprecate our rule.
+
+## SuiteScript version
+
+Always assume SuiteScript 2.1 explicitly. Do not consider SuiteScript 1.0, 2.0 or 2.x in current or future rules, configs, tests or documentation, because Oracle is deprecating them. Never document how to override or disable a rule to keep backwards compatibility with those versions. The one exception is a rule whose purpose is to flag 1.0 leftovers (such as `noSuiteScript1Api`).
+
+## Reading Oracle sources
+
+When reading Oracle documentation or agent skills, never truncate: read each page or file in full, page through anything long, and read every material it references. A summary, an excerpt or a search snippet is not a reading. Quote the source verbatim in the rule's comment and say which file or page it came from.
 
 ## Recording the source
 

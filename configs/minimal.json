@@ -1,0 +1,14 @@
+{
+  "javascript": {
+    "globals": ["define", "require", "log", "util"]
+  },
+  "linter": {
+    "rules": {
+      "correctness": {
+        "noUnusedFunctionParameters": "off"
+      },
+      "preset": "recommended"
+    }
+  },
+  "plugins": ["biome-plugin-suitescript/presets/minimal"]
+}

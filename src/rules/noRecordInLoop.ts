@@ -8,14 +8,18 @@ const LOOPS = [
   "JS_DO_WHILE_STATEMENT",
 ];
 const ITERATORS = /\.(forEach|each|map)$/;
-const RECORD_CALLS = ["record.load", "record.create"];
+const LOOKUPS =
+  /^(record\.load|query\.runSuiteQL(Paged)?|search\.(create|load))(\.promise)?$/;
 
-// Loading or creating a record per iteration burns governance; search or
-// submitFields in bulk instead. Opt-in: Map/Reduce `map` handles one record per call.
+// Oracle's SAFE guide: "NEVER run queries inside loops" (the N+1 problem) and
+// "Loading records in loops: use searches or bulk operations." Loading a record or
+// running a query or search per iteration burns governance. Only record.load is
+// named for records, so record.create and submitFields are not flagged. Map/Reduce
+// `map` handles one record per call, so keep this rule out of those files.
 export const noRecordInLoop = defineRule({
   query: ast("JS_CALL_EXPRESSION"),
   run(node) {
-    if (!RECORD_CALLS.includes(node.callee?.text ?? "")) return;
+    if (!LOOKUPS.test(node.callee?.text ?? "")) return;
     const inLoop = node.ancestors().some((a) => {
       if (LOOPS.includes(a.kind)) return true;
       if (a.kind !== "JS_CALL_ARGUMENT_LIST") return false;
@@ -29,7 +33,7 @@ export const noRecordInLoop = defineRule({
       registerDiagnostic(
         node,
         "warning",
-        `${node.callee?.text}() inside a loop; use a search or submitFields instead.`,
+        `${node.callee?.text}() inside a loop; fetch what you need with one search or query instead.`,
       );
     }
   },

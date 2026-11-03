@@ -5,7 +5,11 @@ const SECRET_NAMES =
 
 const unquote = (text: string): string => text.replace(/^['"]|['"]$/g, "");
 
-// Oracle: "Don't hard-code any passwords in scripts." A heuristic on names, so
+// Oracle: "Don't hard-code any passwords in scripts." The OWASP skill agrees, but
+// its `SKILL.md` shows script parameters as the safe place while its
+// references/02 says script parameters are not a secret store and points to API
+// Secrets. `SKILL.md` outranks the reference; the message follows the reference
+// because it is the more precise advice. A heuristic on names, so
 // no preset includes it; enable it explicitly. Only exact secret-like names with
 // a non-empty string literal are flagged (not `passwordId` or `tokenName`).
 export const noHardcodedSecrets = defineRule({
@@ -43,7 +47,7 @@ export const noHardcodedSecrets = defineRule({
       registerDiagnostic(
         value,
         "error",
-        `Do not hard-code '${name}'; read it from a script parameter or credentials.`,
+        `Do not hard-code '${name}'; use an API Secret (https.createSecureString) instead of source code.`,
       );
     }
   },

@@ -39,6 +39,11 @@ test("modules a script type does not support are reported", () => {
   assert.doesNotMatch(r.out, /N\/record is not supported/);
 });
 
+test("script types from Oracle's list are accepted", () => {
+  const r = run(["check", fx("tags-event-subscriber.js")]);
+  assert.equal(r.code, 0, r.out);
+});
+
 test("old version, bad entry points and missing tags exit 1", () => {
   const r = run(["check", fx("tags-bad.js"), fx("tags-missing.ts")]);
   assert.equal(r.code, 1);

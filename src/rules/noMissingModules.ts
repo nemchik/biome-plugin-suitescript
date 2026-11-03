@@ -6,11 +6,13 @@ import {
 import { MODULES } from "../lib/modules.ts";
 import { inSuiteScriptModule } from "../lib/suitescript.ts";
 
-// `util` is a global in SuiteScript 2.1, so it never needs loading. `log` is
-// treated like every other module: load N/log when you call it.
+// `log` and `util` are globals in SuiteScript 2.1 ("NetSuite loads the log Object
+// by default for all script types. You do not need to load it manually."), so
+// neither needs loading. requireLogModule is the style that wants N/log loaded.
+const GLOBALS = ["log", "util"];
 const ALIASES = new Map(
   Object.entries(MODULES)
-    .filter(([, identifier]) => identifier !== "util")
+    .filter(([, identifier]) => !GLOBALS.includes(identifier))
     .map(([name, identifier]) => [identifier, name]),
 );
 

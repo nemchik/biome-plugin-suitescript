@@ -7,6 +7,8 @@ import {
 import { dependencies } from "../lib/biome-modules.ts";
 import { parseDefine } from "../lib/define.ts";
 
+// Oracle's upgrade skill: not renaming `log` or `util` "shadows SS2.1 globals and
+// can break logging or utility calls" (listed as `error` in its SKILL.md).
 // `log` and `util` are SuiteScript 2.1 globals. The one allowed binding is the
 // module they come from: N/log as `log`, N/util as `util`. `error` is not listed
 // because moduleVars names the N/error identifier `error`.
@@ -39,7 +41,7 @@ export const noGlobalShadowing = defineRule({
     if (module && !isModuleBinding(node, module)) {
       registerDiagnostic(
         node,
-        "warning",
+        "error",
         `'${node.text}' shadows the global ${node.text}.`,
       );
     }
