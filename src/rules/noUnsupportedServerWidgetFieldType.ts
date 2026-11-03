@@ -15,7 +15,9 @@ const COLUMN_UNSUPPORTED = new Set([
 ]);
 
 // Oracle (serverWidget.FieldType): "The DATETIME field type is not supported with
-// addField methods, you must specify DATETIMETZ." and "The CHECKBOX, DATETIME,
+// addField methods, you must specify DATETIMETZ." The type definitions
+// (N/ui/serverWidget.d.ts) have no DATETIME member in FieldType at all. Oracle also
+// says "The CHECKBOX, DATETIME,
 // DATETIMETZ, FILE, HELP, INLINEHTML, LABEL, MULTISELECT, SELECT, and RADIO field
 // types are not supported with List.addColumn(options)." Sublist.addField has its
 // own list but needs the receiver's type, so it is not checked.

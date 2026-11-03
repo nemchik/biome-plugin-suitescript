@@ -36,6 +36,9 @@ define(['N/https', 'N/crypto', 'N/query', 'N/search', 'N/auth', 'N/ui/serverWidg
 		query.createSort({});
 		query.createColumn({ fieldId: 'id' });
 		query.createColumn({ formula: 'x', type: query.ReturnType.STRING });
+		form.addButton({ label: 'B' });
+		form.addSecretKeyField({ id: 'custpage_k', label: 'K' });
+		query.createCondition({ formula: 'x', type: query.ReturnType.STRING });
 		form.clientScriptFileId = 1;
 		form.clientScriptModulePath = './client.js';
 		https.Method.GET;

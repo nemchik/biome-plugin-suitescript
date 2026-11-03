@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
+import { withTable } from "../scripts/rules-table.ts";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const read = (file: string) => readFileSync(root + file, "utf8");
@@ -85,4 +86,9 @@ test("the README rules table is sorted by tier, severity, preset and name", () =
       `${ruleName(rows[i]?.[1])} is out of order`,
     );
   }
+});
+
+test("the README rules table is up to date (run npm run readme)", () => {
+  const readme = read("README.md");
+  assert.equal(withTable(readme), readme);
 });

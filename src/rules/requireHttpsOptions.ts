@@ -14,6 +14,7 @@ const REQUIRED: Record<string, string[]> = {
 
 // Oracle (N/https method pages): each method lists its required options and
 // throws SSS_MISSING_REQD_ARGUMENT ("Missing a required argument") without them.
+// The type definitions (N/http.d.ts, N/https.d.ts) require the same options.
 // Only a call with an options object literal and no spread is checked.
 export const requireHttpsOptions = defineRule({
   query: ast("JS_CALL_EXPRESSION"),
