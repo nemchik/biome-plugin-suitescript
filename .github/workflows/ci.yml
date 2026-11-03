@@ -24,4 +24,6 @@ jobs:
         if: matrix.biome == 'locked'
       - run: npm run sync-modules -- --check
         if: matrix.biome == 'locked'
+      - run: npm run sync-typings -- --check
+        if: matrix.biome == 'locked'
       - run: npm test
