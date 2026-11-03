@@ -7,7 +7,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const read = (file: string) => readFileSync(root + file, "utf8");
 
 const SHORTCODES = {
-  all: ":blue_circle:",
+  all: ":large_blue_circle:",
   minimal: ":white_circle:",
   recommended: ":green_circle:",
 } as const;
