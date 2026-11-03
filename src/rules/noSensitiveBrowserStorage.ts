@@ -4,6 +4,7 @@ import { scriptSide } from "../lib/script-side.ts";
 
 const SENSITIVE = /token|password|secret|api[_-]?key|ssn|credit|card|auth/i;
 
+// Tier 0: docs/adr/0005-guessing-rules-are-in-no-preset.md.
 // Oracle's OWASP skill: "`localStorage` and `sessionStorage` are accessible to any
 // JavaScript running on the same origin. If an XSS vulnerability exists, stored
 // tokens, PII, or session data can be exfiltrated", and "Never store tokens or PII

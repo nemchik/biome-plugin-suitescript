@@ -37,7 +37,7 @@ A file a consumer authors that ends up in the NetSuite file cabinet, either as-i
 _Avoid_: Deployed file (that is the transpiled output)
 
 **Source tier**:
-The priority level of where a rule's requirement comes from (Oracle agent skills, Oracle documentation, SuiteScript-specific rules, generic JavaScript rules). When sources conflict, the lower tier number wins.
+The priority level of where a rule's requirement comes from (Oracle agent skills, Oracle documentation, SuiteScript-specific rules, generic JavaScript rules). When sources conflict, the lower tier number wins. Tier 0 is not a source: it is a repository decision, recorded as an ADR, that overrides every source.
 _Avoid_: Rule level, rule weight
 
 **Generic JavaScript rule**:

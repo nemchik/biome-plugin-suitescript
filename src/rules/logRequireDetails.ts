@@ -1,6 +1,7 @@
 import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 import { hasProperty, logCall } from "../lib/log.ts";
 
+// Tier 0: docs/adr/0002-options-are-separate-rules.md.
 // Oracle's help center marks log `details` optional on all four log method pages;
 // requiring it does not contradict that, it is a house practice from the ESLint
 // log-args rules. As the lowest-precedence kind of source it is in `all` only.

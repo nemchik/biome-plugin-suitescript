@@ -1,6 +1,7 @@
 import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 import { hasProperty, logCall } from "../lib/log.ts";
 
+// Tier 0: docs/adr/0002-options-are-separate-rules.md.
 export const logRequireTitle = defineRule({
   query: ast("JS_CALL_EXPRESSION"),
   run(node) {

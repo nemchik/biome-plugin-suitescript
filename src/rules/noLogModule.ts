@@ -1,6 +1,7 @@
 import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 import { dependencies } from "../lib/biome-modules.ts";
 
+// Tier 0: docs/adr/0005-guessing-rules-are-in-no-preset.md, docs/adr/0006-log-is-a-global-with-two-opposite-styles.md.
 // Opt-in style: use the global `log` instead of loading N/log. Oracle's help
 // center says "NetSuite loads the log Object by default for all script types. You
 // do not need to load it manually", which is what this rule follows. It is the

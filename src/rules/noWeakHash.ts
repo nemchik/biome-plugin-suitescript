@@ -1,5 +1,6 @@
 import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 
+// Tier 0: docs/adr/0005-guessing-rules-are-in-no-preset.md.
 // Oracle's OWASP skill: "MD5 and SHA-1 are cryptographically broken" and "Use
 // SHA-256 as the minimum hashing algorithm. MD5 and SHA-1 are broken and must
 // never be used for security-sensitive operations." LOW CONFIDENCE, so no preset
