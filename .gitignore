@@ -2,3 +2,4 @@ node_modules/
 dist/
 *.tgz
 *lefthook-local*
+.claude/skills/

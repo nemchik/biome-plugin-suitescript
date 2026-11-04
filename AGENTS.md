@@ -12,6 +12,10 @@ Default five-label vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, 
 
 Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
 
+### Skills
+
+Oracle's and Matt Pocock's skills are committed in `.agents/skills/` and managed with `npm run skills:*`. See `docs/agents/skills.md`; run `npm run skills:install` after cloning.
+
 ## GitHub Actions
 
 Pin every action to its commit SHA with the full semver in a trailing comment, using the latest stable release (look it up with `gh api repos/<owner>/<repo>/releases/latest`), for example `actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1`. Tool versions come from `package.json` `devEngines` (Node, npm), mirrored in `.nvmrc` and `.tool-versions`; change them in all three. The CI job that tests against the latest Biome is intentionally unpinned.

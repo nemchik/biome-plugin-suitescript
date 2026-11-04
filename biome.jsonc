@@ -13,6 +13,7 @@
     "ignoreUnknown": true,
     "includes": [
       "**",
+      "!.agents",
       "!CHANGELOG.md",
       "!dist",
       "!test/fixtures",
