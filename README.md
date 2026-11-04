@@ -1,10 +1,15 @@
 # biome-plugin-suitescript
 
+[![npm version](https://img.shields.io/npm/v/biome-plugin-suitescript)](https://www.npmjs.com/package/biome-plugin-suitescript)
+[![CI](https://img.shields.io/github/actions/workflow/status/nemchik/biome-plugin-suitescript/ci.yml?branch=main&label=CI)](https://github.com/nemchik/biome-plugin-suitescript/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/biome-plugin-suitescript)](LICENSE)
+
 [Biome](https://biomejs.dev) lint plugins and a tag checker for NetSuite **SuiteScript 2.1**, ported from
 [acdvs/eslint-plugin-suitescript](https://github.com/acdvs/eslint-plugin-suitescript) and
 [btonasse/eslint-plugin-suitescript](https://github.com/btonasse/eslint-plugin-suitescript).
 
-Requires Biome **>= 2.6.4** (npm-distributed plugins use `biome-manifest.json`) and Node >= 22 for the CLI.
+Requires Biome **>= 2.6.4** (npm-distributed plugins use `biome-manifest.json`) and Node >= 24 for the CLI. Node 24 LTS is also what Oracle's
+[SuiteCloud CLI for Node.js requires](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_1558708810.html).
 Rules work on both AMD `define()` and ES `import`/`export` source, in `.js` and `.ts`.
 
 ## Install
