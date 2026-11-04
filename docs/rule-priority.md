@@ -17,7 +17,7 @@ Process rules for agents (read sources in full, never truncate) are in `AGENTS.m
 
 Rules come from one of five tiers of sources. When sources disagree, the lower tier number wins, and a Tier 0 decision wins over all of them.
 
-1. **Oracle SuiteCloud SDK agent skills**: `packages/agent-skills` in `oracle/netsuite-suitecloud-sdk`. Skills rank in this order, and inside a skill the main `SKILL.md` outranks its `references/` and appendices:
+1. **Oracle SuiteCloud SDK agent skills**: `packages/agent-skills` in `oracle/netsuite-suitecloud-sdk`, read from this repo's copy in `.agents/skills/` (see [agent skills](agents/skills.md)). Skills rank in this order, and inside a skill the main `SKILL.md` outranks its `references/` and appendices:
    1. `netsuite-owasp-secure-coding`
    2. `netsuite-sdf-safe-guide`
    3. `netsuite-suitescript-upgrade`

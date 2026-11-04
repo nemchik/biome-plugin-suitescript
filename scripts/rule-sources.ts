@@ -25,7 +25,7 @@ const BTONASSE =
   "https://github.com/btonasse/eslint-plugin-suitescript/blob/master/lib/rules/";
 const AMD = "https://github.com/acdvs/eslint-plugin-amd/blob/main/lib/rules/";
 const SKILLS =
-  "https://github.com/oracle/netsuite-suitecloud-sdk/blob/master/packages/agent-skills/";
+  "https://github.com/nemchik/biome-plugin-suitescript/blob/main/.agents/skills/";
 const HELP = "https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/";
 const TYPINGS =
   "https://github.com/headintheclouddev/typings-suitescript-2.0/blob/master/N/";
