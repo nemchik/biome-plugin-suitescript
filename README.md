@@ -12,6 +12,7 @@ Requires Biome **>= 2.6.4** (npm-distributed plugins use `biome-manifest.json`) 
 [SuiteCloud CLI for Node.js requires](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_1558708810.html).
 Rules work on both AMD `define()` and ES `import`/`export` source, in `.js` and `.ts`.
 Coming from the ESLint plugins? See [Migrating from the ESLint plugins](docs/migrating-from-eslint.md).
+Want to see it run first? Open the [example project](https://github.com/nemchik/biome-plugin-suitescript-example) in GitHub Codespaces, or use it as a template for your own.
 
 ## Install
 
@@ -219,7 +220,7 @@ does.
 
 ## Tag checker
 
-`@NApiVersion` and `@NScriptType` live in comments, which no Biome plugin can read, so a small CLI checks them.
+`@NApiVersion` and `@NScriptType` live in comments, which no Biome plugin can read (we have [asked Biome for comment access](https://github.com/biomejs/biome/discussions/12939); this CLI goes away if it ships), so a small CLI checks them.
 It is **report-only**: it never edits files.
 
 ```sh
