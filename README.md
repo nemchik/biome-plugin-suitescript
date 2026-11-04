@@ -219,7 +219,7 @@ does.
 
 ## Tag checker
 
-`@NApiVersion` and `@NScriptType` live in comments, which no Biome plugin can read, so a small CLI checks them.
+`@NApiVersion` and `@NScriptType` live in comments, which no Biome plugin can read (we have [asked Biome for comment access](https://github.com/biomejs/biome/discussions/12939); this CLI goes away if it ships), so a small CLI checks them.
 It is **report-only**: it never edits files.
 
 ```sh
