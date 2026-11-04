@@ -11,6 +11,7 @@
 Requires Biome **>= 2.6.4** (npm-distributed plugins use `biome-manifest.json`) and Node >= 24 for the CLI. Node 24 LTS is also what Oracle's
 [SuiteCloud CLI for Node.js requires](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_1558708810.html).
 Rules work on both AMD `define()` and ES `import`/`export` source, in `.js` and `.ts`.
+Coming from the ESLint plugins? See [Migrating from the ESLint plugins](docs/migrating-from-eslint.md).
 
 ## Install
 
@@ -274,7 +275,7 @@ npm run typecheck      # tsc --noEmit over src, scripts and tests
 npm run check          # biome check (npm run format applies fixes)
 npm run sync-modules   # refreshes the N/ module list from @hitc/netsuite-types
 npm run readme         # regenerates the rules table above (after npm run build)
-npm run docs           # regenerates the per-rule pages in docs/rules/ (after npm run build)
+npm run docs           # regenerates the per-rule pages in docs/rules/ and the migration table (after npm run build)
 npm test               # builds first, then tests the built package
 ```
 
