@@ -7,6 +7,7 @@ import {
   ADR,
   BIOME,
   NATIVE_INFO,
+  RULE_PAGES,
   RULES,
   type Source,
   TIER_ZERO,
@@ -35,7 +36,7 @@ interface Row {
 }
 
 /** Whether a rule's diagnostics are errors, read from its source. */
-function severityOf(name: string): "error" | "warn" {
+export function severityOf(name: string): "error" | "warn" {
   const dir = new URL("src/rules/", root);
   const file = readdirSync(dir).find((f) => f.split(".")[0] === name);
   if (!file) throw new Error(`No rule file for ${name}`);
@@ -113,7 +114,7 @@ function rows(): Row[] {
     const severity = severityOf(name);
     out.push({
       cells: [
-        `\`${name}\``,
+        `[\`${name}\`](${RULE_PAGES}${name}.md)`,
         severity,
         cell,
         description,
