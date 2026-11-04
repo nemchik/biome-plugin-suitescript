@@ -21,12 +21,19 @@ npm test
 
 Read [docs/rule-priority.md](docs/rule-priority.md) first. It says which sources a rule may come from, which wins when they disagree, and what severity and preset the rule gets. Assume SuiteScript 2.1 only. Do not add a generic JavaScript rule unless it has a SuiteScript-specific justification and Biome does not already cover it.
 
-For each rule:
+Start a new rule with the scaffold, giving it the tier of its source (1 Oracle agent skill, 2 type definitions, 3 Oracle documentation, 4 SuiteScript-specific, 5 generic JavaScript):
 
-1. Write the rule in `src/rules/` and name its tier and source in a comment, quoting the source.
-2. Add cases to the tests in `test/`.
-3. Add its description, sources and any opt-in reason to `scripts/rule-sources.ts`.
-4. Run `npm run build`, then `npm run readme`, and commit the results.
+```sh
+npm run new-rule -- noFooBar --tier 3          # a TypeScript rule
+npm run new-rule -- noFooBar --tier 3 --grit   # a GritQL rule
+```
+
+In PowerShell, quote the separator (`npm run new-rule '--' noFooBar --tier 3`), because PowerShell otherwise swallows the bare `--`. The scaffold creates the rule file in `src/rules/`, a fixture in `test/fixtures/`, a case in `test/cases.ts` and an entry in `scripts/rule-sources.ts`, and it prints what is left. Each placeholder is marked `TODO(new-rule)`, and `npm test` fails until none is left, because the tier, severity and preset are decisions for you (the tier's defaults are in the rule file's comment):
+
+1. Write the rule, and name its tier and source in its comment, quoting the source.
+2. Make the fixture report the rule, and set the expected count in `test/cases.ts`.
+3. Fill in the description, sources and any opt-in reason in `scripts/rule-sources.ts`, and add the rule to the right preset list in `scripts/build-manifest.ts` (or leave it opt-in).
+4. Run `npm run build`, `npm run docs` and `npm run readme`, and commit the results.
 
 Generated files (`biome-manifest.json`, `configs/`, `src/lib/modules.ts`, `src/lib/typings-data.ts`, the README rules table) come from scripts. Change the source and regenerate; do not edit them by hand. [GLOSSARY.md](GLOSSARY.md) defines the terms used across the code, and [docs/adr/](docs/adr/) records the decisions that override a source.
 
