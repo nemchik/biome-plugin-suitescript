@@ -37,7 +37,7 @@
     "prebuild": "node -e \"require(\\\"node:fs\\\").rmSync(\\\"dist\\\",{recursive:true,force:true})\"",
     "build": "tsc -p tsconfig.build.json && node scripts/build-manifest.ts",
     "check": "biome check",
-    "docs": "node scripts/rule-docs.ts",
+    "docs": "node scripts/rule-docs.ts && node scripts/migration-table.ts",
     "preformat": "npm run typecheck",
     "format": "biome check --write",
     "lint": "biome lint",

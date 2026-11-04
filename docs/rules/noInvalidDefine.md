@@ -24,6 +24,6 @@ Reported as error: define() needs a factory. (`define-shapes.js`, line 1).
 
 ## Rule source
 
-- Tier 4: [acdvs `no-invalid-define`](https://github.com/acdvs/eslint-plugin-amd/blob/main/lib/rules/no-invalid-define.ts)
+- Tier 4: [amd `no-invalid-define`](https://github.com/acdvs/eslint-plugin-amd/blob/main/lib/rules/no-invalid-define.ts)
 
 Enable it with `"plugins": ["biome-plugin-suitescript/noInvalidDefine"]` or through a preset. See the [README](https://github.com/nemchik/biome-plugin-suitescript#readme).

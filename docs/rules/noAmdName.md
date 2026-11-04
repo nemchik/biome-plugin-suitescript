@@ -25,6 +25,6 @@ Reported as error: No AMD module name should be provided. (`define-shapes.js`, l
 ## Rule source
 
 - Tier 4: [btonasse `no-amd-name`](https://github.com/btonasse/eslint-plugin-suitescript/blob/master/lib/rules/no-amd-name.js)
-- Tier 4: [acdvs `no-name`](https://github.com/acdvs/eslint-plugin-amd/blob/main/lib/rules/no-name.ts)
+- Tier 4: [amd `no-name`](https://github.com/acdvs/eslint-plugin-amd/blob/main/lib/rules/no-name.ts)
 
 Enable it with `"plugins": ["biome-plugin-suitescript/noAmdName"]` or through a preset. See the [README](https://github.com/nemchik/biome-plugin-suitescript#readme).

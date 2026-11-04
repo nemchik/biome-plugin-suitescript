@@ -10,7 +10,14 @@ export interface Source {
   /** Link text, for example `Oracle help: N/https` or `` btonasse `no-amd-name` ``. */
   label: string;
   url: string;
+  /** Set for rules ported from an ESLint plugin; `scripts/migration-table.ts` reads it. */
+  eslint?: { plugin: EslintPlugin; rule: string };
 }
+
+export type EslintPlugin =
+  | "eslint-plugin-suitescript (acdvs)"
+  | "eslint-plugin-suitescript (btonasse)"
+  | "eslint-plugin-amd";
 
 export interface RuleInfo {
   description: string;
@@ -37,17 +44,20 @@ export const ADR =
   "https://github.com/nemchik/biome-plugin-suitescript/blob/main/docs/adr/";
 
 const acdvs = (name: string): Source => ({
+  eslint: { plugin: "eslint-plugin-suitescript (acdvs)", rule: name },
   label: `acdvs \`${name}\``,
   tier: 4,
   url: `${ACDVS}${name}.ts`,
 });
 const btonasse = (name: string): Source => ({
+  eslint: { plugin: "eslint-plugin-suitescript (btonasse)", rule: name },
   label: `btonasse \`${name}\``,
   tier: 4,
   url: `${BTONASSE}${name}.js`,
 });
 const amd = (name: string): Source => ({
-  label: `acdvs \`${name}\``,
+  eslint: { plugin: "eslint-plugin-amd", rule: name },
+  label: `amd \`${name}\``,
   tier: 4,
   url: `${AMD}${name}.ts`,
 });

@@ -16,6 +16,7 @@
       "!.agents",
       "!CHANGELOG.md",
       "!docs/rules",
+      "!docs/migrating-from-eslint.md",
       "!dist",
       "!test/fixtures",
       "!package-lock.json"
