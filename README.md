@@ -261,6 +261,8 @@ Biome rules identically.
 
 ## Development
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to report bugs, propose rules and open pull requests.
+
 The source is TypeScript under `src/`, compiled by `tsc` to `dist/` (the only code that is published). Scripts and
 tests are TypeScript too and run directly on Node. Node and npm versions come from `devEngines` in `package.json`
 (also in `.nvmrc` and `.tool-versions`).

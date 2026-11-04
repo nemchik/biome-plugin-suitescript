@@ -1,0 +1,40 @@
+name: Propose a rule
+description: Suggest a new rule, or a change to an existing one.
+labels: [enhancement, needs-triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Rules must come from a source, ranked in [docs/rule-priority.md](https://github.com/nemchik/biome-plugin-suitescript/blob/main/docs/rule-priority.md). A generic JavaScript rule is added only when it has a SuiteScript-specific justification and Biome does not already cover it. SuiteScript 2.1 only.
+  - type: textarea
+    id: behavior
+    attributes:
+      label: What the rule should report
+      description: One bad and one good example.
+      render: javascript
+    validations:
+      required: true
+  - type: dropdown
+    id: tier
+    attributes:
+      label: Source tier
+      options:
+        - "1: Oracle agent skill"
+        - "2: Type definitions"
+        - "3: Oracle documentation"
+        - "4: SuiteScript-specific (community or experience)"
+        - "5: Generic JavaScript"
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source
+      description: Link the skill file, type definition or documentation page, and quote the sentence that asks for it.
+    validations:
+      required: true
+  - type: textarea
+    id: fails
+    attributes:
+      label: What happens if the code is left as is
+      description: Does it fail at runtime or on upload, or is it a convention? This decides the severity and preset.

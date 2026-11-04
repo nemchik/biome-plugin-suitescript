@@ -1,0 +1,45 @@
+name: Bug report
+description: A rule reports wrongly, misses something it should catch, or the CLI misbehaves.
+labels: [bug, needs-triage]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Versions
+      description: "`biome-plugin-suitescript`, `@biomejs/biome` and Node (`node -v`)."
+      placeholder: "biome-plugin-suitescript 0.3.0, @biomejs/biome 2.6.4, Node 24.22.2"
+    validations:
+      required: true
+  - type: input
+    id: rule
+    attributes:
+      label: Rule or command
+      description: The rule name (for example `noRecordInLoop`) or the CLI command.
+    validations:
+      required: true
+  - type: dropdown
+    id: preset
+    attributes:
+      label: How the rule is enabled
+      options:
+        - recommended preset
+        - all preset
+        - minimal preset
+        - enabled individually
+        - not a rule (CLI or configuration)
+    validations:
+      required: true
+  - type: textarea
+    id: sample
+    attributes:
+      label: Smallest SuiteScript file that shows it
+      description: Include the script type (the `@NScriptType` tag or the entry points the file returns).
+      render: javascript
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected and what happened
+    validations:
+      required: true
