@@ -12,6 +12,7 @@ Requires Biome **>= 2.6.4** (npm-distributed plugins use `biome-manifest.json`) 
 [SuiteCloud CLI for Node.js requires](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_1558708810.html).
 Rules work on both AMD `define()` and ES `import`/`export` source, in `.js` and `.ts`.
 Coming from the ESLint plugins? See [Migrating from the ESLint plugins](docs/migrating-from-eslint.md).
+Want to see it run first? Open the [example project](https://github.com/nemchik/biome-plugin-suitescript-example) in GitHub Codespaces, or use it as a template for your own.
 
 ## Install
 
