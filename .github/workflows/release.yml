@@ -28,6 +28,6 @@ jobs:
         with:
           cache: "false"
       # Publish with a README whose rules table matches the built rules and presets.
-      - run: npm run build && npm run readme && npm test
+      - run: npm run build && npm run readme && npm run docs && npm test
       # Authenticates with npm trusted publishing (OIDC); there is no token secret.
       - run: npm publish --provenance --access public

@@ -15,6 +15,7 @@
       "**",
       "!.agents",
       "!CHANGELOG.md",
+      "!docs/rules",
       "!dist",
       "!test/fixtures",
       "!package-lock.json"

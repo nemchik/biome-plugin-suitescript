@@ -30,6 +30,9 @@ const HELP = "https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/";
 const TYPINGS =
   "https://github.com/headintheclouddev/typings-suitescript-2.0/blob/master/N/";
 export const BIOME = "https://biomejs.dev/linter/rules/";
+/** Where the generated page for each rule lives (absolute: the README is published to npm, docs/ is not). */
+export const RULE_PAGES =
+  "https://github.com/nemchik/biome-plugin-suitescript/blob/main/docs/rules/";
 export const ADR =
   "https://github.com/nemchik/biome-plugin-suitescript/blob/main/docs/adr/";
 

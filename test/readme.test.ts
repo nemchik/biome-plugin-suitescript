@@ -43,7 +43,7 @@ test("the README rules table lists the presets each rule belongs to", () => {
   const { presets, rules } = manifest.plugins;
   const rows = read("README.md")
     .split(/\r?\n/)
-    .filter((line) => /^\| `\w+`/.test(line))
+    .filter((line) => /^\| (\[)?`\w+`/.test(line))
     .map((line) => line.split("|").map((cell) => cell.trim()));
   assert.ok(rows.length > 0, "rules table not found");
 
@@ -70,7 +70,7 @@ test("the README rules table is sorted by tier, severity, preset and name", () =
     Number(/Tier ([1-9])/.exec(source)?.[1] ?? 9);
   const rows = read("README.md")
     .split(/\r?\n/)
-    .filter((line) => /^\| `\w+`/.test(line))
+    .filter((line) => /^\| (\[)?`\w+`/.test(line))
     .map((line) => line.split("|").map((cell) => cell.trim()));
   const keys = rows.map((cells) => [
     tierOf(cells[5] ?? ""),
