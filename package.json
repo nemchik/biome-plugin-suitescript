@@ -41,6 +41,7 @@
     "preformat": "npm run typecheck",
     "format": "biome check --write",
     "lint": "biome lint",
+    "new-rule": "node scripts/new-rule.ts",
     "prepack": "npm run build",
     "readme": "node scripts/rules-table.ts",
     "skills": "skills",

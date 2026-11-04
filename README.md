@@ -272,6 +272,7 @@ npm install
 npm run build          # tsc -> dist/, copies GritQL rules, regenerates biome-manifest.json
 npm run typecheck      # tsc --noEmit over src, scripts and tests
 npm run check          # biome check (npm run format applies fixes)
+npm run new-rule -- noFooBar --tier 3   # scaffolds a rule, fixture, test case and sources entry (see CONTRIBUTING.md)
 npm run sync-modules   # refreshes the N/ module list from @hitc/netsuite-types
 npm run readme         # regenerates the rules table above (after npm run build)
 npm run docs           # regenerates the per-rule pages in docs/rules/ (after npm run build)
