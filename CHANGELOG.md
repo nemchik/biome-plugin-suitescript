@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/nemchik/biome-plugin-suitescript/compare/biome-plugin-suitescript-v0.3.0...biome-plugin-suitescript-v0.4.0) (2026-11-04)
+
+
+### Features
+
+* add Oracle's and Matt Pocock's agent skills to the repo ([#36](https://github.com/nemchik/biome-plugin-suitescript/issues/36)) ([1f62141](https://github.com/nemchik/biome-plugin-suitescript/commit/1f62141d1a82e5d7ba57db2c0ce524276fca0f2c))
+
 ## [0.3.0](https://github.com/nemchik/biome-plugin-suitescript/compare/biome-plugin-suitescript-v0.2.0...biome-plugin-suitescript-v0.3.0) (2026-11-03)
 
 
