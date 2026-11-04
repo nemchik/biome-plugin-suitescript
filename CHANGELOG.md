@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/nemchik/biome-plugin-suitescript/compare/biome-plugin-suitescript-v0.4.0...biome-plugin-suitescript-v0.5.0) (2026-11-04)
+
+
+### Features
+
+* add a rule scaffold (npm run new-rule) ([#51](https://github.com/nemchik/biome-plugin-suitescript/issues/51)) ([fc04994](https://github.com/nemchik/biome-plugin-suitescript/commit/fc049949f8ad51a3bc77468d53f238c57f76e14b))
+
 ## [0.4.0](https://github.com/nemchik/biome-plugin-suitescript/compare/biome-plugin-suitescript-v0.3.0...biome-plugin-suitescript-v0.4.0) (2026-11-04)
 
 
