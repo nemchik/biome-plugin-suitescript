@@ -25,6 +25,6 @@ Reported as error: Excess module identifier 'search'. (`define-shapes.js`, line 
 ## Rule source
 
 - Tier 4: [btonasse `no-extra-modules`](https://github.com/btonasse/eslint-plugin-suitescript/blob/master/lib/rules/no-extra-modules.js)
-- Tier 4: [acdvs `no-extra-params`](https://github.com/acdvs/eslint-plugin-amd/blob/main/lib/rules/no-extra-params.ts)
+- Tier 4: [amd `no-extra-params`](https://github.com/acdvs/eslint-plugin-amd/blob/main/lib/rules/no-extra-params.ts)
 
 Enable it with `"plugins": ["biome-plugin-suitescript/noExtraParams"]` or through a preset. See the [README](https://github.com/nemchik/biome-plugin-suitescript#readme).

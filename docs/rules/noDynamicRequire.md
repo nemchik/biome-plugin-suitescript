@@ -25,6 +25,6 @@ Reported as warning: Pass require() a string literal module name, not an express
 ## Rule source
 
 - Tier 1: [OWASP skill](https://github.com/nemchik/biome-plugin-suitescript/blob/main/.agents/skills/netsuite-owasp-secure-coding/SKILL.md)
-- Tier 4: [acdvs `no-dynamic-require`](https://github.com/acdvs/eslint-plugin-amd/blob/main/lib/rules/no-dynamic-require.ts)
+- Tier 4: [amd `no-dynamic-require`](https://github.com/acdvs/eslint-plugin-amd/blob/main/lib/rules/no-dynamic-require.ts)
 
 Enable it with `"plugins": ["biome-plugin-suitescript/noDynamicRequire"]` or through a preset. See the [README](https://github.com/nemchik/biome-plugin-suitescript#readme).

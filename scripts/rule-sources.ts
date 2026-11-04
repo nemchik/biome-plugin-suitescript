@@ -47,7 +47,7 @@ const btonasse = (name: string): Source => ({
   url: `${BTONASSE}${name}.js`,
 });
 const amd = (name: string): Source => ({
-  label: `acdvs \`${name}\``,
+  label: `amd \`${name}\``,
   tier: 4,
   url: `${AMD}${name}.ts`,
 });

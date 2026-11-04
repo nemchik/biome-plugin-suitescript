@@ -25,6 +25,6 @@ Reported as error: Module name should not include file extension. (`bad.js`, lin
 ## Rule source
 
 - Tier 4: [btonasse `no-module-extensions`](https://github.com/btonasse/eslint-plugin-suitescript/blob/master/lib/rules/no-module-extensions.js)
-- Tier 4: [acdvs `no-module-extensions`](https://github.com/acdvs/eslint-plugin-amd/blob/main/lib/rules/no-module-extensions.ts)
+- Tier 4: [amd `no-module-extensions`](https://github.com/acdvs/eslint-plugin-amd/blob/main/lib/rules/no-module-extensions.ts)
 
 Enable it with `"plugins": ["biome-plugin-suitescript/noModuleExtensions"]` or through a preset. See the [README](https://github.com/nemchik/biome-plugin-suitescript#readme).
