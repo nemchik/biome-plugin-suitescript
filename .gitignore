@@ -3,3 +3,4 @@ dist/
 *.tgz
 *lefthook-local*
 .claude/skills/
+.claude/worktrees/
