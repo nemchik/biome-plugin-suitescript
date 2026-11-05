@@ -11,6 +11,8 @@ import {
   RULES,
   type Source,
   TIER_ZERO,
+  VERIFICATION,
+  VERIFICATIONS,
 } from "./rule-sources.ts";
 
 const root = new URL("../", import.meta.url);
@@ -62,6 +64,11 @@ function sourceCell(name: string, sources: Source[]): string {
   for (const tier of [1, 2, 3, 4, 5]) {
     const own = sources.filter((s) => s.tier === tier);
     if (own.length > 0) parts.push(`Tier ${tier}: ${own.map(link).join(", ")}`);
+  }
+  const verified = VERIFICATIONS[name];
+  if (verified) {
+    const links = verified.map((v) => `[${v}](${VERIFICATION}${v}.md)`);
+    parts.push(`Verified: ${links.join(", ")}`);
   }
   return parts.join(" · ");
 }

@@ -1,4 +1,4 @@
-define(['N/log', 'N/record', 'N/query'], (log, record, query) => {
+define(['N/log', 'N/record', 'N/query', 'N/util'], (log, record, query, util) => {
 	let cached = null;
 	const run = (id) => {
 		cached = cached ?? record.create({ type: 'x' });

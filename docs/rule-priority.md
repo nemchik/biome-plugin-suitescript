@@ -9,7 +9,7 @@ Tier 0 holds decisions made in this repository that override every source: Oracl
 - [ADR 0002](adr/0002-options-are-separate-rules.md): rule options are separate rules (`logRequireTitle`, `logRequireDetails`).
 - [ADR 0004](adr/0004-assume-suitescript-2-1-only.md): assume SuiteScript 2.1 only.
 - [ADR 0005](adr/0005-guessing-rules-are-in-no-preset.md): rules that guess are in no preset.
-- [ADR 0006](adr/0006-suitescript-globals-have-two-opposite-loading-styles.md): SuiteScript globals have two opposite loading styles (today `log`).
+- [ADR 0006](adr/0006-suitescript-globals-have-two-opposite-loading-styles.md): `log` and `util` are SuiteScript globals, each with two opposite loading styles.
 
 Process rules for agents (read sources in full, never truncate) are in `AGENTS.md`, not here, and the architecture ADRs 0001 and 0003 have no outside source to override. Add a Tier 0 ADR only when a decision departs from a source or from Biome's behavior and is hard to reverse, surprising without context and a real trade-off.
 

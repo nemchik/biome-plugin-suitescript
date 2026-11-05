@@ -27,7 +27,7 @@ for (const file of readdirSync(sourceRules).sort()) {
 // when an Oracle source states them as a requirement (see docs/rule-priority.md).
 // They never fire on libraries. `all` adds the recommendations and house styles.
 // Rules in neither list are opt-in: they guess, so a consumer enables them
-// knowingly (noLogModule, noHardcodedSecrets and the low-confidence rules).
+// knowingly (noLogModule, noUtilModule, noHardcodedSecrets and the low-confidence rules).
 const recommended = [
   "noAmdName",
   "noExtraDeps",
@@ -83,6 +83,10 @@ const all = [
   "noUnknownOptions",
   "noInvalidEnumMember",
   "requireLogModule",
+  "requireUtilModule",
+  "preferUtilTypeChecks",
+  "preferUtilExtend",
+  "preferUtilEach",
   "noRecordInLoop",
   "noMapReduceSearchResults",
   "noClientLog",

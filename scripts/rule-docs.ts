@@ -16,6 +16,8 @@ import {
   type RuleInfo,
   type Source,
   TIER_ZERO,
+  VERIFICATION,
+  VERIFICATIONS,
 } from "./rule-sources.ts";
 import { severityOf } from "./rules-table.ts";
 
@@ -69,6 +71,9 @@ function page(
   const sources = [
     ...decisions.map((a) => `- Tier 0: [ADR ${a.slice(0, 4)}](${ADR}${a}.md)`),
     ...info.sources.map((s) => `- Tier ${s.tier}: ${link(s)}`),
+    ...(VERIFICATIONS[name] ?? []).map(
+      (v) => `- Verified: [${v}](${VERIFICATION}${v}.md)`,
+    ),
   ];
   const where = presets.length > 0 ? presets.join(", ") : "none (opt-in)";
   return [
