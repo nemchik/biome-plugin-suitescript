@@ -19,7 +19,7 @@ const REQUIRED: Record<string, string[]> = {
 // (N/ui/serverWidget.d.ts) outrank the pages and disagree on two methods: they make
 // addButton's `id` optional and addSecretKeyField's `restrictToScriptIds`
 // optional, where the pages require both, so those two follow the type
-// definitions. The receiver cannot
+// definitions (unverified: docs/verification/contradictions.md, C-003). The receiver cannot
 // be typed, so a method of the same name on another object can misfire. Only an
 // options object literal without a spread is checked.
 export const requireServerWidgetOptions = defineRule({

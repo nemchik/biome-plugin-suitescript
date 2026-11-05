@@ -3,7 +3,9 @@ import { definedOptions } from "../lib/required-options.ts";
 
 // Oracle (https.createSecretKey): "You cannot use both the options.guid parameter
 // and secret parameter in combination." The type definitions (N/https.d.ts) carry
-// the same comment and make both options optional.
+// the same comment and make both options optional. The documentation's sample
+// uses an option its method page does not list: docs/verification/contradictions.md, C-006
+// (unverified).
 export const noSecretKeyGuidAndSecret = defineRule({
   query: ast("JS_CALL_EXPRESSION"),
   run(node) {

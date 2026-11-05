@@ -30,6 +30,14 @@ Start a new rule with `npm run new-rule -- <ruleName> --tier <1-5> [--grit]`; it
 
 Before adding or changing a rule, follow `docs/rule-priority.md`: source tiers (Oracle agent skills, then type definitions, then Oracle docs, then SuiteScript-specific rules, then generic JavaScript; the lower tier wins a conflict, and a Tier 0 ADR in `docs/adr/` overrides all of them), and default severity and preset placement. Do not add a generic JavaScript rule unless it explicitly benefits SuiteScript and Biome does not already cover it. Assume SuiteScript 2.1 only, and never document backwards compatibility overrides for 1.0, 2.0 or 2.x. Read Oracle docs and skills in full, with every referenced material, never truncated.
 
+## Verification
+
+Oracle's skills, the type definitions and Oracle's documentation contradict each other and sometimes the platform. A claim about what the platform does (what an API accepts or rejects, whether something fails, whether a member exists) needs a verification, or an "unverified" mark. Read `docs/verification/README.md` before adding or changing a rule, or researching how a module behaves. A verified behavior overrides a source's claim about the platform, but never a recommendation unless it proves the recommendation cannot work (`docs/rule-priority.md`, "Verified facts").
+
+- If you can run the test yourself, do. No automated way is known today (the NetSuite connector cannot execute a script; see issue #74), so prompt the user to run the snippet and paste the output, even when no skill is asking them questions. Do not guess the result, and do not call a claim verified from a paraphrase of documentation.
+- When skills, type definitions or documentation contradict each other or themselves, add the contradiction to `docs/verification/contradictions.md`, cite its id in the rule's comment and mark the claim unverified until a test settles it.
+- Document every verification as a page in `docs/verification/results/` (the test, the NetSuite version, the results, the explanation and the decision). Never put an account number, account URL, user, token or real record id in it; that is a security risk in a public repository.
+
 ## Releases
 
 Publishing uses npm trusted publishing (OIDC) from `.github/workflows/release.yml`; do not add an `NPM_TOKEN`. npm tokens that bypass 2FA lose publishing around January 2027.

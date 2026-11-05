@@ -5,7 +5,7 @@ import {
 } from "@biomejs/runtime/plugin";
 import { inSuiteScriptModule } from "../lib/suitescript.ts";
 
-// Tier 0: docs/adr/0006-log-is-a-global-with-two-opposite-styles.md.
+// Tier 0: docs/adr/0006-suitescript-globals-have-two-opposite-loading-styles.md.
 // Load N/log when you call log.*. Oracle's upgrade skill says `log` is global but
 // "explicitly including it in `define()` makes dependencies clearer and is
 // recommended", and that practice is what this rule enforces. The help center's

@@ -24,7 +24,7 @@ Reported as error: 'email' is used but N/email is not loaded. (`skills-bad.js`, 
 
 ## Rule source
 
-- Tier 0: [ADR 0006](https://github.com/nemchik/biome-plugin-suitescript/blob/main/docs/adr/0006-log-is-a-global-with-two-opposite-styles.md)
+- Tier 0: [ADR 0006](https://github.com/nemchik/biome-plugin-suitescript/blob/main/docs/adr/0006-suitescript-globals-have-two-opposite-loading-styles.md)
 - Tier 1: [upgrade skill](https://github.com/nemchik/biome-plugin-suitescript/blob/main/.agents/skills/netsuite-suitescript-upgrade/SKILL.md)
 - Tier 1: [learning skill](https://github.com/nemchik/biome-plugin-suitescript/blob/main/.agents/skills/netsuite-suitescript-learning/SKILL.md)
 

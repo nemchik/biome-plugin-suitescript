@@ -21,7 +21,7 @@ npm test
 
 Read [docs/rule-priority.md](docs/rule-priority.md) first. It says which sources a rule may come from, which wins when they disagree, and what severity and preset the rule gets. Assume SuiteScript 2.1 only. Do not add a generic JavaScript rule unless it has a SuiteScript-specific justification and Biome does not already cover it.
 
-Start a new rule with the scaffold, giving it the tier of its source (1 Oracle agent skill, 2 type definitions, 3 Oracle documentation, 4 SuiteScript-specific, 5 generic JavaScript):
+Start a new rule with the scaffold, giving it the tier of its source (1 Oracle agent skill, 2 type definitions, 3 Oracle documentation, 4 SuiteScript-specific, which may be opinionated, 5 generic JavaScript):
 
 ```sh
 npm run new-rule -- noFooBar --tier 3          # a TypeScript rule
@@ -33,7 +33,8 @@ In PowerShell, quote the separator (`npm run new-rule '--' noFooBar --tier 3`), 
 1. Write the rule, and name its tier and source in its comment, quoting the source.
 2. Make the fixture report the rule, and set the expected count in `test/cases.ts`.
 3. Fill in the description, sources and any opt-in reason in `scripts/rule-sources.ts`, and add the rule to the right preset list in `scripts/build-manifest.ts` (or leave it opt-in).
-4. Run `npm run build`, `npm run docs` and `npm run readme`, and commit the results.
+4. Verify any claim about what the platform does, or mark it unverified, as [docs/verification/README.md](docs/verification/README.md) describes, and cite the results page or the contradiction id in the rule's comment.
+5. Run `npm run build`, `npm run docs` and `npm run readme`, and commit the results.
 
 Generated files (`biome-manifest.json`, `configs/`, `src/lib/modules.ts`, `src/lib/typings-data.ts`, the README rules table) come from scripts. Change the source and regenerate; do not edit them by hand. [GLOSSARY.md](GLOSSARY.md) defines the terms used across the code, and [docs/adr/](docs/adr/) records the decisions that override a source.
 

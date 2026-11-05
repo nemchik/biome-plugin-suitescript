@@ -1,3 +1,0 @@
-# `log` is a global, with two opposite styles
-
-Oracle's documentation says `log` is loaded by default in every script type, the upgrade skill says the same but recommends loading `N/log`, and the learning skill says it is not global. We follow the documentation and the higher-ranked upgrade skill on the fact: `noMissingModules` never asks for `log` (or `util`) to be loaded. Loading it is then a style, and projects disagree, so both styles exist as separate rules that must not be enabled together: `requireLogModule` (in `all`, following the upgrade skill's recommendation) and `noLogModule` (opt-in, following the documentation).

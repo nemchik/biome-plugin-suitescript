@@ -7,7 +7,8 @@ import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 // includes it: it cannot tell a security use from a vendor integration that
 // requires MD5 or SHA-1. The type definitions (N/crypto.d.ts) list only SHA256 and
 // SHA512 in crypto.HashAlg, so the MD5 and SHA1 member names come from the skill
-// alone; the skill outranks the type definitions, so the rule stays.
+// alone; the skill outranks the type definitions, so the rule stays. Unverified:
+// docs/verification/contradictions.md, C-008.
 export const noWeakHash = defineRule({
   query: ast("JS_STATIC_MEMBER_EXPRESSION"),
   run(node) {

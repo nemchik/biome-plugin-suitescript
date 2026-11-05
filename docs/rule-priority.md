@@ -9,7 +9,7 @@ Tier 0 holds decisions made in this repository that override every source: Oracl
 - [ADR 0002](adr/0002-options-are-separate-rules.md): rule options are separate rules (`logRequireTitle`, `logRequireDetails`).
 - [ADR 0004](adr/0004-assume-suitescript-2-1-only.md): assume SuiteScript 2.1 only.
 - [ADR 0005](adr/0005-guessing-rules-are-in-no-preset.md): rules that guess are in no preset.
-- [ADR 0006](adr/0006-log-is-a-global-with-two-opposite-styles.md): `log` is a global, with two opposite styles.
+- [ADR 0006](adr/0006-suitescript-globals-have-two-opposite-loading-styles.md): SuiteScript globals have two opposite loading styles (today `log`).
 
 Process rules for agents (read sources in full, never truncate) are in `AGENTS.md`, not here, and the architecture ADRs 0001 and 0003 have no outside source to override. Add a Tier 0 ADR only when a decision departs from a source or from Biome's behavior and is hard to reverse, surprising without context and a real trade-off.
 
@@ -26,8 +26,10 @@ Rules come from one of five tiers of sources. When sources disagree, the lower t
    Skills we have not drawn rules from (finance analyst, roles and permissions, records reference, UIF/SPA reference, project documentation, AI connector) rank below these four. Use them only if they state something that applies to SuiteScript source. A new rule that draws from a skill not ranked above must add that skill to the ranking in the same change, at the position its authority warrants.
 2. **Type definitions**: community TypeScript definitions for the `N/` modules. They carry corrections for places where Oracle's documentation is inaccurate and tend to be more accurate than it, though they are not perfect, and a skill outranks them. A type definition can back a rule without confirmation from Oracle's documentation. The README names the project and says which version it is written for.
 3. **Oracle documentation**: the NetSuite help center (SuiteScript 2.1 module, script type and best-practice pages).
-4. **SuiteScript-specific rules**: anything about SuiteScript that does not apply to JavaScript in general, from any other source (community plugins, our own experience of the platform).
+4. **SuiteScript-specific rules**: anything about SuiteScript that does not apply to JavaScript in general (community plugins, our own experience of the platform). These rules may be opinionated: a good practice we recommend without a stronger source behind it belongs here, with the opinion and the reason stated in the rule's comment.
 5. **Generic JavaScript rules**: JavaScript checks that benefit SuiteScript and that Biome does not already cover. See [Generic JavaScript rules](#generic-javascript-rules).
+
+Verified behavior is not a tier. It decides whether a source's claim about the platform is true, and applies across every tier (see [Verified facts](#verified-facts)).
 
 ## Conflicts
 
@@ -38,6 +40,17 @@ Do not weaken or drop a rule because a lower-ranked source disagrees. When a sou
 A rule that is `error` because a skill says the code fails, with nothing in the documentation to confirm it, keeps its severity. Its source comment says the claim comes only from the skill and has not been checked against the documentation, so a later check can confirm it or downgrade the rule.
 
 Overriding a higher-ranked source or Biome's behavior is allowed only as a Tier 0 decision: write the ADR, then cite it in the rule's source comment and in the README "Rule source" column, naming the source being overridden.
+
+## Verified facts
+
+A verification is a test run in a NetSuite account, recorded in [`docs/verification/`](verification/README.md). It is evidence, not a source of rules, so it has no tier. It settles whether a source's claim about the platform is true.
+
+- A verification overrides a source's claim about **what the platform does**: what an API accepts or rejects, whether something fails, whether a member exists or what it returns. Where an agent skill, the type definitions or Oracle's documentation says one thing and the verified behavior is another, the verified behavior wins, whatever the source's tier.
+- A verification does not override a **recommendation**: a practice to follow or avoid, such as a security habit or "load `N/log` explicitly". A recommendation stands even when the platform works without following it, unless the verification proves the recommendation cannot work or rests on a false premise. Then drop or reshape the rule and record the decision on the results page.
+- A claim nobody has verified stays marked "unverified" in the rule's comment and the README. Where sources contradict each other, the contradiction is listed in [`docs/verification/contradictions.md`](verification/contradictions.md) with its status, and the rule cites it.
+- A decision that follows from a verification becomes a Tier 0 ADR only when it meets the ADR criteria (hard to reverse, surprising without context, a real trade-off). Otherwise the results page records it.
+
+Document every verification: the test performed, the NetSuite version, the results, the explanation and the decision. [`docs/verification/README.md`](verification/README.md) has the methods and the template.
 
 ## Severity and presets
 
