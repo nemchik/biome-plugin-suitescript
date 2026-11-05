@@ -334,6 +334,11 @@ export const RULES: Record<string, RuleInfo> = {
     optIn: "it guesses from the key name",
     sources: [owasp()],
   },
+  noServerConsole: {
+    description:
+      "`console` output goes nowhere in server scripts; use `log.*` (`console` is for client scripts, so Biome's native `noConsole`, which cannot tell them apart, does not fit alongside this rule)",
+    sources: [safe("SAFE guide", "quick-reference.md")],
+  },
   noStackInResponse: {
     description: "No `.stack` inside `response.write`/`writeLine` arguments",
     optIn:

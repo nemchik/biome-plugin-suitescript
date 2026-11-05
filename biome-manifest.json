@@ -69,7 +69,8 @@
         "requireLogModule",
         "noRecordInLoop",
         "noMapReduceSearchResults",
-        "noClientLog"
+        "noClientLog",
+        "noServerConsole"
       ],
       "minimal": ["noExtraDeps", "noExtraParams", "noInvalidModules"],
       "recommended": [
@@ -250,6 +251,9 @@
       },
       {
         "noSensitiveBrowserStorage": "./dist/rules/noSensitiveBrowserStorage.js"
+      },
+      {
+        "noServerConsole": "./dist/rules/noServerConsole.js"
       },
       {
         "noStackInResponse": "./dist/rules/noStackInResponse.js"
