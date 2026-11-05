@@ -56,6 +56,9 @@ export const CASES: [string, string, number][] = [
   ["noUnknownModuleMember", "r-realworld.js", 0],
   ["noUnknownOptions", "r-realworld.js", 0],
   ["noPositionalOptions", "r-realworld.js", 1],
+  ["noServerConsole", "noServerConsole.js", 5],
+  ["noServerConsole", "noServerConsole-client.js", 0],
+  ["noServerConsole", "noServerConsole-library.js", 0],
 ];
 
 /** Rules that no case above covers, each with a fixture where the rule reports something. */

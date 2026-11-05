@@ -86,6 +86,7 @@ const all = [
   "noRecordInLoop",
   "noMapReduceSearchResults",
   "noClientLog",
+  "noServerConsole",
 ];
 
 const minimal = ["noExtraDeps", "noExtraParams", "noInvalidModules"];
