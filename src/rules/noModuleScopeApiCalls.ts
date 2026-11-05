@@ -20,11 +20,12 @@ const FACTORIES = /\.(createColumn|createFilter|createSort|createSetting)$/;
 // callback execution. Calling `runtime.getCurrentScript()`, `record.load()`, or
 // any N/ API at module scope causes deployment failure." Initialize lazily from an
 // entry point instead. N/log is exempt because log is a global. The failure claim
-// comes only from this skill. A deployed RESTlet (2026.2) partly refutes it:
-// runtime.getCurrentScript() and search.createColumn() work at module scope, while a
-// search throws SSS_USAGE_LIMIT_EXCEEDED (docs/verification/results/module-scope-runtime-calls.md,
-// docs/verification/results/module-scope-search-call.md, C-011). record.load and
-// record.create at module scope are not isolated yet.
+// comes only from this skill. A deployed RESTlet (2026.2) shows it holds for
+// record.create and record.load (the module stops loading), while a search throws a
+// catchable SSS_USAGE_LIMIT_EXCEEDED and runtime.getCurrentScript() and
+// search.createColumn() work: docs/verification/results/module-scope-record-calls.md,
+// module-scope-search-call.md and module-scope-runtime-calls.md, C-011. Narrowing the
+// rule to the calls that fail is issue #86.
 // Calls that only build an object (`search.createColumn`, `createFilter`,
 // `createSort`, `createSetting`) are skipped, because nothing says they fail; remove
 // them from FACTORIES if that turns out to be wrong.
