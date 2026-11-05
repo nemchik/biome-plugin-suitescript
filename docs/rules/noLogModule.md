@@ -26,7 +26,7 @@ Reported as warning: Use global log instead of the N/log module. (`bad.js`, line
 ## Rule source
 
 - Tier 0: [ADR 0005](https://github.com/nemchik/biome-plugin-suitescript/blob/main/docs/adr/0005-guessing-rules-are-in-no-preset.md)
-- Tier 0: [ADR 0006](https://github.com/nemchik/biome-plugin-suitescript/blob/main/docs/adr/0006-log-is-a-global-with-two-opposite-styles.md)
+- Tier 0: [ADR 0006](https://github.com/nemchik/biome-plugin-suitescript/blob/main/docs/adr/0006-suitescript-globals-have-two-opposite-loading-styles.md)
 - Tier 3: [Oracle help: log object](https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_4387812838.html)
 - Tier 4: [acdvs `no-log-module`](https://github.com/acdvs/eslint-plugin-suitescript/blob/master/lib/rules/no-log-module.ts)
 - Tier 4: [btonasse `no-log-module`](https://github.com/btonasse/eslint-plugin-suitescript/blob/master/lib/rules/no-log-module.js)

@@ -468,16 +468,20 @@ export const TIER_ZERO: Record<string, string[]> = {
   noLocationHeader: ["0005-guessing-rules-are-in-no-preset"],
   noLogModule: [
     "0005-guessing-rules-are-in-no-preset",
-    "0006-log-is-a-global-with-two-opposite-styles",
+    "0006-suitescript-globals-have-two-opposite-loading-styles",
   ],
-  noMissingModules: ["0006-log-is-a-global-with-two-opposite-styles"],
+  noMissingModules: [
+    "0006-suitescript-globals-have-two-opposite-loading-styles",
+  ],
   noPublicFileUpload: ["0005-guessing-rules-are-in-no-preset"],
   noSensitiveBrowserStorage: ["0005-guessing-rules-are-in-no-preset"],
   noStackInResponse: ["0005-guessing-rules-are-in-no-preset"],
   noSuiteQLSelectStar: ["0005-guessing-rules-are-in-no-preset"],
   noSuiteQLSystemNoteJoin: ["0005-guessing-rules-are-in-no-preset"],
   noWeakHash: ["0005-guessing-rules-are-in-no-preset"],
-  requireLogModule: ["0006-log-is-a-global-with-two-opposite-styles"],
+  requireLogModule: [
+    "0006-suitescript-globals-have-two-opposite-loading-styles",
+  ],
 };
 
 /** Descriptions and Biome documentation slugs for the native rules in `NATIVE_RULES`. */

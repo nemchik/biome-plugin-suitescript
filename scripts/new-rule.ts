@@ -40,6 +40,7 @@ function guidance(tier: number): string[] {
   return [
     `${MARKER}: Tier ${tier}. Quote the source verbatim and say which file or page it came from (docs/rule-priority.md, "Recording the source").`,
     `${MARKER}: severity and preset. Tier ${tier} default: ${DEFAULTS[tier]}. Also, ${COMMON}.`,
+    `${MARKER}: verification. For each claim about what the platform does, cite its results page (docs/verification/results/<slug>.md) or mark it unverified, and cite the contradiction (C-001 style id in docs/verification/contradictions.md) when sources disagree. Ask the maintainer to run the test if you cannot (docs/rule-priority.md, "Verified facts").`,
   ];
 }
 
@@ -216,7 +217,7 @@ function main(): void {
     "",
     `Every ${MARKER} is a decision for you, and npm test fails until none is left:`,
     "1. Confirm the tier, severity and preset against docs/rule-priority.md, and add the rule to the right list in scripts/build-manifest.ts (or give it an `optIn` reason in scripts/rule-sources.ts).",
-    "2. Quote the source in the rule's comment, and fill in its entry in scripts/rule-sources.ts.",
+    "2. Quote the source in the rule's comment, and fill in its entry in scripts/rule-sources.ts. Verify any claim about what the platform does, or mark it unverified (docs/verification/README.md).",
     "3. Write the rule, make its fixture report it, and set the expected count in test/cases.ts.",
     "4. Run: npm run build, npm run docs, npm run readme, npm run format, npm test.",
   ];

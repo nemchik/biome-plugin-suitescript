@@ -6,7 +6,7 @@ import {
 import { MODULES } from "../lib/modules.ts";
 import { inSuiteScriptModule } from "../lib/suitescript.ts";
 
-// Tier 0: docs/adr/0006-log-is-a-global-with-two-opposite-styles.md.
+// Tier 0: docs/adr/0006-suitescript-globals-have-two-opposite-loading-styles.md.
 // `log` and `util` are globals in SuiteScript 2.1 ("NetSuite loads the log Object
 // by default for all script types. You do not need to load it manually."), so
 // neither needs loading. requireLogModule is the style that wants N/log loaded.

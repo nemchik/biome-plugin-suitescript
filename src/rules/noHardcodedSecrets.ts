@@ -10,7 +10,8 @@ const unquote = (text: string): string => text.replace(/^['"]|['"]$/g, "");
 // its `SKILL.md` shows script parameters as the safe place while its
 // references/02 says script parameters are not a secret store and points to API
 // Secrets. `SKILL.md` outranks the reference; the message follows the reference
-// because it is the more precise advice. A heuristic on names, so
+// because it is the more precise advice (docs/verification/contradictions.md,
+// C-002, not testable). A heuristic on names, so
 // no preset includes it; enable it explicitly. Only exact secret-like names with
 // a non-empty string literal are flagged (not `passwordId` or `tokenName`).
 export const noHardcodedSecrets = defineRule({

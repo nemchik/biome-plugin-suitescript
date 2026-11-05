@@ -37,8 +37,16 @@ A file a consumer authors that ends up in the NetSuite file cabinet, either as-i
 _Avoid_: Deployed file (that is the transpiled output)
 
 **Source tier**:
-The priority level of where a rule's requirement comes from (Oracle agent skills, type definitions, Oracle documentation, SuiteScript-specific rules, generic JavaScript rules). When sources conflict, the lower tier number wins. Tier 0 is not a source: it is a repository decision, recorded as an ADR, that overrides every source.
+The priority level of where a rule's requirement comes from (Oracle agent skills, type definitions, Oracle documentation, SuiteScript-specific rules, which may be opinionated, generic JavaScript rules). When sources conflict, the lower tier number wins. Tier 0 is not a source: it is a repository decision, recorded as an ADR, that overrides every source.
 _Avoid_: Rule level, rule weight
+
+**Verification**:
+A test run in a NetSuite account to confirm what the platform really does, documented with the script, the NetSuite version, the results and the decision it led to. It is evidence, not a source tier: it overrides a source's claim about platform behavior, but not a recommendation.
+_Avoid_: Check (a check is what a rule or the CLI does), validation
+
+**Contradiction**:
+Two sources (Oracle agent skills, type definitions, Oracle documentation) that disagree, or one that disagrees with itself. Each is tracked until a verification settles it.
+_Avoid_: Conflict (the source tiers resolve a conflict between sources; a contradiction is what needs verifying)
 
 **Generic JavaScript rule**:
 A rule that applies to JavaScript in general rather than to SuiteScript. It is added only when it explicitly benefits SuiteScript and Biome does not already cover it.

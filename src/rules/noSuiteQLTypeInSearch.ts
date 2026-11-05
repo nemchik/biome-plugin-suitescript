@@ -28,6 +28,7 @@ const ABBREVIATIONS = new Set([
 // and SuiteQL abbreviations only inside SuiteQL query strings." The failure claim
 // comes only from this skill and has not been checked against Oracle's
 // documentation."
+// Unverified: docs/verification/contradictions.md, C-012.
 export const noSuiteQLTypeInSearch = defineRule({
   query: ast("JS_CALL_EXPRESSION"),
   run(node) {

@@ -24,7 +24,7 @@ Reported as warning: 'log' is used but N/log is not loaded. (`r-log.js`, line 3)
 
 ## Rule source
 
-- Tier 0: [ADR 0006](https://github.com/nemchik/biome-plugin-suitescript/blob/main/docs/adr/0006-log-is-a-global-with-two-opposite-styles.md)
+- Tier 0: [ADR 0006](https://github.com/nemchik/biome-plugin-suitescript/blob/main/docs/adr/0006-suitescript-globals-have-two-opposite-loading-styles.md)
 - Tier 1: [upgrade skill](https://github.com/nemchik/biome-plugin-suitescript/blob/main/.agents/skills/netsuite-suitescript-upgrade/SKILL.md)
 - Tier 1: [learning skill](https://github.com/nemchik/biome-plugin-suitescript/blob/main/.agents/skills/netsuite-suitescript-learning/SKILL.md)
 
