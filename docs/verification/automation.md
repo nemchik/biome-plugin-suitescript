@@ -137,6 +137,8 @@ The first batch of eight probes (#67 to #73 and #41) needed four deploys where o
 10. **Write probes with the file tools, not a shell heredoc.** Backticks, `${}` and quotes in a probe broke a shell heredoc on Windows. Use the Write tool.
 11. **The statuses in `contradictions.md` are `unverified`, `verified` and `not testable`** and `npm test` rejects anything else. Put a caveat ("RESTlet only", "partly") in the decision text, and leave the tracking issue open if part of the claim is untested.
 
+12. **Probes are linted by CI (`biome ci --error-on-warnings`).** A probe that deliberately does what a rule forbids (`instanceof Array` in [global-tostring](results/global-tostring.md)) needs a `// biome-ignore lint/...: <why>` comment, and a probe written from a script on Windows needs `npm run format` for its line endings. Run `npx biome ci --error-on-warnings` before committing, not just `npm test`.
+
 ## Keeping this page current
 
 An agent that hits a problem with the runner, a deploy, a probe or the sandbox that is not described here **adds it to the list above in the same pull request that found it**: what happened, what it cost, how to avoid it next time. Keep each entry short and concrete (the message, the cause, the fix). Fix an entry that turns out to be wrong instead of adding a second one that contradicts it. Never put an account number, id, token or real record id in it.

@@ -31,6 +31,7 @@ define(["N/search", "N/runtime"], (search, runtime) => ({
         Object.prototype.toString.call(make()),
       );
       t(`${name}: instanceof Object`, () => make() instanceof Object);
+      // biome-ignore lint/suspicious/useIsArray: the probe tests instanceof itself
       t(`${name}: instanceof Array`, () => make() instanceof Array);
     }
     t("typeof search.Search", () => typeof search.Search);
@@ -38,6 +39,7 @@ define(["N/search", "N/runtime"], (search, runtime) => ({
       "search instanceof search.Search",
       () => objects.search() instanceof search.Search,
     );
+    // biome-ignore lint/suspicious/useIsArray: the probe tests instanceof itself
     t("[] instanceof Array", () => [] instanceof Array);
     t("new Date() instanceof Date", () => new Date() instanceof Date);
     return result;
