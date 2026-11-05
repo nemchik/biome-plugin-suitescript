@@ -42,6 +42,15 @@ export const RULE_PAGES =
   "https://github.com/nemchik/biome-plugin-suitescript/blob/main/docs/rules/";
 export const ADR =
   "https://github.com/nemchik/biome-plugin-suitescript/blob/main/docs/adr/";
+/** The results pages in docs/verification/results: runtime evidence a rule's behavior claims rest on. */
+export const VERIFICATION =
+  "https://github.com/nemchik/biome-plugin-suitescript/blob/main/docs/verification/results/";
+/** A rule's own opinion, with nothing stronger behind it: Tier 4 in docs/rule-priority.md. */
+const opinion = (label: string): Source => ({
+  label,
+  tier: 4,
+  url: "https://github.com/nemchik/biome-plugin-suitescript/blob/main/docs/rule-priority.md#source-tiers",
+});
 
 const acdvs = (name: string): Source => ({
   eslint: { plugin: "eslint-plugin-suitescript (acdvs)", rule: name },
@@ -389,6 +398,12 @@ export const RULES: Record<string, RuleInfo> = {
       help("serverWidget.FieldType", "section_4332671056"),
     ],
   },
+  noUtilModule: {
+    description:
+      "Opt-in style: use the global `util`, not `N/util` (the opposite of `requireUtilModule`)",
+    optIn: "the opposite style to `requireUtilModule`; enable only one",
+    sources: [help("util Object", "section_4387813290")],
+  },
   noWeakHash: {
     description: "No `HashAlg.MD5` or `HashAlg.SHA1`",
     optIn:
@@ -403,6 +418,21 @@ export const RULES: Record<string, RuleInfo> = {
     description:
       "No client-only module (`N/currentRecord`, `N/ui/dialog`) in a server script, or a server-only one in a client script",
     sources: [help("SuiteScript 2.1 modules", "chapter_4220488571")],
+  },
+  preferUtilEach: {
+    description:
+      "Use `util.each` instead of `forEach` on an array literal or `Object.keys/values/entries(o)` (a bare `x.forEach` is skipped: `util.each` does nothing for a `Set` or `Map`)",
+    sources: [opinion("house preference")],
+  },
+  preferUtilExtend: {
+    description:
+      "Use `util.extend(receiver, contributor)` instead of two-argument `Object.assign` (the same behavior, verified)",
+    sources: [opinion("house preference")],
+  },
+  preferUtilTypeChecks: {
+    description:
+      "Use `util.isArray`/`isString`/`isNumber`/`isBoolean`/`isFunction`/`isAsyncFunction`/`isDate`/`isRegExp` instead of the native patterns (`Array.isArray`, `typeof`, `instanceof`, `Object.prototype.toString.call`); `typeof` differs only for boxed values",
+    sources: [opinion("house preference")],
   },
   requireClientValidateReturn: {
     description:
@@ -457,6 +487,16 @@ export const RULES: Record<string, RuleInfo> = {
       help("N/ui/serverWidget", "section_4321345532"),
     ],
   },
+  requireUtilModule: {
+    description:
+      "A used `util.*` needs `N/util` loaded (the upgrade skill recommends it for `log`; the global needs no loading)",
+    sources: [
+      upgrade(
+        "upgrade skill (conversion guide)",
+        "references/conversion-guide.md",
+      ),
+    ],
+  },
 };
 
 /** Rules shaped by a Tier 0 decision (an ADR in docs/adr), by rule name. */
@@ -482,6 +522,13 @@ export const TIER_ZERO: Record<string, string[]> = {
   requireLogModule: [
     "0006-suitescript-globals-have-two-opposite-loading-styles",
   ],
+};
+
+/** Rules whose behavior claims rest on a verification (a page in docs/verification/results), by rule name. */
+export const VERIFICATIONS: Record<string, string[]> = {
+  preferUtilEach: ["util-each"],
+  preferUtilExtend: ["util-extend"],
+  preferUtilTypeChecks: ["util-type-checks", "util-isobject"],
 };
 
 /** Descriptions and Biome documentation slugs for the native rules in `NATIVE_RULES`. */

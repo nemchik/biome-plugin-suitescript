@@ -67,6 +67,10 @@
         "noUnknownOptions",
         "noInvalidEnumMember",
         "requireLogModule",
+        "requireUtilModule",
+        "preferUtilTypeChecks",
+        "preferUtilExtend",
+        "preferUtilEach",
         "noRecordInLoop",
         "noMapReduceSearchResults",
         "noClientLog",
@@ -280,6 +284,9 @@
         "noUnsupportedServerWidgetFieldType": "./dist/rules/noUnsupportedServerWidgetFieldType.js"
       },
       {
+        "noUtilModule": "./dist/rules/noUtilModule.js"
+      },
+      {
         "noWeakHash": "./dist/rules/noWeakHash.js"
       },
       {
@@ -287,6 +294,15 @@
       },
       {
         "noWrongScriptTypeModules": "./dist/rules/noWrongScriptTypeModules.js"
+      },
+      {
+        "preferUtilEach": "./dist/rules/preferUtilEach.js"
+      },
+      {
+        "preferUtilExtend": "./dist/rules/preferUtilExtend.js"
+      },
+      {
+        "preferUtilTypeChecks": "./dist/rules/preferUtilTypeChecks.js"
       },
       {
         "requireClientValidateReturn": "./dist/rules/requireClientValidateReturn.js"
@@ -314,6 +330,9 @@
       },
       {
         "requireServerWidgetOptions": "./dist/rules/requireServerWidgetOptions.js"
+      },
+      {
+        "requireUtilModule": "./dist/rules/requireUtilModule.js"
       }
     ]
   },

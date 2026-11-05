@@ -59,6 +59,17 @@ export const CASES: [string, string, number][] = [
   ["noServerConsole", "noServerConsole.js", 5],
   ["noServerConsole", "noServerConsole-client.js", 0],
   ["noServerConsole", "noServerConsole-library.js", 0],
+  ["requireUtilModule", "r-util.js", 1],
+  ["requireUtilModule", "r-util-module.js", 0],
+  ["noUtilModule", "r-util-module.js", 1],
+  ["noUtilModule", "r-util.js", 0],
+  ["preferUtilTypeChecks", "r-util-prefer.js", 12],
+  ["preferUtilExtend", "r-util-prefer.js", 2],
+  ["preferUtilEach", "r-util-prefer.js", 4],
+  ["preferUtilTypeChecks", "r-util-library.js", 0],
+  ["preferUtilExtend", "r-util-library.js", 0],
+  ["preferUtilEach", "r-util-library.js", 0],
+  ["requireUtilModule", "r-util-library.js", 0],
 ];
 
 /** Rules that no case above covers, each with a fixture where the rule reports something. */
