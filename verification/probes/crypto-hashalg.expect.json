@@ -1,0 +1,15 @@
+{
+  "createHash with HashAlg.MD5": "THROWS: HASHING_ALGORITHM_IS_NO_LONGER_VALID: MD5 hashing algorithm is no longer valid",
+  "createHash with HashAlg.SHA1": "THROWS: HASHING_ALGORITHM_IS_NO_LONGER_VALID: SHA1 hashing algorithm is no longer valid",
+  "createHash with HashAlg.SHA256": "string",
+  "createHash with HashAlg.SHA512": "string",
+  "createHash with the string 'MD5'": "THROWS: HASHING_ALGORITHM_IS_NO_LONGER_VALID: MD5 hashing algorithm is no longer valid",
+  "createHash with the string 'SHA1'": "THROWS: HASHING_ALGORITHM_IS_NO_LONGER_VALID: SHA1 hashing algorithm is no longer valid",
+  "createHash with the string 'SHA256'": "string",
+  "HashAlg.MD5": "MD5",
+  "HashAlg.SHA1": "SHA1",
+  "HashAlg.SHA256": "SHA256",
+  "HashAlg.SHA512": "SHA512",
+  "Object.keys(crypto.HashAlg)": ["MD5", "SHA1", "SHA256", "SHA512"],
+  "typeof crypto.HashAlg": "object"
+}

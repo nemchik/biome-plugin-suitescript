@@ -1,0 +1,3 @@
+{
+  "search.create().run().getRange() at module scope": "THROWS: SSS_USAGE_LIMIT_EXCEEDED: Script Execution Usage Limit Exceeded"
+}

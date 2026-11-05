@@ -1,0 +1,6 @@
+{
+  "JSON string body, no headers": "text/xml; charset=UTF-8",
+  "object body, no headers": "application/x-www-form-urlencoded; charset=UTF-8",
+  "string body, no headers": "text/xml; charset=UTF-8",
+  "Uint8Array body, no headers": "application/octet-stream"
+}

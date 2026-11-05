@@ -1,0 +1,8 @@
+{
+  "log (bound to N/util): typeof debug": "undefined",
+  "log (bound to N/util): typeof isArray": "function",
+  "log.isArray([]) on the shadowing binding": true,
+  "util (bound to N/log): typeof debug": "function",
+  "util (bound to N/log): typeof isArray": "undefined",
+  "util.debug call on the shadowing binding": "ok"
+}

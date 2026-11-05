@@ -1,0 +1,21 @@
+{
+  "type 'CashSale'": "THROWS: INSUFFICIENT_PERMISSION: Permission Violation: You need  the 'Transactions -> Find Transaction' permission to access this page. Please contact your account administrator.",
+  "type 'CustInvc'": "THROWS: INVALID_RCRD_TYPE: The record type [CUSTINVC] is invalid.",
+  "type 'cashsale'": "THROWS: INSUFFICIENT_PERMISSION: Permission Violation: You need  the 'Transactions -> Find Transaction' permission to access this page. Please contact your account administrator.",
+  "type 'Estimate'": "THROWS: INSUFFICIENT_PERMISSION: Permission Violation: You need  the 'Transactions -> Find Transaction' permission to access this page. Please contact your account administrator.",
+  "type 'ExpRept'": "THROWS: INVALID_RCRD_TYPE: The record type [EXPREPT] is invalid.",
+  "type 'estimate'": "THROWS: INSUFFICIENT_PERMISSION: Permission Violation: You need  the 'Transactions -> Find Transaction' permission to access this page. Please contact your account administrator.",
+  "type 'expensereport'": "THROWS: INSUFFICIENT_PERMISSION: Permission Violation: You need  the 'Transactions -> Find Transaction' permission to access this page. Please contact your account administrator.",
+  "type 'InvAdjst'": "THROWS: INVALID_RCRD_TYPE: The record type [INVADJST] is invalid.",
+  "type 'inventoryadjustment'": "THROWS: INSUFFICIENT_PERMISSION: Permission Violation: You need  the 'Transactions -> Find Transaction' permission to access this page. Please contact your account administrator.",
+  "type 'invoice'": "THROWS: INSUFFICIENT_PERMISSION: Permission Violation: You need  the 'Transactions -> Find Transaction' permission to access this page. Please contact your account administrator.",
+  "type 'Journal'": "THROWS: INVALID_RCRD_TYPE: The record type [JOURNAL] is invalid.",
+  "type 'journalentry'": "THROWS: INSUFFICIENT_PERMISSION: Permission Violation: You need  the 'Transactions -> Find Transaction' permission to access this page. Please contact your account administrator.",
+  "type 'PURCHORD'": "THROWS: INVALID_RCRD_TYPE: The record type [PURCHORD] is invalid.",
+  "type 'PurchOrd'": "THROWS: INVALID_RCRD_TYPE: The record type [PURCHORD] is invalid.",
+  "type 'purchaseorder'": "THROWS: INSUFFICIENT_PERMISSION: Permission Violation: You need  the 'Transactions -> Find Transaction' permission to access this page. Please contact your account administrator.",
+  "type 'SalesOrd'": "THROWS: INVALID_RCRD_TYPE: The record type [SALESORD] is invalid.",
+  "type 'salesorder'": "THROWS: INSUFFICIENT_PERMISSION: Permission Violation: You need  the 'Transactions -> Find Transaction' permission to access this page. Please contact your account administrator.",
+  "type 'VendBill'": "THROWS: INVALID_RCRD_TYPE: The record type [VENDBILL] is invalid.",
+  "type 'vendorbill'": "THROWS: INSUFFICIENT_PERMISSION: Permission Violation: You need  the 'Transactions -> Find Transaction' permission to access this page. Please contact your account administrator."
+}
