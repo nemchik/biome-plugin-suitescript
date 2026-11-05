@@ -57,16 +57,16 @@ Every probe needs a results page, `docs/verification/results/<slug>.md`, that li
 
 All run from the repository root. Pass extra arguments after `--`.
 
-| Command                                  | Does                                                                                                            |
-| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `npm run verify:doctor`                  | Read-only checklist. For each failing step it prints what you must do next. Offline.                            |
-| `npm run verify:certificate`             | Optional. Generates the two key pairs with `openssl` and saves their paths to `verification/.env.local`.        |
-| `npm run verify:passkey`                 | Generates the CLI passkey and saves it to `verification/.env.local`.                                            |
-| `npm run verify:env -- set NAME=value`   | Saves one value (an account, client or certificate id) to `verification/.env.local`.                            |
-| `npm run verify:setup-ci`                | Runs `account:setup:ci` for `verification/sdf` from `verification/.env.local`.                                  |
-| `npm run verify:deploy`                  | Builds the runner and **dry-runs** the deployment. Add `-- --approved` to deploy, only after the user approves. |
-| `npm run verify:run -- <slug> [--draft]` | Runs one probe. `--draft` writes the results page if it does not exist yet.                                     |
-| `npm run verify:cleanup`                 | Dry-runs turning the runner's deployment off. Add `-- --approved` to do it, only after the user approves.       |
+| Command                                  | Does                                                                                                                                 |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `npm run verify:doctor`                  | Read-only checklist. For each failing step it prints what you must do next. Offline.                                                 |
+| `npm run verify:certificate`             | Optional. Generates the two key pairs with `openssl` and saves their paths to `verification/.env.local`.                             |
+| `npm run verify:passkey`                 | Generates the CLI passkey and saves it to `verification/.env.local`.                                                                 |
+| `npm run verify:env -- set NAME=value`   | Saves one value (an account, client or certificate id) to `verification/.env.local`.                                                 |
+| `npm run verify:setup-ci`                | Runs `account:setup:ci` for `verification/sdf` from `verification/.env.local`.                                                       |
+| `npm run verify:deploy`                  | Builds the runner and **dry-runs** the deployment. Add `-- --approved` to deploy: you run it in your own terminal and type `DEPLOY`. |
+| `npm run verify:run -- <slug> [--draft]` | Runs one probe. `--draft` writes the results page if it does not exist yet.                                                          |
+| `npm run verify:cleanup`                 | Dry-runs turning the runner's deployment off. Add `-- --approved` to do it: you run it in your own terminal and type `CLEANUP`.      |
 
 ## Setup
 
@@ -84,7 +84,7 @@ The doctor checks these in order. Steps 3 to 5 happen in NetSuite and are yours;
    - `npm run verify:passkey` saves `SUITESCRIPT_VERIFY_PASSKEY` (32 to 100 letters and digits),
    - `npm run verify:env -- set NAME=value` saves the ones only you know: `SUITESCRIPT_VERIFY_ACCOUNT` (the sandbox account id, `<digits>_SB<n>`), `SUITESCRIPT_VERIFY_CLIENT_ID`, `SUITESCRIPT_VERIFY_CERTIFICATE_ID` (the runner mapping) and `SUITESCRIPT_VERIFY_SDF_CERTIFICATE_ID` (the SDF mapping).
 7. `npm run verify:setup-ci`, then `npm run verify:doctor` until it passes.
-8. `npm run verify:deploy`, review the dry run, ask for approval, then `-- --approved`.
+8. `npm run verify:deploy`, review the dry run, then run it with `-- --approved` yourself, in your own terminal (in Claude Code, type `!` before the command), and type `DEPLOY`.
 9. `npm run verify:run -- probe-zero --draft`. Probe zero proves the chain (token, deploy, call, JSON back). If it can not pass for a reason outside this repository (a missing permission you can not grant, an Oracle restriction), record why on [#74](https://github.com/nemchik/biome-plugin-suitescript/issues/74) and keep prompting the user to run snippets by hand ([`README.md`](README.md)).
 
 A sandbox **refresh** clears the M2M mappings and, presumably, the deployed runner. The doctor can not detect it; if a call fails with an authentication or "not found" error after a refresh, redo steps 4 to 8.
@@ -115,7 +115,7 @@ Regenerating a pair after you uploaded its certificate makes that mapping unusab
 
 - **Sandbox only.** The tooling refuses an account id that is not `<digits>_SB<n>`, and the runner refuses unless `runtime.envType` is a sandbox.
 - **No arbitrary code.** The request carries a probe name, never code. The only code the runner can run is in `verification/probes/`, reviewed in version control.
-- **Approval for every write.** `verify:deploy` and `verify:cleanup` only dry-run until you approve; the agent passes `--approved` only after you say so. A probe that writes (`@writes`) needs its own approval.
+- **Approval for every write.** `verify:deploy` and `verify:cleanup` only dry-run for an agent: a real run needs `--approved` and you at a terminal typing `DEPLOY` or `CLEANUP`, which an agent's shell can not do, so the code enforces your approval. A probe that writes (`@writes`) needs its own approval.
 - **No anonymous URL.** Calls use a bearer token; there is no Suitelet "available without login".
 - **Secrets stay out.** The private keys live outside the repository. The passkey and the ids live in the gitignored `verification/.env.local`, which the doctor checks is ignored. Values are never printed, and the tooling never creates NetSuite credentials itself (the integration, role and mappings are yours).
 - **No identifiers in the repository.** The output is scrubbed of your account, client and certificate ids, and the tooling refuses to print or record output that still looks like an account number, host, token, key or email.

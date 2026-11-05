@@ -46,9 +46,11 @@ export function parseEnv(text: string): Map<string, string> {
 /** Forward slashes keep a Windows path valid inside a dotenv file. */
 export const envValue = (value: string) => {
   const normalized = value.replace(/\\/g, "/");
-  return /[\s#"']/.test(normalized)
-    ? `"${normalized.replace(/"/g, '\\"')}"`
-    : normalized;
+  if (!/[\s#"']/.test(normalized)) return normalized;
+  // The reader does not unescape, so quote with a character the value lacks.
+  if (!normalized.includes('"')) return `"${normalized}"`;
+  if (!normalized.includes("'")) return `'${normalized}'`;
+  throw new Error("A value can not contain both kinds of quote.");
 };
 
 export interface EnvPlan {

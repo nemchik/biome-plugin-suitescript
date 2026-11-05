@@ -127,6 +127,23 @@ async function allowReplace(description: string) {
   return /^y(es)?$/i.test(answer.trim());
 }
 
+/**
+ * A write to the sandbox needs a person at a terminal, on top of --approved:
+ * an agent's shell has none, so an agent can not run it. The person types the
+ * action name to confirm.
+ */
+async function confirmWrite(action: string, what: string) {
+  if (!process.stdin.isTTY) {
+    fail(
+      `${what} needs the user at a terminal. Ask the user to run this same command, with --approved, in their own terminal (in Claude Code: type ! before the command).`,
+    );
+  }
+  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  const answer = await rl.question(`${what}. Type ${action} to continue: `);
+  rl.close();
+  if (answer.trim() !== action) fail("Not confirmed. Nothing was changed.");
+}
+
 function requireConfig() {
   const { config, missing } = readConfig(process.env);
   if (!config) fail(`Missing ${missing.join(", ")}. Run the doctor first.`);
@@ -360,7 +377,7 @@ function setupCi() {
   );
 }
 
-function deploy() {
+async function deploy() {
   requireConfig();
   const { files, slugs } = buildSdfProject();
   console.log(`Probes in the runner: ${slugs.join(", ")}`);
@@ -371,6 +388,7 @@ function deploy() {
       "\nDry run only. Deploying writes to the sandbox, so ask the user for approval, then rerun with --approved.",
     );
   }
+  if (approved) await confirmWrite("DEPLOY", "This deploys to the sandbox");
   process.exit(
     suitecloud(["project:deploy", ...(approved ? [] : ["--dryrun"])]),
   );
@@ -398,6 +416,12 @@ async function run() {
     );
   }
 
+  const known = {
+    account: config.account,
+    certificateId: config.certificateId,
+    clientId: config.clientId,
+    sdfCertificateId: config.sdfCertificateId,
+  };
   const endpoint = tokenUrl(config.account);
   const assertion = clientAssertion({
     certificateId: config.certificateId,
@@ -422,7 +446,10 @@ async function run() {
   };
   if (!tokenResponse.ok || !tokenBody.access_token) {
     fail(
-      `Token request failed: HTTP ${tokenResponse.status} ${tokenBody.error ?? ""} ${tokenBody.error_description ?? ""}`.trim(),
+      scrub(
+        `Token request failed: HTTP ${tokenResponse.status} ${tokenBody.error ?? ""} ${tokenBody.error_description ?? ""}`.trim(),
+        known,
+      ).text,
     );
   }
 
@@ -435,12 +462,6 @@ async function run() {
     method: "POST",
   });
   const text = await response.text();
-  const known = {
-    account: config.account,
-    certificateId: config.certificateId,
-    clientId: config.clientId,
-    sdfCertificateId: config.sdfCertificateId,
-  };
   if (!response.ok) {
     fail(
       `The runner call failed: HTTP ${response.status}\n${scrub(text.slice(0, 500), known).text}`,
@@ -496,7 +517,7 @@ async function run() {
   }
 }
 
-function cleanup() {
+async function cleanup() {
   requireConfig();
   const objectFile = join(
     sdfDir,
@@ -514,6 +535,9 @@ function cleanup() {
     console.log(
       "Dry run only. This turns the runner's deployment off in the sandbox, so ask the user for approval, then rerun with --approved.\nTo remove access entirely, the user revokes the certificate mapping (Setup > Integration > Manage Authentication > OAuth 2.0 Client Credentials (M2M) Setup).",
     );
+  }
+  if (approved) {
+    await confirmWrite("CLEANUP", "This turns the runner's deployment off");
   }
   buildSdfProject();
   writeFileSync(objectFile, disabled);
@@ -545,13 +569,13 @@ switch (command) {
     setupCi();
     break;
   case "deploy":
-    deploy();
+    await deploy();
     break;
   case "run":
     await run();
     break;
   case "cleanup":
-    cleanup();
+    await cleanup();
     break;
   default:
     fail(
