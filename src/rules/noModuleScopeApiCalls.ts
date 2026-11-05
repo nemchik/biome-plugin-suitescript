@@ -20,9 +20,11 @@ const FACTORIES = /\.(createColumn|createFilter|createSort|createSetting)$/;
 // callback execution. Calling `runtime.getCurrentScript()`, `record.load()`, or
 // any N/ API at module scope causes deployment failure." Initialize lazily from an
 // entry point instead. N/log is exempt because log is a global. The failure claim
-// comes only from this skill and has not been checked against Oracle's
-// documentation, and its examples are calls that do work (getCurrentScript, record.load).
-// Unverified: docs/verification/contradictions.md, C-011.
+// comes only from this skill. A deployed RESTlet (2026.2) partly refutes it:
+// runtime.getCurrentScript() and search.createColumn() work at module scope, while a
+// search throws SSS_USAGE_LIMIT_EXCEEDED (docs/verification/results/module-scope-runtime-calls.md,
+// docs/verification/results/module-scope-search-call.md, C-011). record.load and
+// record.create at module scope are not isolated yet.
 // Calls that only build an object (`search.createColumn`, `createFilter`,
 // `createSort`, `createSetting`) are skipped, because nothing says they fail; remove
 // them from FACTORIES if that turns out to be wrong.

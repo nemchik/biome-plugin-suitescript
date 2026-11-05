@@ -21,6 +21,8 @@ An unverified claim stays marked "unverified" in the rule's source comment and i
 
 If you can run the test yourself, do. The NetSuite connector can not execute a script, but a **probe** can run in a sandbox through the verification runner: write `verification/probes/<slug>.js` and run `npm run verify:doctor`, then `npm run verify:run -- <slug> --draft` ([`automation.md`](automation.md), [ADR 0007](../adr/0007-agents-run-probes-through-a-sandbox-runner.md), [#74](https://github.com/nemchik/biome-plugin-suitescript/issues/74)). Setup is mostly the user's (browser login, role, certificate), so when the doctor fails, relay its next step and wait.
 
+Before you write a batch of probes read "Lessons" in [`automation.md`](automation.md): each probe change costs the user a deploy, and one bad probe can take the whole runner down. If you meet a problem with the runner, a deploy, a probe or the sandbox that the page does not describe, add it there in the same pull request, and correct an entry that turns out to be wrong.
+
 Prompt the user to run a snippet by hand (the methods below) only when a probe can not run: the doctor can not pass, the claim depends on a script type the runner does not cover (anything but a RESTlet), or the probe would write to the account. Give them the exact snippet and say where to run it. Never run anything in production. Do not guess the result, and do not mark a claim verified from a paraphrase of documentation: verified means a test ran.
 
 ## Methods

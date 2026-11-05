@@ -1,0 +1,8 @@
+{
+  "log.debug works as a global": "ok",
+  "N/log module is the global log": true,
+  "N/util module is the global util": true,
+  "typeof log (global)": "object",
+  "typeof util (global)": "object",
+  "util.isArray works as a global": true
+}

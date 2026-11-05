@@ -7,8 +7,8 @@ import { dependencies } from "../lib/biome-modules.ts";
 // do not need to load it manually", which is what this rule follows. It is the
 // opposite of requireLogModule, so enable only one of them. (The upgrade skill
 // says the global exists but loading is recommended, which requireLogModule
-// follows; the learning skill says it is not global and loses; unverified,
-// docs/verification/contradictions.md, C-001.) Logging in a client script attached to a form is
+// follows; the learning skill says it is not global and loses, and a deployed RESTlet
+// confirms the global exists (2026.2): docs/verification/results/globals-log-util.md, C-001.) Logging in a client script attached to a form is
 // ignored either way; see noClientLog.
 export const noLogModule = defineRule({
   query: ast("JS_CALL_EXPRESSION", "JS_IMPORT"),

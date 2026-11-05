@@ -26,9 +26,8 @@ const ABBREVIATIONS = new Set([
 // a runtime error: `The record type [PURCHORD] is invalid.` Always use
 // `search.Type.*` enum values (or their lowercase string equivalents) in N/search,
 // and SuiteQL abbreviations only inside SuiteQL query strings." The failure claim
-// comes only from this skill and has not been checked against Oracle's
-// documentation."
-// Unverified: docs/verification/contradictions.md, C-012.
+// comes only from this skill, and a deployed RESTlet confirms it (2026.2):
+// docs/verification/results/suiteql-type-in-search.md, C-012.
 export const noSuiteQLTypeInSearch = defineRule({
   query: ast("JS_CALL_EXPRESSION"),
   run(node) {
