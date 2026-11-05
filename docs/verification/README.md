@@ -19,7 +19,9 @@ An unverified claim stays marked "unverified" in the rule's source comment and i
 
 ## For agents
 
-If you can run the test yourself, do. Today no automated path is known: the NetSuite connector reads and writes records but cannot execute a script (investigation: [#74](https://github.com/nemchik/biome-plugin-suitescript/issues/74)). So, even when you are not running a skill that asks questions, **prompt the user** to run the test and paste the output. Give them the exact snippet and say where to run it (below). Do not guess the result, and do not mark a claim verified from a paraphrase of documentation: verified means a test ran.
+If you can run the test yourself, do. The NetSuite connector can not execute a script, but a **probe** can run in a sandbox through the verification runner: write `verification/probes/<slug>.js` and run `npm run verify:doctor`, then `npm run verify:run -- <slug> --draft` ([`automation.md`](automation.md), [ADR 0007](../adr/0007-agents-run-probes-through-a-sandbox-runner.md), [#74](https://github.com/nemchik/biome-plugin-suitescript/issues/74)). Setup is mostly the user's (browser login, role, certificate), so when the doctor fails, relay its next step and wait.
+
+Prompt the user to run a snippet by hand (the methods below) only when a probe can not run: the doctor can not pass, the claim depends on a script type the runner does not cover (anything but a RESTlet), or the probe would write to the account. Give them the exact snippet and say where to run it. Never run anything in production. Do not guess the result, and do not mark a claim verified from a paraphrase of documentation: verified means a test ran.
 
 ## Methods
 
@@ -84,7 +86,8 @@ Copy this template to `results/<slug>.md` (lowercase, hyphens, for example `util
 - **NetSuite version:** 2026.2
 - **Account type:** sandbox
 - **Date:** YYYY-MM-DD
-- **Method:** browser console | script debugger | deployed <script type>
+- **Method:** browser console | script debugger | deployed <script type> | deployed RESTlet (the verification runner)
+- **Script type:** RESTlet (only for a probe; also names it: **Probe:** [verification/probes/<slug>.js](../../../verification/probes/<slug>.js))
 - **Contradictions settled:** C-0NN (or none)
 - **Issue:** #NN (or none)
 
@@ -104,5 +107,7 @@ What the results mean, and how they relate to what each source claims.
 
 What we decided because of the results, and which rules, comments or docs changed.
 ```
+
+`npm run verify:run -- <slug> --draft` writes this page for a probe, with the version, script, output and date filled in and scrubbed of identifiers. Replace each `TODO(verify)`: `npm test` fails while one is left.
 
 Then update the contradiction's row in `contradictions.md` (status, results page, decision), and cite the results page in the rule's source comment as `docs/verification/results/<slug>.md`. `npm test` fails when a cited results page or contradiction id does not exist.

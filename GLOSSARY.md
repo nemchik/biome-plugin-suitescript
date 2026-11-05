@@ -44,6 +44,14 @@ _Avoid_: Rule level, rule weight
 A test run in a NetSuite account to confirm what the platform really does, documented with the script, the NetSuite version, the results and the decision it led to. It is evidence, not a source tier: it overrides a source's claim about platform behavior, but not a recommendation.
 _Avoid_: Check (a check is what a rule or the CLI does), validation
 
+**Probe**:
+A version-controlled script module that exercises one platform behavior and returns what happened as data. It cites the contradictions or rules it verifies, and each has a results page.
+_Avoid_: Test (a test is what `npm test` runs), snippet (a snippet is pasted by hand and not recorded)
+
+**Runner**:
+The single script deployed to a sandbox that runs a probe on request, identified by name from a fixed list of probes. It never runs code supplied in the request.
+_Avoid_: Harness
+
 **Contradiction**:
 Two sources (Oracle agent skills, type definitions, Oracle documentation) that disagree, or one that disagrees with itself. Each is tracked until a verification settles it.
 _Avoid_: Conflict (the source tiers resolve a conflict between sources; a contradiction is what needs verifying)

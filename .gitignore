@@ -4,3 +4,9 @@ dist/
 *lefthook-local*
 .claude/skills/
 .claude/worktrees/
+
+# Runtime verification (docs/verification/automation.md): credentials and generated files
+verification/.env.local
+verification/sdf/project.json
+verification/sdf/src/FileCabinet/
+verification/sdf/*.log

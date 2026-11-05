@@ -3,6 +3,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
+import { parseProbe, scrub } from "../scripts/verify/lib.ts";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const verification = join(root, "docs", "verification");
@@ -114,6 +115,104 @@ test("verification pages never include an account number or id", () => {
       read(file),
       account,
       `${relative(root, file)} looks like it includes an account number or record id (see docs/verification/README.md)`,
+    );
+  }
+});
+
+// ---------------------------------------------------------------- probes
+
+const probesDir = join(root, "verification", "probes");
+const probeFiles = readdirSync(probesDir).filter((file) =>
+  file.endsWith(".js"),
+);
+const slugOf = (file: string) => file.replace(/\.js$/, "");
+
+test("every probe declares its script type and what it verifies", () => {
+  assert.ok(probeFiles.length > 0, "no probes found");
+  for (const file of probeFiles) {
+    const probe = parseProbe(slugOf(file), read(join(probesDir, file)));
+    assert.equal(
+      probe.scriptType,
+      "Restlet",
+      `${file}: @scriptType must be Restlet (the runner's only supported type so far)`,
+    );
+    assert.ok(
+      probe.contradictions.length + probe.rules.length > 0 || probe.tooling,
+      `${file}: cite a @contradiction or a @rule it verifies, or mark it @tooling`,
+    );
+    for (const id of probe.contradictions) {
+      assert.ok(
+        ids.has(id),
+        `${file} cites ${id}, which is not in contradictions.md`,
+      );
+    }
+    for (const rule of probe.rules) {
+      assert.ok(
+        existsSync(join(root, "src", "rules", `${rule}.ts`)) ||
+          existsSync(join(root, "src", "rules", `${rule}.grit`)),
+        `${file} cites rule ${rule}, which does not exist in src/rules`,
+      );
+    }
+  }
+});
+
+test("every probe has a results page that links back to it", () => {
+  for (const file of probeFiles) {
+    const slug = slugOf(file);
+    const page = join(results, `${slug}.md`);
+    assert.ok(
+      existsSync(page),
+      `${file} has no docs/verification/results/${slug}.md (run it: npm run verify:run -- ${slug} --draft)`,
+    );
+    assert.ok(
+      read(page).includes(`verification/probes/${slug}.js`),
+      `${slug}.md does not link its probe verification/probes/${slug}.js`,
+    );
+  }
+});
+
+test("a results page that names a probe names one that exists", () => {
+  for (const page of readdirSync(results).filter((f) => f.endsWith(".md"))) {
+    const match = /\*\*Probe:\*\* \[([^\]]+)\]/.exec(read(join(results, page)));
+    if (match) {
+      assert.ok(
+        existsSync(join(root, match[1] ?? "")),
+        `${page} names probe ${match[1]}, which does not exist`,
+      );
+    }
+  }
+});
+
+test("no results page still has a TODO(verify) placeholder", () => {
+  for (const page of readdirSync(results).filter((f) => f.endsWith(".md"))) {
+    assert.doesNotMatch(
+      read(join(results, page)),
+      /TODO\(verify\)/,
+      `${page} still has a TODO(verify) placeholder`,
+    );
+  }
+});
+
+test("a probe's expected output is valid JSON for a probe that exists", () => {
+  for (const file of readdirSync(probesDir).filter((f) =>
+    f.endsWith(".expect.json"),
+  )) {
+    const slug = file.replace(/\.expect\.json$/, "");
+    assert.ok(probeFiles.includes(`${slug}.js`), `${file} has no probe`);
+    JSON.parse(read(join(probesDir, file)));
+  }
+});
+
+test("probes and the runner contain no account number, token or key", () => {
+  const files = [
+    ...probeFiles.map((f) => join(probesDir, f)),
+    join(root, "verification", "runner", "runner.template.js"),
+  ];
+  for (const file of files) {
+    assert.deepEqual(
+      scrub(read(file), {}).problems,
+      [],
+      `${relative(root, file)} looks like it contains an identifier`,
     );
   }
 });
