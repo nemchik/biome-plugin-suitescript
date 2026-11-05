@@ -1,0 +1,5 @@
+{
+  "nanoTime() is non-decreasing": "THROWS: TypeError: Cannot read property 'nsNanoTime' of undefined",
+  "nanoTime() typeof": "THROWS: TypeError: Cannot read property 'nsNanoTime' of undefined",
+  "typeof util.nanoTime": "function"
+}
