@@ -12,6 +12,10 @@ Default five-label vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, 
 
 Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
 
+### Workflow
+
+Flow steps, the state-of-issue table, guard rails and standing rules (review before merge, Write or Edit over heredocs): `docs/agents/workflow.md`.
+
 ### Skills
 
 Oracle's and Matt Pocock's skills are committed in `.agents/skills/` and managed with `npm run skills:*`. See `docs/agents/skills.md`; run `npm run skills:install` after cloning.
