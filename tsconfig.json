@@ -17,5 +17,5 @@
     "verbatimModuleSyntax": true
   },
   "exclude": ["test/fixtures", "dist", "node_modules"],
-  "include": ["src", "scripts", "test"]
+  "include": [".claude/hooks", "src", "scripts", "test"]
 }
