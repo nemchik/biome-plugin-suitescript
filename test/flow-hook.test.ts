@@ -64,11 +64,69 @@ test("the grill reminder checks that grilling and domain-modeling loaded", () =>
   assert.match(text, /"yes" or "lgtm" approves the summary only/);
 });
 
+test("every step states a prerequisite, a guard rail and a next step", () => {
+  for (const name of flow) {
+    const text = run(`/${name}`).context?.additionalContext ?? "";
+    for (const label of ["Prerequisite", "Guard rail", "Next step"]) {
+      assert.match(text, new RegExp(`- ${label}: \\S`), `${name}: ${label}`);
+    }
+  }
+});
+
 test("later steps state their prerequisite", () => {
   const text = (name: string) => run(`/${name}`).context?.additionalContext;
-  assert.match(text("to-tickets") ?? "", /spec or .*thread/);
+  assert.match(text("to-tickets") ?? "", /A spec or a decided thread/);
   assert.match(text("implement") ?? "", /Tickets/);
   assert.match(text("code-review") ?? "", /committed diff/);
+});
+
+test("/grill-me does not claim the docs-only edit rule", () => {
+  assert.doesNotMatch(
+    run("/grill-me").context?.additionalContext ?? "",
+    /edits only GLOSSARY/,
+  );
+  assert.match(
+    run("/grill-with-docs").context?.additionalContext ?? "",
+    /edits only GLOSSARY/,
+  );
+});
+
+test("the guard-rail table in the workflow doc matches the hook", () => {
+  const doc = readFileSync(`${root}docs/agents/workflow.md`, "utf8");
+  const section = doc.split("## Per-step guard rails")[1] ?? "";
+  const rows = (section.split("## Standing rules")[0] ?? "")
+    .split("\n")
+    .filter((line) => /^\| `\//.test(line))
+    .map((line) => line.split("|").map((cell) => cell.trim()));
+  const cellOf = (cells: string[], index: number) => cells[index] ?? "";
+  const documented = rows.map((cells) => cellOf(cells, 1).replaceAll("`", ""));
+  assert.deepEqual(
+    documented.sort(),
+    [
+      "/code-review",
+      "/grill-with-docs",
+      "/implement",
+      "/retro",
+      "/to-spec",
+      "/to-tickets",
+      "/wayfinder",
+    ].sort(),
+  );
+  for (const cells of rows) {
+    const name = cellOf(cells, 1).replaceAll("`", "").slice(1);
+    const text = run(`/${name}`).context?.additionalContext ?? "";
+    for (const command of cellOf(cells, 3).match(/\/[a-z][a-z-]*/g) ?? []) {
+      assert.ok(text.includes(command), `${name}: next step names ${command}`);
+    }
+    for (const phrase of cellOf(cells, 2).match(
+      /\([^)]*(?:converges|excepted)[^)]*\)/g,
+    ) ?? []) {
+      assert.ok(text.includes(phrase), `${name}: guard rail keeps ${phrase}`);
+    }
+    if (name === "wayfinder") {
+      assert.match(text, /mis-typed/);
+    }
+  }
 });
 
 test("other prompts and non-flow commands inject nothing", () => {
@@ -93,6 +151,18 @@ test("the hook is registered for UserPromptSubmit only and never blocks", () => 
     readFileSync(`${root}.claude/settings.json`, "utf8"),
   ) as { hooks: Record<string, unknown[]> };
   assert.deepEqual(Object.keys(settings.hooks), ["UserPromptSubmit"]);
-  const source = readFileSync(hook, "utf8");
-  assert.doesNotMatch(source, /"decision"|permissionDecision|process\.exit\(2/);
+  for (const name of flow) {
+    const { result } = run(`/${name}`);
+    assert.equal(result.status, 0, name);
+    assert.deepEqual(
+      Object.keys(JSON.parse(result.stdout)),
+      ["hookSpecificOutput"],
+      name,
+    );
+    assert.deepEqual(
+      Object.keys(JSON.parse(result.stdout).hookSpecificOutput).sort(),
+      ["additionalContext", "hookEventName"],
+      name,
+    );
+  }
 });
