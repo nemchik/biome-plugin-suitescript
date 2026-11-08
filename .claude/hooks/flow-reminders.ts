@@ -7,9 +7,9 @@ const NOT_INVOCABLE =
 
 const GRILL = {
   endsWith:
-    'End with the decisions summarised, "shared understanding reached?", then the route from the branch table in docs/agents/workflow.md. Then stop: "yes" or "lgtm" approves the summary only; building starts on "implement it" or "go ahead".',
+    'End with the decisions summarised, "shared understanding reached?", then the route from /ask-matt. Then stop: "yes" or "lgtm" approves the summary only; building starts on "implement it" or "go ahead".',
   leavesAlone:
-    "Leave alone code, branches, commits, PRs, issues and deploys; edit only GLOSSARY.md and docs/adr/. Confirm the `grilling` and `domain-modeling` skills were loaded (read their SKILL.md) and recommend an answer with each question; the known failure is an interview with no recommendations and no paper trail.",
+    "Leave alone code, branches, commits, PRs, issues and deploys. Confirm the `grilling` and `domain-modeling` skills were loaded (read their SKILL.md; /grill-with-docs edits only GLOSSARY.md and docs/adr/) and recommend an answer with each question; the known failure is an interview with no recommendations and no paper trail.",
   prerequisite: "None: this is the first step.",
 };
 
