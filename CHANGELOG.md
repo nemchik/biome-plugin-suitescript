@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.6.0](https://github.com/nemchik/biome-plugin-suitescript/compare/biome-plugin-suitescript-v0.5.0...biome-plugin-suitescript-v0.6.0) (2026-11-08)
+
+
+### Features
+
+* add noServerConsole rule ([#65](https://github.com/nemchik/biome-plugin-suitescript/issues/65)) ([ea2e14d](https://github.com/nemchik/biome-plugin-suitescript/commit/ea2e14d3afaecf6e4d3e50b3c415e1110ac89aab))
+* add preferUtil rules and a requireUtilModule / noUtilModule pair ([#77](https://github.com/nemchik/biome-plugin-suitescript/issues/77)) ([6b07505](https://github.com/nemchik/biome-plugin-suitescript/commit/6b07505d67bfaa26739ddd36e6b9a598589f433f))
+* run verification probes in a sandbox through a RESTlet runner ([#78](https://github.com/nemchik/biome-plugin-suitescript/issues/78)) ([76e889b](https://github.com/nemchik/biome-plugin-suitescript/commit/76e889be8afc14c89c6c0ac232c67609018fac2d))
+
+
+### Bug Fixes
+
+* **deps:** update dependency oxc-parser to ^0.157.0 ([#84](https://github.com/nemchik/biome-plugin-suitescript/issues/84)) ([64af138](https://github.com/nemchik/biome-plugin-suitescript/commit/64af13822e86cec733a005852a755bbe75dec9e0))
+
 ## [0.5.0](https://github.com/nemchik/biome-plugin-suitescript/compare/biome-plugin-suitescript-v0.4.0...biome-plugin-suitescript-v0.5.0) (2026-11-04)
 
 
