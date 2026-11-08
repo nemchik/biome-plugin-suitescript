@@ -11,7 +11,10 @@ interface Step {
   prerequisite: string;
 }
 
-const GRILL: Step = {
+const BUILD_GUARD_RAIL =
+  "Do not reopen the plan, interview, or build on the default branch.";
+
+const GRILL_STEP: Step = {
   guardRail:
     "Leave alone code, branches, commits, PRs, issues and deploys. Confirm the `grilling` and `domain-modeling` skills were loaded (read their SKILL.md) and recommend an answer with each question; the known failure is an interview with no recommendations and no paper trail.",
   nextStep:
@@ -28,22 +31,20 @@ const STEPS: Record<string, Step> = {
     prerequisite:
       "A committed diff: it diffs HEAD, so if the work is uncommitted, say so and recommend committing first. A fresh session is better than the one that wrote the code.",
   },
-  "grill-me": GRILL,
+  "grill-me": GRILL_STEP,
   "grill-with-docs": {
-    ...GRILL,
-    guardRail: `${GRILL.guardRail} /grill-with-docs edits only GLOSSARY.md and docs/adr/.`,
+    ...GRILL_STEP,
+    guardRail: `${GRILL_STEP.guardRail} /grill-with-docs edits only GLOSSARY.md and docs/adr/.`,
   },
   implement: {
-    guardRail:
-      "Do not reopen the plan, interview, or build on the default branch.",
+    guardRail: BUILD_GUARD_RAIL,
     nextStep:
       "Commit first, then recommend /code-review (a fresh session), then closing the ticket and ticking its criteria (implement does neither itself).",
     prerequisite:
       "Tickets (or an issue that already holds enough to proceed). If the earlier steps did not happen, say so and recommend the missing step before doing anything else.",
   },
   "implement-spec": {
-    guardRail:
-      "Do not reopen the plan, interview, or build on the default branch.",
+    guardRail: BUILD_GUARD_RAIL,
     nextStep:
       "Commit, then recommend /code-review, then closing the tickets and ticking their criteria.",
     prerequisite:
@@ -80,7 +81,11 @@ const STEPS: Record<string, Step> = {
   },
 };
 
-/** Both the typed form and the expanded form Claude Code may deliver. */
+/**
+ * Claude Code delivers a typed slash command to this hook in the expanded
+ * `<command-name>` form (seen in a live /implement run); the typed form is kept
+ * for a plain `/name` prompt.
+ */
 function commandOf(prompt: string): string | undefined {
   const typed = /^\s*\/([a-z][a-z0-9-]*)(?:\s|$)/.exec(prompt);
   if (typed) {

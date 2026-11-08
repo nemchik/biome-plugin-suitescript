@@ -28,6 +28,11 @@ function run(prompt: string) {
   return { context, result };
 }
 
+/** The injected reminder text for a prompt, or "" when nothing is injected. */
+function reminderText(prompt: string): string {
+  return run(prompt).context?.additionalContext ?? "";
+}
+
 const flow = [
   "grill-with-docs",
   "grill-me",
@@ -58,7 +63,7 @@ test("the expanded command form is recognised", () => {
 });
 
 test("the grill reminder checks that grilling and domain-modeling loaded", () => {
-  const text = run("/grill-with-docs").context?.additionalContext ?? "";
+  const text = reminderText("/grill-with-docs");
   assert.match(text, /grilling/);
   assert.match(text, /domain-modeling/);
   assert.match(text, /"yes" or "lgtm" approves the summary only/);
@@ -66,7 +71,7 @@ test("the grill reminder checks that grilling and domain-modeling loaded", () =>
 
 test("every step states a prerequisite, a guard rail and a next step", () => {
   for (const name of flow) {
-    const text = run(`/${name}`).context?.additionalContext ?? "";
+    const text = reminderText(`/${name}`);
     for (const label of ["Prerequisite", "Guard rail", "Next step"]) {
       assert.match(text, new RegExp(`- ${label}: \\S`), `${name}: ${label}`);
     }
@@ -74,21 +79,14 @@ test("every step states a prerequisite, a guard rail and a next step", () => {
 });
 
 test("later steps state their prerequisite", () => {
-  const text = (name: string) => run(`/${name}`).context?.additionalContext;
-  assert.match(text("to-tickets") ?? "", /A spec or a decided thread/);
-  assert.match(text("implement") ?? "", /Tickets/);
-  assert.match(text("code-review") ?? "", /committed diff/);
+  assert.match(reminderText("/to-tickets"), /A spec or a decided thread/);
+  assert.match(reminderText("/implement"), /Tickets/);
+  assert.match(reminderText("/code-review"), /committed diff/);
 });
 
 test("/grill-me does not claim the docs-only edit rule", () => {
-  assert.doesNotMatch(
-    run("/grill-me").context?.additionalContext ?? "",
-    /edits only GLOSSARY/,
-  );
-  assert.match(
-    run("/grill-with-docs").context?.additionalContext ?? "",
-    /edits only GLOSSARY/,
-  );
+  assert.doesNotMatch(reminderText("/grill-me"), /edits only GLOSSARY/);
+  assert.match(reminderText("/grill-with-docs"), /edits only GLOSSARY/);
 });
 
 test("the guard-rail table in the workflow doc matches the hook", () => {
@@ -106,6 +104,7 @@ test("the guard-rail table in the workflow doc matches the hook", () => {
       "/code-review",
       "/grill-with-docs",
       "/implement",
+      "/implement-spec",
       "/retro",
       "/to-spec",
       "/to-tickets",
@@ -114,7 +113,7 @@ test("the guard-rail table in the workflow doc matches the hook", () => {
   );
   for (const cells of rows) {
     const name = cellOf(cells, 1).replaceAll("`", "").slice(1);
-    const text = run(`/${name}`).context?.additionalContext ?? "";
+    const text = reminderText(`/${name}`);
     for (const command of cellOf(cells, 3).match(/\/[a-z][a-z-]*/g) ?? []) {
       assert.ok(text.includes(command), `${name}: next step names ${command}`);
     }
@@ -153,14 +152,13 @@ test("the hook is registered for UserPromptSubmit only and never blocks", () => 
   assert.deepEqual(Object.keys(settings.hooks), ["UserPromptSubmit"]);
   for (const name of flow) {
     const { result } = run(`/${name}`);
+    const output = JSON.parse(result.stdout) as {
+      hookSpecificOutput: Record<string, unknown>;
+    };
     assert.equal(result.status, 0, name);
+    assert.deepEqual(Object.keys(output), ["hookSpecificOutput"], name);
     assert.deepEqual(
-      Object.keys(JSON.parse(result.stdout)),
-      ["hookSpecificOutput"],
-      name,
-    );
-    assert.deepEqual(
-      Object.keys(JSON.parse(result.stdout).hookSpecificOutput).sort(),
+      Object.keys(output.hookSpecificOutput).sort(),
       ["additionalContext", "hookEventName"],
       name,
     );
