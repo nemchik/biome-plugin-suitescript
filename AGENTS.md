@@ -14,7 +14,7 @@ Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/ag
 
 ### Workflow
 
-Flow steps, the state-of-issue table, guard rails and standing rules (review before merge, Write or Edit over heredocs): `docs/agents/workflow.md`.
+When asked to address an issue or to run a flow step (`/implement`, `/code-review` and the rest), read `docs/agents/workflow.md`.
 
 ### Skills
 

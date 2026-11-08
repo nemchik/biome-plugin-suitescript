@@ -44,6 +44,4 @@ A later step entered early (for example `/implement` with no spec or tickets) fi
 
 ## Standing rules
 
-- `/code-review` runs before merge. Commit first: it diffs `HEAD`.
-- `/implement` ends with a commit, then a review, then closing the ticket and ticking its criteria. `/implement` does neither the closing nor the ticking itself.
 - Write files with the Write or Edit tool, never shell heredocs, and keep scripts in the scratchpad.

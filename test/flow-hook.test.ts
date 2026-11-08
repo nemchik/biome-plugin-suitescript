@@ -9,23 +9,30 @@ const hook = fileURLToPath(
   new URL("../.claude/hooks/flow-reminders.ts", import.meta.url),
 );
 
-/** Runs the hook the way Claude Code does: the event as JSON on stdin. */
-function run(prompt: string) {
+interface HookOutput {
+  hookSpecificOutput: Record<string, unknown> & {
+    additionalContext: string;
+    hookEventName: string;
+  };
+}
+
+/** Feeds the hook raw stdin and parses what it printed, if anything. */
+function runRaw(input: string) {
   const result = spawnSync(process.execPath, [hook], {
     encoding: "utf8",
-    input: JSON.stringify({ hook_event_name: "UserPromptSubmit", prompt }),
+    input,
   });
-  const context = result.stdout.trim()
-    ? (
-        JSON.parse(result.stdout) as {
-          hookSpecificOutput: {
-            additionalContext: string;
-            hookEventName: string;
-          };
-        }
-      ).hookSpecificOutput
+  const output = result.stdout.trim()
+    ? (JSON.parse(result.stdout) as HookOutput)
     : undefined;
-  return { context, result };
+  return { context: output?.hookSpecificOutput, output, result };
+}
+
+/** Runs the hook the way Claude Code does: the event as JSON on stdin. */
+function run(prompt: string) {
+  return runRaw(
+    JSON.stringify({ hook_event_name: "UserPromptSubmit", prompt }),
+  );
 }
 
 /** The injected reminder text for a prompt, or "" when nothing is injected. */
@@ -95,9 +102,13 @@ test("the guard-rail table in the workflow doc matches the hook", () => {
   const rows = (section.split("## Standing rules")[0] ?? "")
     .split("\n")
     .filter((line) => /^\| `\//.test(line))
-    .map((line) => line.split("|").map((cell) => cell.trim()));
-  const cellOf = (cells: string[], index: number) => cells[index] ?? "";
-  const documented = rows.map((cells) => cellOf(cells, 1).replaceAll("`", ""));
+    .map((line) => {
+      const [, step = "", leavesAlone = "", endsWith = ""] = line
+        .split("|")
+        .map((cell) => cell.trim());
+      return { endsWith, leavesAlone, step: step.replaceAll("`", "") };
+    });
+  const documented = rows.map((row) => row.step);
   assert.deepEqual(
     documented.sort(),
     [
@@ -111,13 +122,13 @@ test("the guard-rail table in the workflow doc matches the hook", () => {
       "/wayfinder",
     ].sort(),
   );
-  for (const cells of rows) {
-    const name = cellOf(cells, 1).replaceAll("`", "").slice(1);
+  for (const row of rows) {
+    const name = row.step.slice(1);
     const text = reminderText(`/${name}`);
-    for (const command of cellOf(cells, 3).match(/\/[a-z][a-z-]*/g) ?? []) {
+    for (const command of row.endsWith.match(/\/[a-z][a-z-]*/g) ?? []) {
       assert.ok(text.includes(command), `${name}: next step names ${command}`);
     }
-    for (const phrase of cellOf(cells, 2).match(
+    for (const phrase of row.leavesAlone.match(
       /\([^)]*(?:converges|excepted)[^)]*\)/g,
     ) ?? []) {
       assert.ok(text.includes(phrase), `${name}: guard rail keeps ${phrase}`);
@@ -137,12 +148,9 @@ test("other prompts and non-flow commands inject nothing", () => {
 });
 
 test("bad input never fails or blocks", () => {
-  const result = spawnSync(process.execPath, [hook], {
-    encoding: "utf8",
-    input: "not json",
-  });
+  const { output, result } = runRaw("not json");
   assert.equal(result.status, 0);
-  assert.equal(result.stdout.trim(), "");
+  assert.equal(output, undefined);
 });
 
 test("the hook is registered for UserPromptSubmit only and never blocks", () => {
@@ -151,11 +159,9 @@ test("the hook is registered for UserPromptSubmit only and never blocks", () => 
   ) as { hooks: Record<string, unknown[]> };
   assert.deepEqual(Object.keys(settings.hooks), ["UserPromptSubmit"]);
   for (const name of flow) {
-    const { result } = run(`/${name}`);
-    const output = JSON.parse(result.stdout) as {
-      hookSpecificOutput: Record<string, unknown>;
-    };
+    const { output, result } = run(`/${name}`);
     assert.equal(result.status, 0, name);
+    assert.ok(output, name);
     assert.deepEqual(Object.keys(output), ["hookSpecificOutput"], name);
     assert.deepEqual(
       Object.keys(output.hookSpecificOutput).sort(),

@@ -11,8 +11,15 @@ interface Step {
   prerequisite: string;
 }
 
-const BUILD_GUARD_RAIL =
-  "Do not reopen the plan, interview, or build on the default branch.";
+/** The build steps share one guard rail; they differ in what they build from and close out. */
+function buildStep(unit: string, prerequisite: string): Step {
+  return {
+    guardRail:
+      "Do not reopen the plan, interview, or build on the default branch.",
+    nextStep: `Commit first, then recommend /code-review (a fresh session), then closing the ${unit} and ticking its criteria (the build step does neither itself).`,
+    prerequisite,
+  };
+}
 
 const GRILL_STEP: Step = {
   guardRail:
@@ -36,20 +43,14 @@ const STEPS: Record<string, Step> = {
     ...GRILL_STEP,
     guardRail: `${GRILL_STEP.guardRail} /grill-with-docs edits only GLOSSARY.md and docs/adr/.`,
   },
-  implement: {
-    guardRail: BUILD_GUARD_RAIL,
-    nextStep:
-      "Commit first, then recommend /code-review (a fresh session), then closing the ticket and ticking its criteria (implement does neither itself).",
-    prerequisite:
-      "Tickets (or an issue that already holds enough to proceed). If the earlier steps did not happen, say so and recommend the missing step before doing anything else.",
-  },
-  "implement-spec": {
-    guardRail: BUILD_GUARD_RAIL,
-    nextStep:
-      "Commit, then recommend /code-review, then closing the tickets and ticking their criteria.",
-    prerequisite:
-      "A spec with tickets. If either is missing, recommend /to-spec or /to-tickets first.",
-  },
+  implement: buildStep(
+    "ticket",
+    "Tickets (or an issue that already holds enough to proceed). If the earlier steps did not happen, say so and recommend the missing step before doing anything else.",
+  ),
+  "implement-spec": buildStep(
+    "tickets",
+    "A spec with tickets. If either is missing, recommend /to-spec or /to-tickets first.",
+  ),
   retro: {
     guardRail: "Change nothing before the user picks a candidate.",
     nextStep:
