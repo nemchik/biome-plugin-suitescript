@@ -1,9 +1,8 @@
 // Things Oracle documents that @hitc/netsuite-types does not list yet (a typings
 // gap). The generated data adds them so the rules do not report valid code. Each
 // entry cites Oracle's page; remove it once the typings have the option or member
-// (the typings test fails when one is no longer needed). The render options are
-// proposed upstream in
-// https://github.com/headintheclouddev/typings-suitescript-2.0/pull/382.
+// (the typings test fails when one is no longer needed). The option list is empty
+// while the typings cover every option Oracle documents.
 
 /** Options of a function that the typings lack (an option gap). */
 export interface Gap {
@@ -15,26 +14,7 @@ export interface Gap {
 
 const HELP = "https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/";
 
-export const GAPS: Gap[] = [
-  {
-    fn: "pickingTicket",
-    module: "N/render",
-    options: ["inCustLocale"],
-    source: `${HELP}section_456921936034.html`,
-  },
-  {
-    fn: "packingSlip",
-    module: "N/render",
-    options: ["inCustLocale"],
-    source: `${HELP}section_458625732421.html`,
-  },
-  {
-    fn: "bom",
-    module: "N/render",
-    options: ["inCustLocale"],
-    source: `${HELP}section_457552429198.html`,
-  },
-];
+export const GAPS: Gap[] = [];
 
 /** A module member that the typings lack (a member gap). */
 export interface ExportGap {
