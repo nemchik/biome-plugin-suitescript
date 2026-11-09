@@ -45,6 +45,7 @@ export interface ExportGap {
 
 export const EXPORT_GAPS: ExportGap[] = [
   {
+    // C-009 (docs/verification/contradictions.md)
     module: "N/util",
     name: "isAsyncFunction",
     source: `${HELP}section_159485198809.html`,
