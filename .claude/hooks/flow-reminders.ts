@@ -21,9 +21,13 @@ function buildStep(unit: string, prerequisite: string): Step {
   };
 }
 
+const SWITCH_RULES =
+  'Switch rules: see "Switching between grilling and wayfinder" in docs/agents/workflow.md (prompt, with a seed, never automatic).';
+
 const GRILL_STEP: Step = {
   guardRail:
-    "Leave alone code, branches, commits, PRs, issues and deploys. Confirm the `grilling` and `domain-modeling` skills were loaded (read their SKILL.md) and recommend an answer with each question; the known failure is an interview with no recommendations and no paper trail.",
+    SWITCH_RULES +
+    " Leave alone code, branches, commits, PRs, issues and deploys. Confirm the `grilling` and `domain-modeling` skills were loaded (read their SKILL.md) and recommend an answer with each question; the known failure is an interview with no recommendations and no paper trail.",
   nextStep:
     'End with the decisions summarised, "shared understanding reached?", then the route from /ask-matt (/implement, /to-spec, /to-tickets, /wayfinder, /prototype, /to-questionnaire). Then stop: "yes" or "lgtm" approves the summary only; building starts on "implement it" or "go ahead".',
   prerequisite: "None: this is the first step.",
@@ -74,7 +78,8 @@ const STEPS: Record<string, Step> = {
   },
   wayfinder: {
     guardRail:
-      "Do not write product code, edit your own Notes to carry execution, work more than one ticket per session (research excepted), pick a prototype variant for the user, or treat a `task` that looks like a build slice as mis-typed.",
+      SWITCH_RULES +
+      " Do not write product code, edit your own Notes to carry execution, work more than one ticket per session (research excepted), pick a prototype variant for the user, or treat a `task` that looks like a build slice as mis-typed.",
     nextStep:
       "Charting ends after creating tickets; a resolved ticket ends with the next frontier ticket; a clear map ends by recommending /to-spec #<map>.",
     prerequisite:

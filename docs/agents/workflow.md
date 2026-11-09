@@ -42,6 +42,48 @@ A later step entered early (for example `/implement` with no spec or tickets) fi
 | `/code-review`     | Fixing; looping until clean (it never converges); spawning more reviewers (known recursion bug)                                                                                                                             | Findings by axis; fixes are a new `/implement` pass; merge only after a review                                                                                                                                                                                                               |
 | `/retro`           | Changing anything before the user picks a candidate                                                                                                                                                                         | The picked candidates as tickets or a grill                                                                                                                                                                                                                                                  |
 
+## Switching between grilling and wayfinder
+
+The split is session count, not importance: `/grill-with-docs` plans in one session, `/wayfinder` across several. Wayfinder is slower and denser, and reaching for it on a well-scoped feature is the common mistake, so grilling is the default. A switch is always a prompt to the user, never automatic. Both are user-invoked, so the agent only offers the exact text to type. A request small enough for no skill gets no prompt, and the agent reads the target skill's `SKILL.md` before recommending it.
+
+The thresholds below are estimates, to be tuned by use. What real sessions showed is recorded on [#99](https://github.com/nemchik/biome-plugin-suitescript/issues/99).
+
+### Grilling to wayfinder
+
+Prompt when two or more of these hold:
+
+- The destination cannot be stated narrowly (a spec, a decision or one change); every answer widens it.
+- After about three rounds the frontier still grows: new branches arrive faster than they close.
+- The build plainly would not fit one session (roughly the ~150k-token "smart zone") once decided.
+- Several independent areas each need their own decisions, research or a prototype first.
+- Facts outside the repo block decisions and cannot be looked up in one pass.
+- The session is nearing the smart zone before it has reached shared understanding.
+
+The prompt names the signals seen, says the session has outgrown one window, and gives a ready-to-paste `/wayfinder <destination>` line seeded from the grilling. Staying in the same session is the first choice (the grilling is the primary source). If the window is nearly full, offer `/compact` with an instruction naming what to keep. Use `/handoff` only when the work moves harness, directory or colleague.
+
+### Wayfinder to grilling (or past it)
+
+Prompt, with the same seed, when:
+
+- Charting finds no fog and the whole journey fits one session: `/grill-with-docs` to finish the decisions, or `/implement` if nothing is left to decide.
+- Every decision is already made: `/to-spec`, skipping the map.
+- The map is cleared: `/to-spec #<map>`, then `/to-tickets`.
+
+Do not offer a switch mid-map for a single `wayfinder:grilling` ticket (it stays inside the map and is resolved by grilling in a fresh session), and not while a ticket is claimed.
+
+### Seed format
+
+Every prompt carries a seed so nothing is re-explained:
+
+```text
+/wayfinder <proposed destination>
+Settled: <decision, one line each>
+Open (candidate fog): <open question, one line each>
+Out of scope: <what is excluded>
+```
+
+Use the same four lines after `/grill-with-docs`, `/to-spec` or `/implement`, whichever the switch recommends.
+
 ## Standing rules
 
 - Write files with the Write or Edit tool, never shell heredocs, and keep scripts in the scratchpad.
