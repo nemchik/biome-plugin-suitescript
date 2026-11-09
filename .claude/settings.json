@@ -10,5 +10,16 @@
         ]
       }
     ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm run verify:doctor)",
+      "Bash(npm run verify:run *)",
+      "Bash(npm run verify:deploy)"
+    ],
+    "deny": [
+      "Bash(npm run verify:deploy *--approved*)",
+      "Bash(npm run verify:cleanup *--approved*)"
+    ]
   }
 }
