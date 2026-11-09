@@ -8,17 +8,18 @@ A `UserPromptSubmit` hook (`.claude/hooks/flow-reminders.ts`, registered in `.cl
 
 Read the issue, pick the step from what the tracker shows, tell the user which step that is, and **recommend the next slash command when the step ends**, naming the exact text to type. Do not start a step the user has not chosen, and do not do another step's work. Small, decided work goes to `/implement` in the same window; multi-session work goes to `/to-spec` or `/to-tickets`.
 
-| State of issue N                                | Step to recommend                                                |
-| ----------------------------------------------- | ---------------------------------------------------------------- |
-| No decisions recorded, or open design questions | `/grill-with-docs` (or `/wayfinder` when it is too big)          |
-| Decided, and small                              | `/implement`                                                     |
-| Decided, multi-session, no spec                 | `/to-spec` (or `/to-tickets` straight from the thread)           |
-| A spec exists, no tickets                       | `/to-tickets`                                                    |
-| Tickets exist and an unblocked one is open      | `/implement` (one ticket) or `/implement-spec` (the whole graph) |
-| An open PR closes it                            | `/code-review`, then merge                                       |
-| Merged                                          | `/retro` if the session was rough                                |
-| A wayfinder map with open frontier tickets      | `/wayfinder #<map>`                                              |
-| A wayfinder map with no tickets left            | `/to-spec #<map>`                                                |
+| State of issue N                                | Step to recommend                                                                                     |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| No decisions recorded, or open design questions | `/grill-with-docs` (or `/wayfinder` when it is too big)                                               |
+| Decided, and small                              | `/implement`                                                                                          |
+| Decided, multi-session, no spec                 | `/to-spec` (or `/to-tickets` straight from the thread)                                                |
+| A spec exists, no tickets                       | `/to-tickets`                                                                                         |
+| Tickets exist and an unblocked one is open      | `/implement` (one ticket) or `/implement-spec` (the whole graph)                                      |
+| Committed and reviewed, no PR yet               | Ask the agent to push the branch and open a PR that closes N (it loads `pr` for the body), then merge |
+| An open PR closes it                            | `/code-review`, then merge                                                                            |
+| Merged                                          | `/retro` if the session was rough                                                                     |
+| A wayfinder map with open frontier tickets      | `/wayfinder #<map>`                                                                                   |
+| A wayfinder map with no tickets left            | `/to-spec #<map>`                                                                                     |
 
 A later step entered early (for example `/implement` with no spec or tickets) first checks whether the earlier steps happened or whether the issue already holds enough to proceed, and says which. If not, it recommends the missing step before doing anything else.
 
@@ -39,7 +40,7 @@ A later step entered early (for example `/implement` with no spec or tickets) fi
 | `/to-tickets`      | Code; publishing before the quiz is approved; closing the parent; the `ready-for-agent` label on a spec                                                                                                                     | `/implement` per ticket in a fresh window, or `/implement-spec`                                                                                                                                                                                                                              |
 | `/implement`       | Reopening the plan; interviewing; building on the default branch                                                                                                                                                            | Commit first, then `/code-review` (fresh session), then close the ticket and tick its criteria (`/implement` does neither)                                                                                                                                                                   |
 | `/implement-spec`  | Reopening the plan; interviewing; building on the default branch                                                                                                                                                            | Commit, then `/code-review`, then close the tickets and tick their criteria                                                                                                                                                                                                                  |
-| `/code-review`     | Fixing; looping until clean (it never converges); spawning more reviewers (known recursion bug)                                                                                                                             | Findings by axis; fixes are a new `/implement` pass; merge only after a review                                                                                                                                                                                                               |
+| `/code-review`     | Fixing; looping until clean (it never converges); spawning more reviewers (known recursion bug)                                                                                                                             | Findings by axis; fixes are a new `/implement` pass; then the user asks the agent to push and open the PR (`pr` shapes the body, `Closes #N`); merge only after a review                                                                                                                     |
 | `/retro`           | Changing anything before the user picks a candidate                                                                                                                                                                         | The picked candidates as tickets or a grill                                                                                                                                                                                                                                                  |
 
 ## Switching between grilling and wayfinder
