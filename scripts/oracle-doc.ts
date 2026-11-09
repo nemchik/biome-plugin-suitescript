@@ -76,13 +76,20 @@ function decodeEntities(text: string): string {
 /** Strips tags and scripts from a page and keeps block structure as line breaks. */
 export function htmlToText(html: string): string {
   const body = /<body[^>]*>([\s\S]*)<\/body>/i.exec(html)?.[1] ?? html;
-  const stripped = body.replace(TAG, (token) => {
-    // One pass over the markup: a removed piece can never join its
-    // neighbours into a new tag, which chained replaces allow.
-    if (BLOCK_END.test(token)) return "\n";
-    if (CELL_END.test(token)) return "\t";
-    return "";
-  });
+  // One pass over the markup, assembling the text piece by piece: a removed
+  // piece can never join its neighbours into a new tag, which chained
+  // replaces allow.
+  const pieces: string[] = [];
+  let last = 0;
+  for (const match of body.matchAll(TAG)) {
+    const token = match[0];
+    pieces.push(body.slice(last, match.index));
+    if (BLOCK_END.test(token)) pieces.push("\n");
+    else if (CELL_END.test(token)) pieces.push("\t");
+    last = match.index + token.length;
+  }
+  pieces.push(body.slice(last));
+  const stripped = pieces.join("");
   // Tidy the whitespace first and decode last, so nothing rewrites the text
   // after an entity has become a character.
   const tidy = stripped
