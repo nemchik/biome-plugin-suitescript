@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { parseSync } from "oxc-parser";
 import { MODULES } from "../src/lib/modules.ts";
 import type { Alternative, Typings } from "../src/lib/typings.ts";
-import { GAPS } from "./typings-gaps.ts";
+import { EXPORT_GAPS, GAPS } from "./typings-gaps.ts";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const typesDir = join(root, "node_modules/@hitc/netsuite-types/N");
@@ -415,6 +415,16 @@ export function extractTypings(applyGaps = true): Typings {
           ...new Set([...alternative[1], ...gap.options]),
         ].sort();
       }
+    }
+    for (const gap of EXPORT_GAPS) {
+      const entry = out[gap.module];
+      const exports = entry?.exports;
+      if (!entry || !exports) {
+        throw new Error(
+          `${gap.module} has no export list to add ${gap.name} to (unknown or re-exports everything)`,
+        );
+      }
+      entry.exports = [...new Set([...exports, gap.name])].sort();
     }
   }
   return out;

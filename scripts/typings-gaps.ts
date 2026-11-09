@@ -1,8 +1,11 @@
-// Options Oracle documents that @hitc/netsuite-types does not list yet. The
-// generated data adds them so noUnknownOptions does not report valid code. Each
-// entry cites Oracle's page; remove it once the typings have the option (the typings
-// test fails when one is no longer needed). The render options are proposed upstream in
+// Things Oracle documents that @hitc/netsuite-types does not list yet (a typings
+// gap). The generated data adds them so the rules do not report valid code. Each
+// entry cites Oracle's page; remove it once the typings have the option or member
+// (the typings test fails when one is no longer needed). The render options are
+// proposed upstream in
 // https://github.com/headintheclouddev/typings-suitescript-2.0/pull/382.
+
+/** Options of a function that the typings lack (an option gap). */
 export interface Gap {
   module: string;
   fn: string;
@@ -30,5 +33,20 @@ export const GAPS: Gap[] = [
     module: "N/render",
     options: ["inCustLocale"],
     source: `${HELP}section_457552429198.html`,
+  },
+];
+
+/** A module member that the typings lack (a member gap). */
+export interface ExportGap {
+  module: string;
+  name: string;
+  source: string;
+}
+
+export const EXPORT_GAPS: ExportGap[] = [
+  {
+    module: "N/util",
+    name: "isAsyncFunction",
+    source: `${HELP}section_159485198809.html`,
   },
 ];

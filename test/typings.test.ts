@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { extractTypings } from "../scripts/typings-extract.ts";
-import { GAPS } from "../scripts/typings-gaps.ts";
+import { EXPORT_GAPS, GAPS } from "../scripts/typings-gaps.ts";
 import { TYPINGS } from "../src/lib/typings-data.ts";
 
 test("the generated typings data matches the installed type definitions (run npm run sync-typings)", () => {
@@ -37,6 +37,40 @@ test("each known typings gap is still a gap (remove it from scripts/typings-gaps
         `${gap.fn} now lists ${option}; remove the gap`,
       );
     }
+  }
+});
+
+test("each known member gap is still a gap (remove it from scripts/typings-gaps.ts once fixed)", () => {
+  const raw = extractTypings(false);
+  for (const gap of EXPORT_GAPS) {
+    const exports = raw[gap.module]?.exports;
+    assert.ok(Array.isArray(exports), `${gap.module} lists its exports`);
+    assert.ok(
+      !exports.includes(gap.name),
+      `${gap.module} now exports ${gap.name}; remove the gap`,
+    );
+  }
+});
+
+test("a member gap adds the member to the module's exports", () => {
+  assert.ok(
+    extractTypings(true)["N/util"]?.exports?.includes("isAsyncFunction"),
+  );
+  assert.ok(
+    !extractTypings(false)["N/util"]?.exports?.includes("isAsyncFunction"),
+  );
+});
+
+test("a member gap on a module without an export list is an error", () => {
+  const gap = { module: "N/noSuchModule", name: "nope", source: "test" };
+  EXPORT_GAPS.push(gap);
+  try {
+    assert.throws(
+      () => extractTypings(true),
+      /N\/noSuchModule has no export list/,
+    );
+  } finally {
+    EXPORT_GAPS.splice(EXPORT_GAPS.indexOf(gap), 1);
   }
 });
 

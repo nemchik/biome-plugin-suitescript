@@ -3958,6 +3958,7 @@ export const TYPINGS: Typings = {
       "each",
       "extend",
       "isArray",
+      "isAsyncFunction",
       "isBoolean",
       "isDate",
       "isFunction",
