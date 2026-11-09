@@ -38,18 +38,24 @@ export function resolveUrl(input: string): string {
   return `${HELP_BASE}section_${id[1]}.html`;
 }
 
+/** A comment, a whole script-like element, or any single tag, matched in one alternation. */
+const TAG =
+  /<!--[\s\S]*?-->|<(script|style|noscript|svg)\b[\s\S]*?<\/\1\s*>|<[^>]*>/gi;
+const BLOCK_END =
+  /^<\/(?:p|div|h[1-6]|li|tr|table|ul|ol|pre|section|article)\s*>$|^<br\s*\/?>$/i;
+const CELL_END = /^<\/t[dh]\s*>$/i;
+
 /** Strips tags and scripts from a page and keeps block structure as line breaks. */
 export function htmlToText(html: string): string {
   const body = /<body[^>]*>([\s\S]*)<\/body>/i.exec(html)?.[1] ?? html;
   return body
-    .replace(/<(script|style|noscript|svg)\b[\s\S]*?<\/\1>/gi, "")
-    .replace(/<!--[\s\S]*?-->/g, "")
-    .replace(
-      /<\/(p|div|h[1-6]|li|tr|table|ul|ol|pre|section|article)>|<br\s*\/?>/gi,
-      "\n",
-    )
-    .replace(/<\/t[dh]>/gi, "\t")
-    .replace(/<[^>]+>/g, "")
+    .replace(TAG, (token) => {
+      // One pass over the markup: a removed piece can never join its
+      // neighbours into a new tag, which chained replaces allow.
+      if (BLOCK_END.test(token)) return "\n";
+      if (CELL_END.test(token)) return "\t";
+      return "";
+    })
     .replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, entity: string) => {
       if (entity[0] === "#") {
         const code =

@@ -42,3 +42,8 @@ test("no argument exits non-zero with usage", () => {
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /Usage/);
 });
+
+test("htmlToText leaves no tag behind when a removed piece would join its neighbours", () => {
+  assert.doesNotMatch(htmlToText("a<scr<!-- -->ipt>b"), /<script/i);
+  assert.doesNotMatch(htmlToText("<<script>x</script>b>c"), /<\/?script/i);
+});
