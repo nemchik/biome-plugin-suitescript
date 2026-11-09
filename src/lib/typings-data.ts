@@ -16,7 +16,7 @@ export const TYPINGS: Typings = {
       ],
       executeBulk: [
         [
-          ["condition", "id", "paramCallback", "params", "recordType"],
+          ["id", "recordType"],
           ["condition", "id", "paramCallback", "params", "recordType"],
         ],
       ],
@@ -2424,6 +2424,7 @@ export const TYPINGS: Typings = {
       "create",
       "createPeriod",
       "createRelativeDate",
+      "delete",
       "load",
       "runSuiteQL",
       "runSuiteQLPaged",
@@ -2437,6 +2438,7 @@ export const TYPINGS: Typings = {
           ["dateId", "value"],
         ],
       ],
+      delete: [[["id"], ["id"]]],
       load: [[["id"], ["id"]]],
       runSuiteQL: [[["query"], ["customScriptId", "params", "query"]]],
       runSuiteQLPaged: [
@@ -2873,7 +2875,7 @@ export const TYPINGS: Typings = {
       toSavedSearch: [[["id"], ["id"]]],
       toSavedSearchResult: [[["id"], ["id"]]],
       toSearch: [[["search"], ["search"]]],
-      toSearchResult: [[["Search"], ["Search"]]],
+      toSearchResult: [[["search"], ["search"]]],
       toSuitelet: [
         [
           ["deploymentId", "scriptId"],
