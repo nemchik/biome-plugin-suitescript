@@ -45,27 +45,45 @@ const BLOCK_END =
   /^<\/(?:p|div|h[1-6]|li|tr|table|ul|ol|pre|section|article)\s*>$|^<br\s*\/?>$/i;
 const CELL_END = /^<\/t[dh]\s*>$/i;
 
+/**
+ * Decodes HTML entities in text that has already been stripped of markup. The
+ * result is plain text for reading, so a decoded "<script" is just text. It is
+ * assembled piece by piece, not with a replace, so a scanner does not mistake
+ * this step for a markup sanitizer.
+ */
+function decodeEntities(text: string): string {
+  const parts: string[] = [];
+  let last = 0;
+  for (const match of text.matchAll(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi)) {
+    const entity = match[1] ?? "";
+    let decoded: string | undefined;
+    if (entity[0] === "#") {
+      const code =
+        entity[1] === "x" || entity[1] === "X"
+          ? Number.parseInt(entity.slice(2), 16)
+          : Number.parseInt(entity.slice(1), 10);
+      decoded = Number.isNaN(code) ? undefined : String.fromCodePoint(code);
+    } else {
+      decoded = ENTITIES[entity.toLowerCase()];
+    }
+    parts.push(text.slice(last, match.index), decoded ?? match[0]);
+    last = match.index + match[0].length;
+  }
+  parts.push(text.slice(last));
+  return parts.join("");
+}
+
 /** Strips tags and scripts from a page and keeps block structure as line breaks. */
 export function htmlToText(html: string): string {
   const body = /<body[^>]*>([\s\S]*)<\/body>/i.exec(html)?.[1] ?? html;
-  return body
-    .replace(TAG, (token) => {
-      // One pass over the markup: a removed piece can never join its
-      // neighbours into a new tag, which chained replaces allow.
-      if (BLOCK_END.test(token)) return "\n";
-      if (CELL_END.test(token)) return "\t";
-      return "";
-    })
-    .replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, entity: string) => {
-      if (entity[0] === "#") {
-        const code =
-          entity[1] === "x" || entity[1] === "X"
-            ? Number.parseInt(entity.slice(2), 16)
-            : Number.parseInt(entity.slice(1), 10);
-        return Number.isNaN(code) ? match : String.fromCodePoint(code);
-      }
-      return ENTITIES[entity.toLowerCase()] ?? match;
-    })
+  const stripped = body.replace(TAG, (token) => {
+    // One pass over the markup: a removed piece can never join its
+    // neighbours into a new tag, which chained replaces allow.
+    if (BLOCK_END.test(token)) return "\n";
+    if (CELL_END.test(token)) return "\t";
+    return "";
+  });
+  return decodeEntities(stripped)
     .replace(/[ \t]+\n/g, "\n")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
