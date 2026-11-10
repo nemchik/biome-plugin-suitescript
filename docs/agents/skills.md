@@ -27,3 +27,5 @@ Claude Code reads `.claude/skills/` instead. `.claude/skills/` is gitignored and
 ## Updates
 
 `.github/workflows/sync-skills.yml` runs `npm run skills:update` every Monday and opens a pull request when anything changed. A change under a `netsuite-*` skill needs a review of the rules that cite it against `docs/rule-priority.md` before merging. Do not edit files in `.agents/skills/` by hand: the next update overwrites them, and the lock hash stops matching.
+
+The workflow sets `AI_AGENT=claude` on the update step. A CI runner has no agent, and without it `skills update` targets every supported agent, including Eve, and writes a second copy of every skill to `agent/skills/` (pull request #107). A following step fails the job when anything outside `.agents/skills/` and `skills-lock.json` changed. Run the update locally only inside Claude Code or another detected agent, for the same reason.
