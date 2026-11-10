@@ -24,6 +24,12 @@ Claude Code reads `.claude/skills/` instead. `.claude/skills/` is gitignored and
 
 `skills:install` leaves skills that are already present as they are and fails in CI when a skill's content does not match the lock.
 
+## Plugins that duplicate the skills
+
+If you also have the `mattpocock-skills`, `netsuite-suitecloud`, `netsuite-ai-companion` or `netsuite-finance-analyst` Claude plugins installed, their skills load next to the committed ones as `/<plugin>:<skill>`. The repo's copy takes priority, so `.claude/settings.json` denies the plugin copy of every skill that this repo also carries. Plugin skills the repo does not carry (for example `mattpocock-skills:resolving-merge-conflicts` and the whole `netsuite-suiteskills` plugin) stay available. Disabling a whole plugin per machine (`enabledPlugins` in `.claude/settings.local.json`) is no longer needed.
+
+When a source adds a skill and a plugin carries it too, add a matching `Skill(<plugin>:<skill>)` deny entry.
+
 ## Updates
 
 `.github/workflows/sync-skills.yml` runs `npm run skills:update` every Monday and opens a pull request when anything changed. A change under a `netsuite-*` skill needs a review of the rules that cite it against `docs/rule-priority.md` before merging. Do not edit files in `.agents/skills/` by hand: the next update overwrites them, and the lock hash stops matching.
