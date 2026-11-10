@@ -99,6 +99,7 @@
     }
   },
   "allowScripts": {
-    "lefthook": true
+    "lefthook": true,
+    "@oracle/suitecloud-cli": true
   }
 }
