@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
@@ -45,4 +45,14 @@ test("the pin check rejects a tag reference and a missing version comment", () =
     "actions/checkout@v4",
   ]);
   assert.deepEqual(externalUses("- uses: ./.github/actions/setup"), []);
+});
+
+test("only ci and code-quality accept the SuiteCloud SDK license (ADR 0008)", () => {
+  const accepting = actionFiles()
+    .filter((file) =>
+      /suitecloud-sdk:\s*"true"/.test(readFileSync(file, "utf8")),
+    )
+    .map((file) => basename(file))
+    .sort();
+  assert.deepEqual(accepting, ["ci.yml", "code-quality.yml"]);
 });

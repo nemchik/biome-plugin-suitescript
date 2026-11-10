@@ -43,6 +43,8 @@ Oracle's skills, the type definitions and Oracle's documentation contradict each
 - Document every verification as a page in `docs/verification/results/` (the test, the NetSuite version, the results, the explanation and the decision). Never put an account number, account URL, user, token or real record id in it; that is a security risk in a public repository.
 - Read "Lessons" in `docs/verification/automation.md` before writing probes: batch them so the user deploys once, and run `probe-zero` after each deploy. When you hit a runner, deploy, probe or sandbox problem that page does not describe, add it there in the same pull request (what happened, what it cost, how to avoid it), and correct any entry that proves wrong.
 
+Accepting Oracle's SuiteCloud SDK license is the maintainer's act, never an agent's: do not set `SUITECLOUD_CLI_ACCEPT_LICENSE` in a shell or a file. The maintainer authorized CI jobs that pass `suitecloud-sdk: "true"` to the setup action (ADR 0008); that does not extend to agents or to other jobs.
+
 ## Releases
 
 Publishing uses npm trusted publishing (OIDC) from `.github/workflows/release.yml`; do not add an `NPM_TOKEN`. npm tokens that bypass 2FA lose publishing around January 2027.
