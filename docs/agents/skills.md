@@ -28,4 +28,11 @@ Claude Code reads `.claude/skills/` instead. `.claude/skills/` is gitignored and
 
 `.github/workflows/sync-skills.yml` runs `npm run skills:update` every Monday and opens a pull request when anything changed. A change under a `netsuite-*` skill needs a review of the rules that cite it against `docs/rule-priority.md` before merging. Do not edit files in `.agents/skills/` by hand: the next update overwrites them, and the lock hash stops matching.
 
-The workflow sets `AI_AGENT=claude` on the update step. A CI runner has no agent, and without it `skills update` targets every supported agent, including Eve, and writes a second copy of every skill to `agent/skills/` (pull request #107). A following step fails the job when anything outside `.agents/skills/` and `skills-lock.json` changed. Run the update locally only inside Claude Code or another detected agent, for the same reason.
+Two things make the update and the lock file reproducible across machines, and `scripts/skills.ts` (behind every `npm run skills*` command) handles both:
+
+- **Line endings.** `skills-lock.json` holds a hash of each skill's files, taken from a git clone of the source. A clone with `core.autocrlf=true` (the Windows default) has CRLF endings and a different hash from CI's, so every skill reads as outdated. The script forces `core.autocrlf=false` for the CLI's git calls only, leaving your git config alone. Run the CLI through `npm run skills -- <args>`, never as a bare `skills` or `npx skills`, or a Windows run writes CRLF hashes into the lock.
+- **Agent detection.** A CI runner has no agent, and without one `skills update` targets every supported agent, including Eve, and writes a second copy of every skill to `agent/skills/` (pull request #107). The script sets `AI_AGENT=claude` unless the environment names an agent, and the workflow sets it too. A step after the update fails the job when anything outside `.agents/skills/` and `skills-lock.json` changed.
+
+Biome ignores `skills-lock.json` (`biome.jsonc`): the CLI generates it, and its key order (`version` first) fails `useSortedKeys`.
+
+The update pull request is opened with the default token, so GitHub does not start the required checks on it. A maintainer has to start them (approve the workflow runs, or push to the branch) and approve the pull request as code owner before it merges.
