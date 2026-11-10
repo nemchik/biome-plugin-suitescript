@@ -56,6 +56,10 @@ _Avoid_: Harness
 Two sources (Oracle agent skills, type definitions, Oracle documentation) that disagree, or one that disagrees with itself. Each is tracked until a verification settles it.
 _Avoid_: Conflict (the source tiers resolve a conflict between sources; a contradiction is what needs verifying)
 
+**Typings gap**:
+Something Oracle documents that the type definitions omit, patched locally until the type definitions catch up. An **option gap** is a missing function option; a **member gap** is a missing module member. Each cites Oracle's page and is removed once the type definitions have it.
+_Avoid_: Workaround, override
+
 **Generic JavaScript rule**:
 A rule that applies to JavaScript in general rather than to SuiteScript. It is added only when it explicitly benefits SuiteScript and Biome does not already cover it.
 _Avoid_: General rule

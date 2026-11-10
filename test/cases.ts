@@ -54,6 +54,7 @@ export const CASES: [string, string, number][] = [
   ["noGlobalShadowing", "r-realworld.js", 0],
   ["requireQueryOptions", "r-realworld.js", 0],
   ["noUnknownModuleMember", "r-realworld.js", 0],
+  ["noUnknownModuleMember", "r-export-gaps.js", 0],
   ["noUnknownOptions", "r-realworld.js", 0],
   ["noPositionalOptions", "r-realworld.js", 1],
   ["noServerConsole", "noServerConsole.js", 5],
