@@ -14,7 +14,15 @@ jobs:
       - uses: ./.github/actions/setup
         with:
           cache: "false"
+      # The runner has no agent, so the CLI targets every supported agent and writes
+      # `agent/skills` (Eve). AI_AGENT=claude limits it to `.agents/skills`.
       - run: npm run skills:update
+        env:
+          AI_AGENT: claude
+      - name: Fail on files outside the skills
+        run: |
+          stray=$(git status --porcelain | grep -vE " (\.agents/skills/|skills-lock\.json)" || true)
+          if [ -n "$stray" ]; then echo "$stray"; exit 1; fi
       - uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8.1.3
         with:
           branch: chore/update-skills
