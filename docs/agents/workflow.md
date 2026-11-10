@@ -23,6 +23,10 @@ Read the issue, pick the step from what the tracker shows, tell the user which s
 
 A later step entered early (for example `/implement` with no spec or tickets) first checks whether the earlier steps happened or whether the issue already holds enough to proceed, and says which. If not, it recommends the missing step before doing anything else.
 
+## Fixing what a maintainer's change broke
+
+Treat a committed or staged maintainer change as a fence: learn why it stands before a fix removes it. Read its commit message and linked issue; when they do not say, ask the maintainer in one question before editing, and present the fix only after the answer. A rule that bars the agent from an act (such as accepting a license) binds the agent alone; whether CI or a human may do it is the maintainer's call, recorded in an ADR.
+
 ## Which skills to recommend and which to load
 
 - **User-invoked** (only the user can start them, so recommend the slash command and stop): `/grill-with-docs`, `/grill-me`, `/to-spec`, `/to-tickets`, `/implement`, `/implement-spec`, `/wayfinder`, `/retro`, `/triage`, `/handoff`, `/improve-codebase-architecture`, `/to-questionnaire`. The skills are installed but not model-invocable, so never claim one is missing.
