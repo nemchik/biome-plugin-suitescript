@@ -50,9 +50,25 @@ test("the pin check rejects a tag reference and a missing version comment", () =
 test("only ci and code-quality accept the SuiteCloud SDK license (ADR 0008)", () => {
   const accepting = actionFiles()
     .filter((file) =>
-      /suitecloud-sdk:\s*"true"/.test(readFileSync(file, "utf8")),
+      /suitecloud-sdk:\s*["']?true["']?/.test(readFileSync(file, "utf8")),
     )
     .map((file) => basename(file))
     .sort();
   assert.deepEqual(accepting, ["ci.yml", "code-quality.yml"]);
+});
+
+test("only the setup action sets the license variable, off by default, and skips scripts otherwise (ADR 0008)", () => {
+  const setters = actionFiles()
+    .filter((file) =>
+      readFileSync(file, "utf8").includes("SUITECLOUD_CLI_ACCEPT_LICENSE"),
+    )
+    .map((file) => basename(file));
+  assert.deepEqual(setters, ["action.yml"]);
+
+  const setup = readFileSync(
+    join(github, "actions", "setup", "action.yml"),
+    "utf8",
+  );
+  assert.match(setup, /suitecloud-sdk:[\s\S]*?default: "false"/);
+  assert.match(setup, /npm ci --ignore-scripts/);
 });

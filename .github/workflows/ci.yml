@@ -21,8 +21,6 @@ jobs:
           suitecloud-sdk: "true"
       - name: Use latest Biome
         if: matrix.biome == 'latest'
-        env:
-          SUITECLOUD_CLI_ACCEPT_LICENSE: "true"
         run: npm install --no-save @biomejs/biome@latest @biomejs/runtime@latest
       - run: npm run build && git diff --exit-code
         if: matrix.biome == 'locked'

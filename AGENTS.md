@@ -24,6 +24,8 @@ Oracle's and Matt Pocock's skills are committed in `.agents/skills/` and managed
 
 Pin each action to its latest stable release (`gh api repos/<owner>/<repo>/releases/latest`); `test/actions.test.ts` enforces the SHA and the semver comment. Tool versions come from `package.json` `devEngines` (Node, npm), mirrored in `.nvmrc` and `.tool-versions`; change them in all three. The CI job that tests against the latest Biome is intentionally unpinned.
 
+Accepting Oracle's SuiteCloud SDK license is the maintainer's act, never an agent's: do not set `SUITECLOUD_CLI_ACCEPT_LICENSE` in a shell or a file. The maintainer authorized the CI jobs that pass `suitecloud-sdk: "true"` to the setup action, and only the setup action sets the variable (ADR 0008); that does not extend to agents or to other jobs.
+
 ## Code
 
 Source is TypeScript in `src/` and compiles to `dist/` (gitignored, published). Run `npm run format` before committing; CI runs `biome ci --error-on-warnings` and `tsc`. Never edit a generated file by hand: the manifest and presets come from `npm run build`, the module and typings data from `npm run sync-modules` and `npm run sync-typings`, and the README rules table, rule pages and migration table from `npm run readme` and `npm run docs` (data in `scripts/rule-sources.ts` and `test/cases.ts`). The file headers and the CI and tests name each generator, and fail on a hand edit.
@@ -42,8 +44,6 @@ Oracle's skills, the type definitions and Oracle's documentation contradict each
 - When skills, type definitions or documentation contradict each other or themselves, add the contradiction to `docs/verification/contradictions.md`, cite its id in the rule's comment and mark the claim unverified until a test settles it.
 - Document every verification as a page in `docs/verification/results/` (the test, the NetSuite version, the results, the explanation and the decision). Never put an account number, account URL, user, token or real record id in it; that is a security risk in a public repository.
 - Read "Lessons" in `docs/verification/automation.md` before writing probes: batch them so the user deploys once, and run `probe-zero` after each deploy. When you hit a runner, deploy, probe or sandbox problem that page does not describe, add it there in the same pull request (what happened, what it cost, how to avoid it), and correct any entry that proves wrong.
-
-Accepting Oracle's SuiteCloud SDK license is the maintainer's act, never an agent's: do not set `SUITECLOUD_CLI_ACCEPT_LICENSE` in a shell or a file. The maintainer authorized CI jobs that pass `suitecloud-sdk: "true"` to the setup action (ADR 0008); that does not extend to agents or to other jobs.
 
 ## Releases
 

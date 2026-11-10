@@ -139,7 +139,7 @@ The first batch of eight probes (#67 to #73 and #41) needed four deploys where o
 
 12. **Probes are linted by CI (`biome ci --error-on-warnings`).** A probe that deliberately does what a rule forbids (`instanceof Array` in [global-tostring](results/global-tostring.md)) needs a `// biome-ignore lint/...: <why>` comment, and a probe written from a script on Windows needs `npm run format` for its line endings. Run `npx biome ci --error-on-warnings` before committing, not just `npm test`.
 
-13. **The CLI postinstall exits 3 on a headless machine.** After `@oracle/suitecloud-cli` was added to `allowScripts`, CI installs failed with `Set SUITECLOUD_CLI_ACCEPT_LICENSE=true to accept the FUTC license`: with the variable unset the script opens the license file with `start`, `open` or `xdg-open`, and that command fails without a desktop. Two CI runs were red until fixed. A desktop install is fine; for a headless job either accept the license (ADR 0008, `suitecloud-sdk: "true"` on the setup action) or install with `--ignore-scripts` (the default).
+13. **The CLI postinstall exits 3 on a headless machine.** After `@oracle/suitecloud-cli` was added to `allowScripts` (ea83a88), CI installs failed with `Set SUITECLOUD_CLI_ACCEPT_LICENSE=true to accept the FUTC license`: with the variable unset the script opens the license file with `start`, `open` or `xdg-open`, and that command fails without a desktop. `CI` and `Code quality` stayed red until fixed. A desktop install is fine; for a headless job either accept the license (ADR 0008, `suitecloud-sdk: "true"` on the setup action) or install with `--ignore-scripts` (the default).
 
 ## Keeping this page current
 
