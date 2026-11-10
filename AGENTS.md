@@ -24,6 +24,8 @@ Oracle's and Matt Pocock's skills are committed in `.agents/skills/` and managed
 
 Pin each action to its latest stable release (`gh api repos/<owner>/<repo>/releases/latest`); `test/actions.test.ts` enforces the SHA and the semver comment. Tool versions come from `package.json` `devEngines` (Node, npm), mirrored in `.nvmrc` and `.tool-versions`; change them in all three. The CI job that tests against the latest Biome is intentionally unpinned.
 
+Accepting Oracle's SuiteCloud SDK license is the maintainer's act, never an agent's: do not set `SUITECLOUD_CLI_ACCEPT_LICENSE` in a shell or a file. The maintainer authorized the CI jobs that pass `suitecloud-sdk: "true"` to the setup action, and only the setup action sets the variable (ADR 0008); that does not extend to agents or to other jobs.
+
 ## Code
 
 Source is TypeScript in `src/` and compiles to `dist/` (gitignored, published). Run `npm run format` before committing; CI runs `biome ci --error-on-warnings` and `tsc`. Never edit a generated file by hand: the manifest and presets come from `npm run build`, the module and typings data from `npm run sync-modules` and `npm run sync-typings`, and the README rules table, rule pages and migration table from `npm run readme` and `npm run docs` (data in `scripts/rule-sources.ts` and `test/cases.ts`). The file headers and the CI and tests name each generator, and fail on a hand edit.

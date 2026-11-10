@@ -6,6 +6,14 @@ inputs:
     description: Restore and save the npm cache. Set to "false" in workflows that publish or hold secrets.
     default: "true"
 
+  suitecloud-sdk:
+    description: >-
+      Accept Oracle's FUTC license (ADR 0008) so the SuiteCloud CLI postinstall
+      downloads its jar. Set to "true" only in jobs without publishing rights
+      or secrets. When "false", install scripts are skipped (`--ignore-scripts`):
+      on a headless runner the postinstall exits 3 without the license.
+    default: "false"
+
 runs:
   using: composite
   steps:
@@ -20,4 +28,11 @@ runs:
       run: npm install --global "npm@$(node -p "require('./package.json').devEngines.packageManager.version")"
     - name: Install npm dependencies
       shell: bash
-      run: npm ci
+      env:
+        SUITECLOUD_SDK: ${{ inputs.suitecloud-sdk }}
+      run: |
+        if [ "$SUITECLOUD_SDK" = "true" ]; then
+          SUITECLOUD_CLI_ACCEPT_LICENSE=true npm ci
+        else
+          npm ci --ignore-scripts
+        fi
