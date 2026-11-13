@@ -1,8 +1,4 @@
-import {
-  defineRule,
-  registerDiagnostic,
-  semantic,
-} from "@biomejs/runtime/plugin";
+import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 import { moduleOfReceiver, typingsOf } from "../lib/module-calls.ts";
 
 // A member the type definitions (Tier 2) do not list for a module enum
@@ -10,7 +6,7 @@ import { moduleOfReceiver, typingsOf } from "../lib/module-calls.ts";
 // option at runtime. The enum's module is resolved from the define() or import
 // binding of the receiver.
 export const noInvalidEnumMember = defineRule({
-  query: semantic("JS_STATIC_MEMBER_EXPRESSION"),
+  query: ast("JS_STATIC_MEMBER_EXPRESSION", { semantic: true }),
   run(node, { model }) {
     const [object, member] = node.children();
     if (object?.kind !== "JS_STATIC_MEMBER_EXPRESSION" || !member) return;
