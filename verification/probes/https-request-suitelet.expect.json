@@ -1,0 +1,13 @@
+{
+  "a RESTlet script id": "returned object",
+  "deploymentId only": "THROWS: SSS_MISSING_REQD_ARGUMENT: https.requestSuitelet: Missing a required argument: options.scriptId",
+  "no options": "THROWS: SSS_MISSING_REQD_ARGUMENT: https.requestSuitelet: Missing a required argument: options.scriptId",
+  "nonexistent script and deployment": "THROWS: UNEXPECTED_ERROR: An unexpected SuiteScript error has occurred",
+  "nonexistent, Authorization header": "THROWS: UNEXPECTED_ERROR: An unexpected SuiteScript error has occurred",
+  "nonexistent, external true": "THROWS: REQUEST_SUITELET_NO_LONGER_SUPPORTS_EXTERNAL_PARAMETER: SuiteScript API `https.requestSuitelet()` no longer supports `external` parameter.",
+  "nonexistent, SAFE guide params option": "THROWS: UNKNOWN_PARAM: Unknown parameter: deploymentId, scriptId.",
+  "nonexistent, urlParams as a string": "THROWS: SSS_INVALID_TYPE_ARG: You have entered an invalid type argument: options.urlParams",
+  "scriptId only": "THROWS: SSS_MISSING_REQD_ARGUMENT: https.requestSuitelet: Missing a required argument: options.deploymentId",
+  "typeofPromise": "function",
+  "typeofRequestSuitelet": "function"
+}
