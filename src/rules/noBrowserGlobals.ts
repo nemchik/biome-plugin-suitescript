@@ -1,8 +1,4 @@
-import {
-  defineRule,
-  registerDiagnostic,
-  semantic,
-} from "@biomejs/runtime/plugin";
+import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 import { scriptSide } from "../lib/script-side.ts";
 
 const BROWSER_GLOBALS = new Set([
@@ -20,7 +16,7 @@ const BROWSER_GLOBALS = new Set([
 // Server scripts run outside a browser, but TypeScript's DOM library lets
 // these names compile. Locals that reuse a name resolve to a binding and are left alone.
 export const noBrowserGlobals = defineRule({
-  query: semantic("JS_REFERENCE_IDENTIFIER"),
+  query: ast("JS_REFERENCE_IDENTIFIER", { semantic: true }),
   run(node, { model }) {
     if (!BROWSER_GLOBALS.has(node.text) || model.binding(node)) return;
     if (scriptSide(node) !== "server") return;

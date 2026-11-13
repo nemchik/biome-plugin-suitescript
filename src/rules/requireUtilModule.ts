@@ -1,8 +1,4 @@
-import {
-  defineRule,
-  registerDiagnostic,
-  semantic,
-} from "@biomejs/runtime/plugin";
+import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 import { inSuiteScriptModule } from "../lib/suitescript.ts";
 
 // Tier 0: docs/adr/0006-suitescript-globals-have-two-opposite-loading-styles.md.
@@ -16,7 +12,7 @@ import { inSuiteScriptModule } from "../lib/suitescript.ts";
 // noMissingModules leaves `util` alone. This is the opposite style to noUtilModule,
 // so enable only one of them.
 export const requireUtilModule = defineRule({
-  query: semantic("JS_REFERENCE_IDENTIFIER"),
+  query: ast("JS_REFERENCE_IDENTIFIER", { semantic: true }),
   run(node, { model }) {
     if (node.text !== "util" || model.binding(node)) return;
     const member = node.parent?.parent;

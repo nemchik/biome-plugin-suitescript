@@ -1,8 +1,4 @@
-import {
-  defineRule,
-  registerDiagnostic,
-  semantic,
-} from "@biomejs/runtime/plugin";
+import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 import { MODULES } from "../lib/modules.ts";
 import { inSuiteScriptModule } from "../lib/suitescript.ts";
 
@@ -21,7 +17,7 @@ const ALIASES = new Map(
 // module was never added to `define()` or imported. Locals that shadow the
 // name resolve to a binding and are left alone.
 export const noMissingModules = defineRule({
-  query: semantic("JS_REFERENCE_IDENTIFIER"),
+  query: ast("JS_REFERENCE_IDENTIFIER", { semantic: true }),
   run(node, { model }) {
     const module = ALIASES.get(node.text);
     if (!module || model.binding(node)) return;

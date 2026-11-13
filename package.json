@@ -59,12 +59,12 @@
     "verify": "suitescript-verify"
   },
   "dependencies": {
-    "oxc-parser": "^0.157.0",
+    "oxc-parser": "^0.158.0",
     "tinyglobby": "^0.2.17"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.6.6",
-    "@biomejs/runtime": "2.6.6",
+    "@biomejs/biome": "2.6.7",
+    "@biomejs/runtime": "2.6.7",
     "@hitc/netsuite-types": "2026.2.6",
     "@oracle/suitecloud-cli": "4.1.1",
     "@types/node": "24.19.2",
@@ -75,7 +75,7 @@
     "typescript": "7.0.2"
   },
   "peerDependencies": {
-    "@biomejs/biome": "^2.6.4"
+    "@biomejs/biome": "^2.6.7"
   },
   "engines": {
     "node": ">=24"

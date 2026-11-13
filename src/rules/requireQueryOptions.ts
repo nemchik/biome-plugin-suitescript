@@ -1,8 +1,4 @@
-import {
-  defineRule,
-  registerDiagnostic,
-  semantic,
-} from "@biomejs/runtime/plugin";
+import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 import { moduleOfReceiver } from "../lib/module-calls.ts";
 import { MODULES } from "../lib/modules.ts";
 import { definedOptions } from "../lib/required-options.ts";
@@ -20,7 +16,7 @@ import { definedOptions } from "../lib/required-options.ts";
 // the binding cannot be resolved, a receiver named like another module's
 // conventional identifier (`search`) is skipped too.
 export const requireQueryOptions = defineRule({
-  query: semantic("JS_CALL_EXPRESSION"),
+  query: ast("JS_CALL_EXPRESSION", { semantic: true }),
   run(node, { model }) {
     const callee = node.callee?.text ?? "";
     const method = /(^|\.)(createColumn|createCondition|createSort)$/.exec(
