@@ -5,8 +5,6 @@ dist/
 .claude/skills/
 .claude/worktrees/
 
-# Runtime verification (docs/verification/automation.md): credentials and generated files
+# Runtime verification (docs/verification/automation.md): credentials, and the SDF project suitescript-verify generates
 verification/.env.local
-verification/sdf/project.json
-verification/sdf/src/FileCabinet/
-verification/sdf/*.log
+verification/sdf/

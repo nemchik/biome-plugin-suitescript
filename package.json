@@ -56,14 +56,7 @@
     "pretest": "npm run build",
     "test": "node --test test/*.test.ts",
     "typecheck": "tsc",
-    "verify:certificate": "node scripts/verify.ts certificate",
-    "verify:cleanup": "node scripts/verify.ts cleanup",
-    "verify:deploy": "node scripts/verify.ts deploy",
-    "verify:doctor": "node scripts/verify.ts doctor",
-    "verify:env": "node scripts/verify.ts env",
-    "verify:passkey": "node scripts/verify.ts passkey",
-    "verify:run": "node scripts/verify.ts run",
-    "verify:setup-ci": "node scripts/verify.ts setup-ci"
+    "verify": "suitescript-verify"
   },
   "dependencies": {
     "oxc-parser": "^0.157.0",
@@ -78,6 +71,7 @@
     "git-pull-run": "2.1.0",
     "lefthook": "2.2.2",
     "skills": "1.7.6",
+    "suitescript-verify": "0.1.0",
     "typescript": "7.0.2"
   },
   "peerDependencies": {

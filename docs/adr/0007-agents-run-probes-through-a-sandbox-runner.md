@@ -5,7 +5,7 @@ Verifying a claim about the platform used to need a person to paste a snippet in
 ## Decision
 
 - A **probe** is a module in `verification/probes/`. It cites the contradictions or rules it verifies, and has a results page of the same name. `npm test` checks these links without NetSuite.
-- The **runner** is a RESTlet in the sandbox. It runs a probe by name from a fixed list generated from the probes folder. It never runs code supplied in a request.
+- The **runner** is a RESTlet in the sandbox. It runs a probe by name from a fixed list generated from the probes folder. It never runs code supplied in a request. The request body is `{probe, params}`: a probe may take **validated, pattern-declared data parameters** (`@param <name> <pattern>` in its header, passed with `run --param name=value`), which the runner checks against the declared pattern and hands to the probe as strings, never as code (amended by ADR 0009).
 - The agent authenticates with OAuth 2.0 machine-to-machine (a certificate), through a dedicated least-privilege role. The SuiteCloud CLI is a pinned local dependency.
 - The runner stays deployed. Each deploy needs the maintainer's approval, enforced in code: a real deploy or cleanup needs `--approved` and a person typing a confirmation at a terminal, so an agent can not run it. A probe that writes needs a separate one.
 - Sandbox only, enforced twice: the tooling refuses a non-sandbox account, and the runner checks `runtime.envType`.

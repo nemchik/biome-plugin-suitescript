@@ -19,7 +19,7 @@ An unverified claim stays marked "unverified" in the rule's source comment and i
 
 ## For agents
 
-If you can run the test yourself, do. The NetSuite connector can not execute a script, but a **probe** can run in a sandbox through the verification runner: write `verification/probes/<slug>.js` and run `npm run verify:doctor`, then `npm run verify:run -- <slug> --draft` ([`automation.md`](automation.md), [ADR 0007](../adr/0007-agents-run-probes-through-a-sandbox-runner.md), [#74](https://github.com/nemchik/biome-plugin-suitescript/issues/74)). Setup is mostly the user's (browser login, role, certificate), so when the doctor fails, relay its next step and wait.
+If you can run the test yourself, do. The NetSuite connector can not execute a script, but a **probe** can run in a sandbox through the verification runner: write `verification/probes/<slug>.js` and run `npm run verify -- doctor`, then `npm run verify -- run <slug> --draft` ([`automation.md`](automation.md), [ADR 0007](../adr/0007-agents-run-probes-through-a-sandbox-runner.md), [ADR 0009](../adr/0009-the-verification-tooling-is-a-separate-package.md), [#74](https://github.com/nemchik/biome-plugin-suitescript/issues/74)). Setup is mostly the user's (browser login, role, certificate), so when the doctor fails, relay its next step and wait.
 
 Before you write a batch of probes read "Lessons" in [`automation.md`](automation.md): each probe change costs the user a deploy, and one bad probe can take the whole runner down. If you meet a problem with the runner, a deploy, a probe or the sandbox that the page does not describe, add it there in the same pull request, and correct an entry that turns out to be wrong.
 
@@ -110,6 +110,6 @@ What the results mean, and how they relate to what each source claims.
 What we decided because of the results, and which rules, comments or docs changed.
 ```
 
-`npm run verify:run -- <slug> --draft` writes this page for a probe, with the version, script, output and date filled in and scrubbed of identifiers. Replace each `TODO(verify)`: `npm test` fails while one is left.
+`npm run verify -- run <slug> --draft` writes this page for a probe, with the version, script, output and date filled in and scrubbed of identifiers. Replace each `TODO(verify)`: `npm test` fails while one is left.
 
 Then update the contradiction's row in `contradictions.md` (status, results page, decision), and cite the results page in the rule's source comment as `docs/verification/results/<slug>.md`. `npm test` fails when a cited results page or contradiction id does not exist.

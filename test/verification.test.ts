@@ -3,13 +3,31 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { parseProbe, scrub } from "../scripts/verify/lib.ts";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const verification = join(root, "docs", "verification");
 const results = join(verification, "results");
 const read = (path: string) =>
   readFileSync(path, "utf8").replace(/\r\n/g, "\n");
+
+/** The tags this repository registers with the suitescript-verify package. */
+const ownTags = ["contradiction", "rule", "tooling"];
+
+/** Reads the tags this repository owns from a probe's leading JSDoc block. */
+function parseProbe(slug: string, source: string) {
+  const block = /^\s*\/\*\*([\s\S]*?)\*\//.exec(source)?.[1] ?? "";
+  const tags = (name: string) =>
+    [...block.matchAll(new RegExp(`@${name}\\b[ \\t]*([^\\n*]*)`, "g"))].map(
+      (match) => (match[1] ?? "").trim(),
+    );
+  return {
+    contradictions: tags("contradiction").filter(Boolean),
+    rules: tags("rule").filter(Boolean),
+    scriptType: tags("scriptType")[0] ?? "",
+    slug,
+    tooling: tags("tooling").length > 0,
+  };
+}
 
 const contradictions = read(join(verification, "contradictions.md"));
 const rows = [...contradictions.matchAll(/^\| (C-\d{3}) \|(.*)\|$/gm)].map(
@@ -162,7 +180,7 @@ test("every probe has a results page that links back to it", () => {
     const page = join(results, `${slug}.md`);
     assert.ok(
       existsSync(page),
-      `${file} has no docs/verification/results/${slug}.md (run it: npm run verify:run -- ${slug} --draft)`,
+      `${file} has no docs/verification/results/${slug}.md (run it: npm run verify -- run ${slug} --draft)`,
     );
     assert.ok(
       read(page).includes(`verification/probes/${slug}.js`),
@@ -203,16 +221,104 @@ test("a probe's expected output is valid JSON for a probe that exists", () => {
   }
 });
 
-test("probes and the runner contain no account number, token or key", () => {
-  const files = [
-    ...probeFiles.map((f) => join(probesDir, f)),
-    join(root, "verification", "runner", "runner.template.js"),
-  ];
-  for (const file of files) {
-    assert.deepEqual(
-      scrub(read(file), {}).problems,
-      [],
-      `${relative(root, file)} looks like it contains an identifier`,
+test("probes contain no account number, token or key", () => {
+  const identifier =
+    /\b\d{5,8}_(?:SB|RP)\d*\b|-----BEGIN [A-Z ]*KEY-----|\beyJ[\w-]+\.[\w-]+\.[\w-]+\b/i;
+  for (const file of probeFiles) {
+    assert.doesNotMatch(
+      read(join(probesDir, file)),
+      identifier,
+      `verification/probes/${file} looks like it contains an identifier`,
     );
   }
+});
+
+// ------------------------------------------------- the suitescript-verify package
+
+test("the verification .env holds layout keys and registers this repository's tags", () => {
+  const env = read(join(root, "verification", ".env"));
+  const tags = /^SUITESCRIPT_VERIFY_EXTRA_TAGS=(.*)$/m.exec(env)?.[1] ?? "";
+  assert.deepEqual(
+    tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .sort(),
+    ownTags,
+  );
+  for (const line of env.split(/\r?\n/).filter((l) => /^[A-Z]/.test(l))) {
+    assert.match(
+      line,
+      /^SUITESCRIPT_VERIFY_(PROBES_DIR|RESULTS_DIR|SDF_DIR|EXTRA_TAGS)=/,
+      "the committed .env holds layout keys only",
+    );
+  }
+});
+
+test("every probe tag is the package's or one registered here", () => {
+  const known = new Set(
+    [
+      "NApiVersion",
+      "NScriptType",
+      "NModuleScope",
+      "scriptType",
+      "writes",
+      "param",
+      "see",
+      "link",
+      "example",
+      "returns",
+      "since",
+      "deprecated",
+      ...ownTags,
+    ].map((tag) => tag.toLowerCase()),
+  );
+  for (const file of probeFiles) {
+    const block =
+      /^\s*\/\*\*([\s\S]*?)\*\//.exec(read(join(probesDir, file)))?.[1] ?? "";
+    for (const match of block.matchAll(/^\s*\*\s*@(\w+)/gm)) {
+      assert.ok(
+        known.has((match[1] ?? "").toLowerCase()),
+        `${file}: @${match[1]}`,
+      );
+    }
+  }
+});
+
+test("the replaced local verification tooling is gone", () => {
+  for (const path of [
+    "scripts/verify.ts",
+    "scripts/verify",
+    "verification/runner",
+    "verification/sdf",
+    "test/verify.test.ts",
+  ]) {
+    assert.ok(!existsSync(join(root, path)), `${path} should be removed`);
+  }
+  const pkg = JSON.parse(read(join(root, "package.json")));
+  assert.match(pkg.devDependencies["suitescript-verify"], /^\d+\.\d+\.\d+$/);
+  assert.equal(pkg.scripts.verify, "suitescript-verify");
+  assert.ok(
+    !Object.keys(pkg.scripts).some((name) => name.startsWith("verify:")),
+    "verify:* scripts point to the package bin now: npm run verify -- <command>",
+  );
+});
+
+test("agent docs point to the package, not the removed scripts", () => {
+  const files = [
+    "AGENTS.md",
+    "docs/verification/README.md",
+    "docs/verification/automation.md",
+    ".claude/settings.json",
+  ];
+  for (const file of files) {
+    assert.doesNotMatch(
+      read(join(root, file)),
+      /verify:(doctor|run|deploy|cleanup|certificate|passkey|env|setup-ci)|scripts\/verify/,
+      `${file} still names the removed local tooling`,
+    );
+  }
+  assert.match(
+    read(join(root, "docs/verification/automation.md")),
+    /customrole_suitescript_verify/,
+  );
 });
