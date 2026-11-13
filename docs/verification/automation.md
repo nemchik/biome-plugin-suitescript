@@ -42,7 +42,7 @@ The package does not ship a chain-proving probe, so this repository keeps [`prob
 
 ## Role and script ids
 
-The package's runner is the script `customscript_suitescript_verify_runner`, limited to the role with the ID **`customrole_suitescript_verify`**. This repository used `customrole_biome_verification` and `customscript_biome_verification_runner` before ADR 0009: a sandbox that was set up then needs a role with the new ID (and a new deploy), or the runner's calls fail with `INSUFFICIENT_PERMISSION`. A sandbox refresh clears the mappings and, presumably, the deployed runner.
+The package's runner is the script `customscript_suitescript_verify_runner`, limited to the role named by `SUITESCRIPT_VERIFY_ROLE_ID` (the package default is `customrole_suitescript_verify`; `verification/.env` sets `customrole_biome_verification`, the role this repository already used, so the existing role and its mappings stay). The runner script id changed from `customscript_biome_verification_runner` before ADR 0009, so the first deploy under the package needs a real deploy. A sandbox refresh clears the mappings and, presumably, the deployed runner.
 
 ## Lessons specific to this repository
 
@@ -68,6 +68,6 @@ The first successful run used a role with these permissions (the minimum was not
 - Allow JS / HTML Uploads
 - SuiteScript
 
-The role that SDF deploys use needs the deploy permissions (Documents and Files, Allow JS / HTML Uploads, SuiteScript). The role the runner is called as must be the one in the deployment's audience (`customrole_suitescript_verify`); another role fails with `INSUFFICIENT_PERMISSION`. Both roles were the same custom role in the first run.
+The role that SDF deploys use needs the deploy permissions (Documents and Files, Allow JS / HTML Uploads, SuiteScript). The role the runner is called as must be the one in the deployment's audience (`SUITESCRIPT_VERIFY_ROLE_ID`); another role fails with `INSUFFICIENT_PERMISSION`. Both roles were the same custom role in the first run.
 
 To import a role with `object:import` the SDF role also needs **Bulk Manage Roles**; the setup does not.

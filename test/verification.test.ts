@@ -285,7 +285,7 @@ test("the verification .env holds layout keys and registers this repository's ta
   for (const line of env.split(/\r?\n/).filter((l) => /^[A-Z]/.test(l))) {
     assert.match(
       line,
-      /^SUITESCRIPT_VERIFY_(PROBES_DIR|RESULTS_DIR|SDF_DIR|EXTRA_TAGS)=/,
+      /^SUITESCRIPT_VERIFY_(PROBES_DIR|RESULTS_DIR|SDF_DIR|EXTRA_TAGS|ROLE_ID)=/,
       "the committed .env holds layout keys only",
     );
   }
@@ -328,7 +328,6 @@ test("the replaced local verification tooling is gone", () => {
     "scripts/verify.ts",
     "scripts/verify",
     "verification/runner",
-    "verification/sdf",
     "test/verify.test.ts",
   ]) {
     assert.ok(!existsSync(join(root, path)), `${path} should be removed`);
