@@ -50,6 +50,10 @@ The package's runner is the script `customscript_suitescript_verify_runner`, lim
 
 2. **The statuses in `contradictions.md` are `unverified`, `verified` and `not testable`** and `npm test` rejects anything else. Put a caveat ("RESTlet only", "partly") in the decision text, and leave the tracking issue open if part of the claim is untested.
 
+3. **A probe with volatile output has no `expect.json`, and a new probe has none until its first run.** The drift check compares the whole output, so a count that changes on every run (as in [script-note-read](results/script-note-read.md)) cannot have one, and a probe written before it has run cannot guess one. Write the file from the first run's output, or say on the results page why there is none.
+
+4. **`verification/.env.local` is gitignored, so a git worktree does not have it.** `doctor`, `deploy` and `run` fail there. Run them from the main checkout (merge the probes into the branch you run from first), and a probe added after a deploy needs a new real deploy before `run` can find it.
+
 When you hit a problem that is not specific to this repository, add it to the package's lessons; add one that is, here, in the same pull request, and correct an entry that proves wrong. Never put an account number, id, token or real record id in it.
 
 ## Not automated yet

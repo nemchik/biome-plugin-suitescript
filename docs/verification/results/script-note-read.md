@@ -174,4 +174,6 @@ define(["N/query", "N/search"], (query, search) => ({
 
 ## Decision
 
-No rule depends on this. C-017 is marked verified: a RESTlet can read `scriptnote` with SuiteQL, `search.create` cannot, and the table is undocumented by Oracle, so a rule or recommendation built on it should say the source is the SAFE guide and observed behavior. No log text was recorded. The probe returns counts, types and column kinds only.
+No rule depends on this. C-017 is marked verified for SuiteQL and `search.create` only: a RESTlet can read `scriptnote` with SuiteQL and `search.create` cannot. The `query.create` result ("no rows") is ambiguous, and which permission allowed the read is unknown, so neither is settled. The table is undocumented by Oracle, so a rule or recommendation built on it should say the source is the SAFE guide and observed behavior. No log text was recorded. The probe returns counts, types and column kinds only.
+
+There is no `script-note-read.expect.json`: the row counts change on every run, and the drift check compares the whole output, so any expected file would report false drift.
