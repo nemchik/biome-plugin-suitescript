@@ -45,12 +45,20 @@ A test run in a NetSuite account to confirm what the platform really does, docum
 _Avoid_: Check (a check is what a rule or the CLI does), validation
 
 **Probe**:
-A version-controlled script module that exercises one platform behavior and returns what happened as data. It cites the contradictions or rules it verifies, and each has a results page.
+A version-controlled script module that exercises one platform behavior and returns what happened as data. It cites the contradictions or rules it verifies, and each has a results page. It belongs to this repository or to a downstream project.
 _Avoid_: Test (a test is what `npm test` runs), snippet (a snippet is pasted by hand and not recorded)
 
 **Runner**:
-The single script deployed to a sandbox that runs a probe on request, identified by name from a fixed list of probes. It never runs code supplied in the request.
+The single script deployed to a sandbox that runs a probe on request, identified by name from a fixed list of probes. A probe may receive declared, pattern-checked data parameters; it never runs code supplied in the request.
 _Avoid_: Harness
+
+**Verification package**:
+The separate npm package, `suitescript-verify`, that holds the runner, its CLI and its guardrails so any project can run probes in a sandbox.
+_Avoid_: Harness, verification tool
+
+**Downstream project**:
+A project that depends on the verification package and keeps its own probes and results in directories it configures.
+_Avoid_: Consumer (a consumer enables this package's rules), client
 
 **Contradiction**:
 Two sources (Oracle agent skills, type definitions, Oracle documentation) that disagree, or one that disagrees with itself. Each is tracked until a verification settles it.
