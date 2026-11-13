@@ -1,8 +1,4 @@
-import {
-  defineRule,
-  registerDiagnostic,
-  semantic,
-} from "@biomejs/runtime/plugin";
+import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 import { moduleOfReceiver, typingsOf } from "../lib/module-calls.ts";
 
 const IGNORED = ["default", "prototype", "constructor", "__esModule"];
@@ -13,7 +9,7 @@ const IGNORED = ["default", "prototype", "constructor", "__esModule"];
 // re-export everything are skipped because their exports cannot be listed, and the
 // definitions can lag a release, so a member Oracle added recently may be reported.
 export const noUnknownModuleMember = defineRule({
-  query: semantic("JS_STATIC_MEMBER_EXPRESSION"),
+  query: ast("JS_STATIC_MEMBER_EXPRESSION", { semantic: true }),
   run(node, { model }) {
     const [object, member] = node.children();
     if (!object || !member) return;

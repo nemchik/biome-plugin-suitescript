@@ -1,8 +1,4 @@
-import {
-  defineRule,
-  registerDiagnostic,
-  semantic,
-} from "@biomejs/runtime/plugin";
+import { ast, defineRule, registerDiagnostic } from "@biomejs/runtime/plugin";
 import { moduleCall } from "../lib/module-calls.ts";
 import { callArguments } from "../lib/options.ts";
 
@@ -19,7 +15,7 @@ const LITERALS = [
 // every required option missing at runtime. Only a literal first argument is
 // flagged; a variable may hold the options object.
 export const noPositionalOptions = defineRule({
-  query: semantic("JS_CALL_EXPRESSION"),
+  query: ast("JS_CALL_EXPRESSION", { semantic: true }),
   run(node, { model }) {
     const call = moduleCall(node, model);
     if (!call || call.alternatives === 0) return;
