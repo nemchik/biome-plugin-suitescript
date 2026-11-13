@@ -22,7 +22,7 @@ The probe runner, its CLI and its guardrails (ADR 0007) are generic: the typings
 
 ## Consequences
 
-- This repository's `scripts/verify*` and `verification/runner`, `verification/sdf` are replaced by the package's bin once it is published. The package is developed in its own repository, `nemchik/suitescript-verify`, never as a workspace folder here.
-- The package's own README must say in one line that it never accepts the license, and its `init` must leave a project with a to-do list, not credentials.
-- Moving `docs/verification/automation.md` Lessons into the package means a lesson learned in one project reaches all of them; the package's instruction to record new lessons in the same pull request carries over.
-- The unscoped name `suitescript-verify` was free on npm when checked; publish an early version to hold it.
+- `suitescript-verify` 0.1.0 is published and this repository uses it as a pinned dev dependency: `scripts/verify*`, `verification/runner` and `verification/sdf` are gone, replaced by the package's bin (`npm run verify -- <command>`). The package is developed in its own repository, `nemchik/suitescript-verify`, never as a workspace folder here.
+- The package's README says in one line that it never accepts the license, and its `init` leaves a project with a to-do list, not credentials.
+- Generic Lessons live in the package, so a lesson learned in one project reaches all of them; this repository keeps only its own in `docs/verification/automation.md`.
+- The unscoped name `suitescript-verify` is held by the published package.

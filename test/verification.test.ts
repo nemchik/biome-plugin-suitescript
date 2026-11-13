@@ -221,14 +221,51 @@ test("a probe's expected output is valid JSON for a probe that exists", () => {
   }
 });
 
-test("probes contain no account number, token or key", () => {
-  const identifier =
-    /\b\d{5,8}_(?:SB|RP)\d*\b|-----BEGIN [A-Z ]*KEY-----|\beyJ[\w-]+\.[\w-]+\.[\w-]+\b/i;
-  for (const file of probeFiles) {
-    assert.doesNotMatch(
-      read(join(probesDir, file)),
-      identifier,
-      `verification/probes/${file} looks like it contains an identifier`,
+/** Mirrors the old runner scrub: anything that looks like an identifier. */
+const identifierPatterns: Array<[string, RegExp]> = [
+  ["an account number", /\b\d{5,8}[_-](?:SB|RP|TSTDRV)\w*\b/i],
+  ["an account number", /\bTSTDRV\d+\b/i],
+  ["a NetSuite host", /[a-z0-9-]+\.[a-z0-9.-]*netsuite\.com/i],
+  ["a JWT", /\beyJ[\w-]{10,}\.[\w-]{10,}\./],
+  ["a long hex token", /\b[a-f0-9]{40,}\b/i],
+  ["a PEM block", /-----BEGIN [A-Z ]+-----/],
+  ["an email address", /[\w.+-]+@[\w-]+\.[\w.-]+/],
+];
+
+function identifiers(text: string): string[] {
+  return identifierPatterns
+    .filter(([, pattern]) => pattern.test(text))
+    .map(([label]) => label);
+}
+
+test("the identifier check flags account numbers, hosts, tokens and emails", () => {
+  for (const sample of [
+    "1234567_SB1",
+    "TSTDRV123456",
+    "acme.app.netsuite.com",
+    "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3.c2lnbmF0dXJl",
+    "a".repeat(40),
+    "-----BEGIN PRIVATE KEY-----",
+    "someone@example.com",
+  ]) {
+    assert.ok(identifiers(sample).length > 0, sample);
+  }
+  assert.deepEqual(identifiers("N/search returns a result set"), []);
+});
+
+test("probes and results pages contain no account number, host, token or email", () => {
+  const files = [
+    ...probeFiles.map((file) => join(probesDir, file)),
+    ...readdirSync(probesDir)
+      .filter((file) => file.endsWith(".expect.json"))
+      .map((file) => join(probesDir, file)),
+    ...readdirSync(results).map((file) => join(results, file)),
+  ];
+  for (const file of files) {
+    assert.deepEqual(
+      identifiers(read(file)),
+      [],
+      `${relative(root, file)} looks like it contains an identifier`,
     );
   }
 });
@@ -255,6 +292,8 @@ test("the verification .env holds layout keys and registers this repository's ta
 });
 
 test("every probe tag is the package's or one registered here", () => {
+  // The package does not export its tag list, so it is copied here; a tag the
+  // package adds later fails this test until it is added below.
   const known = new Set(
     [
       "NApiVersion",
@@ -317,8 +356,4 @@ test("agent docs point to the package, not the removed scripts", () => {
       `${file} still names the removed local tooling`,
     );
   }
-  assert.match(
-    read(join(root, "docs/verification/automation.md")),
-    /customrole_suitescript_verify/,
-  );
 });
