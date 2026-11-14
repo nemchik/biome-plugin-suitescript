@@ -65,7 +65,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.6.7",
     "@biomejs/runtime": "2.6.7",
-    "@hitc/netsuite-types": "2026.2.6",
+    "@hitc/netsuite-types": "2026.2.7",
     "@oracle/suitecloud-cli": "4.1.1",
     "@types/node": "24.19.2",
     "git-pull-run": "2.1.0",
