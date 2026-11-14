@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.7.0](https://github.com/nemchik/biome-plugin-suitescript/compare/biome-plugin-suitescript-v0.6.0...biome-plugin-suitescript-v0.7.0) (2026-11-14)
+
+
+### Features
+
+* oracle-doc, verify permission rules, AGENTS.md trim, switch prompts ([#102](https://github.com/nemchik/biome-plugin-suitescript/issues/102)) ([aa27d94](https://github.com/nemchik/biome-plugin-suitescript/commit/aa27d945219c701d1b4094004970e0011a3f1fab))
+* run verification through the suitescript-verify package ([#134](https://github.com/nemchik/biome-plugin-suitescript/issues/134)) ([02f713c](https://github.com/nemchik/biome-plugin-suitescript/commit/02f713c98c4ec20deac438ce584ea3f826e57e09))
+
+
+### Bug Fixes
+
+* accept the SuiteCloud SDK license in ci and code-quality, skip scripts elsewhere ([#113](https://github.com/nemchik/biome-plugin-suitescript/issues/113)) ([e303549](https://github.com/nemchik/biome-plugin-suitescript/commit/e303549346fa66949a9eb111dac3b73460d92a32))
+* add member gaps so noUnknownModuleMember accepts util.isAsyncFunction ([#75](https://github.com/nemchik/biome-plugin-suitescript/issues/75)) ([#108](https://github.com/nemchik/biome-plugin-suitescript/issues/108)) ([01d9d6a](https://github.com/nemchik/biome-plugin-suitescript/commit/01d9d6a98629e11b8d75eb6ace1d65d9c49589f1))
+* **deps:** update dependency oxc-parser to ^0.158.0 ([#121](https://github.com/nemchik/biome-plugin-suitescript/issues/121)) ([b38142a](https://github.com/nemchik/biome-plugin-suitescript/commit/b38142a2077e3d4f905ba576aa6d668cbf33fddd))
+* hash the skills with LF endings on every platform ([#117](https://github.com/nemchik/biome-plugin-suitescript/issues/117)) ([02591c6](https://github.com/nemchik/biome-plugin-suitescript/commit/02591c6487a941c50abc2f688b95315caacf5446))
+* stop the skills sync writing agent/skills on CI ([#115](https://github.com/nemchik/biome-plugin-suitescript/issues/115)) ([9574498](https://github.com/nemchik/biome-plugin-suitescript/commit/9574498c1ee98445447f059e40fbbb8beaf5f4c6))
+* use ast(..., { semantic: true }) for Biome 2.6.7 ([#132](https://github.com/nemchik/biome-plugin-suitescript/issues/132)) ([d38083d](https://github.com/nemchik/biome-plugin-suitescript/commit/d38083d534b33ffec1bfc4a8b0d865bf45e79d7f))
+
 ## [0.6.0](https://github.com/nemchik/biome-plugin-suitescript/compare/biome-plugin-suitescript-v0.5.0...biome-plugin-suitescript-v0.6.0) (2026-11-08)
 
 
