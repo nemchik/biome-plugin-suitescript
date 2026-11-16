@@ -1,0 +1,46 @@
+name: Regenerate typings data on Renovate updates
+# A @hitc/netsuite-types bump changes the data generated from it, which CI
+# checks with `--check`. Renovate's hosted app cannot run commands, so this
+# regenerates the data on its branch and pushes it.
+on:
+  push:
+    branches: ["renovate/hitc-netsuite-types-*"]
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  regenerate:
+    # Only Renovate's pushes: the push below uses GITHUB_TOKEN, which starts no
+    # workflow run, so this cannot loop.
+    if: github.actor == 'renovate[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup
+        with:
+          cache: "false"
+      - run: npm run sync-modules
+      - run: npm run sync-typings
+      # A GITHUB_TOKEN push starts no pull_request runs, so the required checks
+      # are dispatched on the branch; their check runs land on the new head.
+      # The bot's email is in renovate.json gitIgnoredAuthors, so Renovate keeps
+      # managing the branch.
+      - name: Commit, push and run the checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet; then
+            echo "Generated data is current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit --all --message "chore: regenerate modules and typings data"
+          git push
+          gh workflow run ci.yml --ref "$GITHUB_REF_NAME"
+          gh workflow run code-quality.yml --ref "$GITHUB_REF_NAME"

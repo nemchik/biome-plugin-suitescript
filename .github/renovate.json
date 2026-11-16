@@ -17,6 +17,9 @@
     ":enableVulnerabilityAlerts",
     ":renovatePrefix"
   ],
+  "gitIgnoredAuthors": [
+    "41898282+github-actions[bot]@users.noreply.github.com"
+  ],
   "lockFileMaintenance": { "automerge": true, "enabled": true },
   "packageRules": [
     {
