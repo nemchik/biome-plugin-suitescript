@@ -12,8 +12,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   regenerate:
-    # Only Renovate's pushes: the push below uses GITHUB_TOKEN, which starts no
-    # workflow run, so this cannot loop.
+    # Only Renovate's pushes, so the bot's push below cannot loop.
     if: github.actor == 'renovate[bot]'
     runs-on: ubuntu-latest
     permissions:
@@ -26,8 +25,9 @@ jobs:
           cache: "false"
       - run: npm run sync-modules
       - run: npm run sync-typings
-      # A GITHUB_TOKEN push starts no pull_request runs, so the required checks
-      # are dispatched on the branch; their check runs land on the new head.
+      # GitHub may hold pull_request runs from a GITHUB_TOKEN push for approval,
+      # so the required checks are dispatched on the branch; their check runs
+      # land on the new head.
       # The bot's email is in renovate.json gitIgnoredAuthors, so Renovate keeps
       # managing the branch.
       - name: Commit, push and run the checks
