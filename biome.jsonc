@@ -13,8 +13,9 @@
     "ignoreUnknown": true,
     "includes": [
       "**",
-      "!.agents",
       "!skills-lock.json",
+      "!!**/.claude",
+      "!!**/.agents",
       "!CHANGELOG.md",
       "!docs/rules",
       "!docs/migrating-from-eslint.md",
