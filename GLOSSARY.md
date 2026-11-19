@@ -49,7 +49,7 @@ A version-controlled script module that exercises one platform behavior and retu
 _Avoid_: Test (a test is what `npm test` runs), snippet (a snippet is pasted by hand and not recorded)
 
 **Runner**:
-The single script deployed to a sandbox that runs a probe on request, identified by name from a fixed list of probes. A probe may receive declared, pattern-checked data parameters; it never runs code supplied in the request.
+The RESTlet deployed to a sandbox that runs a probe on request, identified by name from a fixed list of probes. A probe may receive declared, pattern-checked data parameters; it never runs code supplied in the request. A Suitelet probe runs in the Suitelet host deployed beside it, which the runner calls.
 _Avoid_: Harness
 
 **Verification package**:

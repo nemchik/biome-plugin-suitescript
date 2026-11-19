@@ -3,11 +3,15 @@
  * SuiteQL reads it; the type definitions list `query.Type.SCRIPT_NOTE`; Oracle
  * documents only the Script Execution Logs page and a Server Script Log search.
  * Read-only, and it reports counts, the type values and the kind of each
- * column, never a title or detail, so no log text reaches the output.
+ * column, never a title or detail, so no log text reaches the output. Under
+ * the runner's minimal role SuiteQL answers "Record 'scriptnote' was not found",
+ * so it declares SuiteScript (`ADMI_CUSTOMSCRIPT`), which the earlier
+ * hand-built role held.
  *
  * @NApiVersion 2.1
  * @scriptType Restlet
  * @contradiction C-017
+ * @permission ADMI_CUSTOMSCRIPT VIEW
  */
 define(["N/query", "N/search"], (query, search) => ({
   run() {

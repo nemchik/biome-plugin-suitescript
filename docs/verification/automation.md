@@ -1,8 +1,8 @@
 # Automated verification
 
-An agent can run a [probe](../../GLOSSARY.md) in a NetSuite **sandbox** without a human pasting a snippet into a browser. The tooling is the [`suitescript-verify`](https://github.com/nemchik/suitescript-verify) package, a pinned dev dependency ([ADR 0009](../adr/0009-the-verification-tooling-is-a-separate-package.md)); the decision and guardrails are in [ADR 0007](../adr/0007-agents-run-probes-through-a-sandbox-runner.md). This repository keeps its probes, results pages, contradictions and tags.
+An agent can run a [probe](../../GLOSSARY.md) in a NetSuite **sandbox** without a human pasting a snippet into a browser. The tooling is the [`suitescript-verify`](https://github.com/nemchik/suitescript-verify) package, a pinned dev dependency ([ADR 0009](../adr/0009-the-verification-tooling-is-a-separate-package.md)); the decision and guardrails are in [ADR 0007](../adr/0007-agents-run-probes-through-a-sandbox-runner.md), and the move to version 2 is [ADR 0010](../adr/0010-suitescript-verify-2-writes-the-runner-role-and-hosts-suitelet-probes.md). This repository keeps its probes, results pages, contradictions and tags.
 
-The package's README is the command reference and its [lessons](https://github.com/nemchik/suitescript-verify/blob/main/docs/verification/lessons.md) are the setup and pitfalls guide (every lesson that applies to any project): read both before writing probes. None of this runs in `npm test` or CI, except the link checks in `test/verification.test.ts`, and none of it is published in this repository's package.
+The installed package's README (`node_modules/suitescript-verify/README.md`, the version this repository pins) is the command reference and the setup and pitfalls guide: its "For agents", Probes and Troubleshooting sections hold every lesson that applies to any project. Read it before writing probes. None of this runs in `npm test` or CI, except the link checks in `test/verification.test.ts`, and none of it is published in this repository's package.
 
 ## Commands
 
@@ -10,7 +10,8 @@ The package's README is the command reference and its [lessons](https://github.c
 
 | Command                                           | Does                                                                                                                     |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `npm run verify -- doctor`                        | Read-only checklist. For each failing step it prints what you must do next.                                              |
+| `npm run verify -- doctor`                        | Read-only checklist, ending with the deployed runner's self-check. For each failing step it prints what to do next.      |
+| `npm run verify -- setup`                         | Guided setup, in the user's own terminal. It skips each step `doctor` already passes.                                    |
 | `npm run verify -- certificate`                   | Generates the two key pairs and saves their paths to `verification/.env.local`.                                          |
 | `npm run verify -- passkey`                       | Generates the CLI passkey and saves it to `verification/.env.local`.                                                     |
 | `npm run verify -- env set NAME=value`            | Saves one value to `verification/.env.local`.                                                                            |
@@ -26,23 +27,25 @@ The committed `verification/.env` holds layout keys only (probes in `verificatio
 
 ## Writing a probe
 
-A probe is `verification/probes/<slug>.js`. Besides the package's tags (`@scriptType Restlet`, `@param`, `@writes`) it uses this repository's:
+A probe is `verification/probes/<slug>.js`. Besides the package's tags (`@scriptType Restlet` or `@scriptType Suitelet`, `@param`, `@permission`, `@writes`) it uses this repository's:
 
-| Tag              | Meaning                                                                                                               |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `@contradiction` | A contradiction id from [`contradictions.md`](contradictions.md). Repeat it for several.                              |
-| `@rule`          | A rule name from `src/rules/`. Repeat it for several.                                                                 |
-| `@tooling`       | For a probe that verifies the tooling itself (probe zero). A probe needs a `@contradiction`, a `@rule` or `@tooling`. |
+| Tag              | Meaning                                                                                                  |
+| ---------------- | -------------------------------------------------------------------------------------------------------- |
+| `@contradiction` | A contradiction id from [`contradictions.md`](contradictions.md). Repeat it for several.                 |
+| `@rule`          | A rule name from `src/rules/`. Repeat it for several.                                                    |
+| `@tooling`       | For a probe that verifies the tooling itself. A probe needs a `@contradiction`, a `@rule` or `@tooling`. |
 
 `npm test` checks that every probe has a results page linking it, that cited ids and rules exist, that no `TODO(verify)` is left, and that probes contain no identifier. A probe that settles a contradiction should also commit `<slug>.expect.json`, so `run` reports drift (exit code 2) on a later NetSuite version.
 
-## Probe zero
+A probe that needs a record or setup permission declares it with `@permission <permkey> VIEW`; the next deploy adds it to the runner's role. Never ask for a permission to be added to the role by hand: no deploy removes it, and the probe would depend on a role nobody can read from the repository.
 
-The package does not ship a chain-proving probe, so this repository keeps [`probe-zero`](../../verification/probes/probe-zero.js) (`@tooling`). After every deploy run `npm run verify -- run probe-zero`. It proves the token, the deployed runner and the JSON back, and reports the facts every results page records. If it fails, no other result means anything.
+## After a deploy
+
+Run `npm run verify -- doctor`. Its last step asks the deployed runner and the Suitelet host for their version, build fingerprint, probe list and role permissions, and says "Redeploy" when they differ from this checkout. If it fails, no probe result means anything. It replaced this repository's `probe-zero` (ADR 0010).
 
 ## Role and script ids
 
-The package's runner is the script `customscript_suitescript_verify_runner`, limited to the role named by `SUITESCRIPT_VERIFY_ROLE_ID` (the package default is `customrole_suitescript_verify`; `verification/.env` sets `customrole_biome_verification`, the role this repository already used, so the existing role and its mappings stay). The runner script id changed from `customscript_biome_verification_runner` before ADR 0009, so the first deploy under the package needs a real deploy. A sandbox refresh clears the mappings and, presumably, the deployed runner.
+This repository uses the package defaults: the runner is the RESTlet `customscript_suitescript_verify_rl`, the Suitelet host beside it is `customscript_suitescript_verify_sl`, and the runner's role is `customrole_suitescript_verify`. Every deploy writes that role: Log in using OAuth 2.0 Access Tokens and REST Web Services at Full, plus what probes declare. The SDF login deploys as Administrator, which has the Bulk Manage Roles permission a role object needs; it must never be the runner's role, which a deploy rewrites. A certificate mapping cannot move to another role, so a role change needs a new key pair and a new mapping. A sandbox refresh clears the mappings and, presumably, the deployed runner.
 
 ## Lessons specific to this repository
 
@@ -54,24 +57,11 @@ The package's runner is the script `customscript_suitescript_verify_runner`, lim
 
 4. **`verification/.env.local` is gitignored, so a git worktree does not have it.** `doctor`, `deploy` and `run` fail there. Run them from the main checkout (merge the probes into the branch you run from first), and a probe added after a deploy needs a new real deploy before `run` can find it.
 
-When you hit a problem that is not specific to this repository, add it to the package's lessons; add one that is, here, in the same pull request, and correct an entry that proves wrong. Never put an account number, id, token or real record id in it.
+5. **The old hand-built role hid missing permissions.** Under the role every deploy now writes, a SuiteQL query on `scriptnote` answers `Record 'scriptnote' was not found.`, a missing permission worded as a missing table; [script-note-read](results/script-note-read.md) declares SuiteScript for it. After a role change, rerun every probe, not only the ones with an `expect.json`.
+
+When you hit a problem that is not specific to this repository, open an issue or pull request in the [suitescript-verify](https://github.com/nemchik/suitescript-verify) repository so it ships in the package README; add one that is, here, in the same pull request, and correct an entry that proves wrong. Never put an account number, id, token or real record id in it.
 
 ## Not automated yet
 
-- Probes whose claim depends on another script type (Suitelet, Map/Reduce, Scheduled, User Event, Client): the package is RESTlet-only in version 1. Until then, prompt the user ([`README.md`](README.md)).
+- Probes whose claim depends on a script type other than a RESTlet or a Suitelet (Map/Reduce, Scheduled, User Event, Client). Prompt the user ([`README.md`](README.md)).
 - Probes that write (`@writes`).
-
-## Recorded role permissions
-
-The first successful run used a role with these permissions (the minimum was not isolated; the list is what was added after failures):
-
-- Log in using OAuth 2.0 Access Tokens
-- REST Web Services
-- User Access Tokens
-- Documents and Files
-- Allow JS / HTML Uploads
-- SuiteScript
-
-The role that SDF deploys use needs the deploy permissions (Documents and Files, Allow JS / HTML Uploads, SuiteScript). The role the runner is called as must be the one in the deployment's audience (`SUITESCRIPT_VERIFY_ROLE_ID`); another role fails with `INSUFFICIENT_PERMISSION`. Both roles were the same custom role in the first run.
-
-To import a role with `object:import` the SDF role also needs **Bulk Manage Roles**; the setup does not.

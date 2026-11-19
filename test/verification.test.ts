@@ -302,6 +302,7 @@ test("every probe tag is the package's or one registered here", () => {
       "scriptType",
       "writes",
       "param",
+      "permission",
       "see",
       "link",
       "example",
