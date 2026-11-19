@@ -2,7 +2,7 @@
 
 - **NetSuite version:** 2026.2
 - **Account type:** sandbox
-- **Date:** 2026-11-13
+- **Date:** 2026-11-13, rerun 2026-11-18 under suitescript-verify 2.0.0
 - **Method:** deployed RESTlet (the suitescript-verify runner)
 - **Script type:** RESTlet
 - **Probe:** [verification/probes/https-request-suitelet.js](../../../verification/probes/https-request-suitelet.js)
@@ -81,8 +81,8 @@ define(["N/https"], (https) => ({
         // reference a Suitelet script") should fire if the script lookup runs.
         t("a RESTlet script id", () =>
             https.requestSuitelet({
-                deploymentId: "customdeploy_suitescript_verify_runner",
-                scriptId: "customscript_suitescript_verify_runner",
+                deploymentId: "customdeploy_suitescript_verify_rl",
+                scriptId: "customscript_suitescript_verify_rl",
             }),
         );
         return result;
@@ -108,6 +108,10 @@ define(["N/https"], (https) => ({
 }
 ```
 
+### Rerun under suitescript-verify 2.0.0 (2026-11-18)
+
+suitescript-verify 2.0 renamed the runner by script type, from `customscript_suitescript_verify_runner` to `customscript_suitescript_verify_rl`, so the probe's "a RESTlet script id" case now names the new runner (the code above). The output matched `https-request-suitelet.expect.json` unchanged, so every result above still holds.
+
 ## Explanation
 
 No Suitelet was called, so this page says what the method accepts and rejects, not whether a Suitelet answers.
@@ -121,4 +125,4 @@ No Suitelet was called, so this page says what the method accepts and rejects, n
 
 ## Decision
 
-No rule depends on this. C-016 is marked verified for the option names only: `scriptId`, `deploymentId` and `urlParams` are the accepted options, and neither the SAFE guide's `params` nor the type definitions' `external` works. Whether a Suitelet answers a RESTlet's call stays untested, so Suitelet support stays out of v1 as #130 says and needs a separate decision. The returned-object result for a RESTlet script id needs a follow-up probe that inspects the object before it is used as evidence.
+No rule depends on this. C-016 is marked verified for the option names only: `scriptId`, `deploymentId` and `urlParams` are the accepted options, and neither the SAFE guide's `params` nor the type definitions' `external` works. Whether a Suitelet answers a RESTlet's call was untested here, so Suitelet support stayed out of v1 as #130 said. suitescript-verify 2.0 since reaches its Suitelet host from the runner with `requestSuitelet` (`doctor`'s self-check passes through it in this sandbox; [ADR 0010](../../adr/0010-suitescript-verify-2-writes-the-runner-role-and-hosts-suitelet-probes.md)). The returned-object result for a RESTlet script id needs a follow-up probe that inspects the object before it is used as evidence.

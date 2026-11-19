@@ -67,8 +67,8 @@ define(["N/https"], (https) => ({
     // reference a Suitelet script") should fire if the script lookup runs.
     t("a RESTlet script id", () =>
       https.requestSuitelet({
-        deploymentId: "customdeploy_suitescript_verify_runner",
-        scriptId: "customscript_suitescript_verify_runner",
+        deploymentId: "customdeploy_suitescript_verify_rl",
+        scriptId: "customscript_suitescript_verify_rl",
       }),
     );
     return result;
