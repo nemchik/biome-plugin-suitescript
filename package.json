@@ -59,7 +59,7 @@
     "verify": "suitescript-verify"
   },
   "dependencies": {
-    "oxc-parser": "^0.158.0",
+    "oxc-parser": "^0.159.0",
     "tinyglobby": "^0.2.17"
   },
   "devDependencies": {
