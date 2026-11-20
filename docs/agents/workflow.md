@@ -2,8 +2,6 @@
 
 The flow is grill, spec, tickets, implement, review, retro. The marked block below is the generic flow; the sections after it are this repo's additions.
 
-A `UserPromptSubmit` hook (`.claude/hooks/flow-reminders.ts`, registered in `.claude/settings.json`) injects the matching guard rail, next-step line and prerequisite when a flow command is typed. It is reminder-only and never blocks a tool call.
-
 <!-- flow:start -->
 ## Agent workflow
 
