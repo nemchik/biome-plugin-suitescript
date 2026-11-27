@@ -272,6 +272,11 @@ export const TYPINGS: Typings = {
     },
   },
   "N/currentRecord": { enums: {}, exports: ["get"], functions: { get: 0 } },
+  "N/dataStore": {
+    enums: {},
+    exports: ["getCollection", "getDatastore"],
+    functions: { getCollection: 0, getDatastore: 0 },
+  },
   "N/dataset": {
     enums: {},
     exports: [
@@ -854,7 +859,6 @@ export const TYPINGS: Typings = {
         "ASIA_KATMANDU",
         "ASIA_KRASNOYARSK",
         "ASIA_KUALA_LUMPUR",
-        "ASIA_MAGADAN",
         "ASIA_MANILA",
         "ASIA_MUSCAT",
         "ASIA_RANGOON",
@@ -3396,7 +3400,6 @@ export const TYPINGS: Typings = {
         "EMPLOYEE",
         "EMPLOYEE_CHANGE_REQUEST",
         "EMPLOYEE_CHANGE_REQUEST_TYPE",
-        "EMPLOYEE_CHANGE_TYPE",
         "EMPLOYEE_PAYROLL_ITEM",
         "EMPLOYEE_STATUS",
         "EMPLOYEE_TYPE",
@@ -3412,7 +3415,6 @@ export const TYPINGS: Typings = {
         "EXPENSE_REPORT_POLICY",
         "FAIR_VALUE_PRICE",
         "FINANCIAL_INSTITUTION",
-        "FIN_RPT_AGGREGATE_F_R",
         "FIXED_AMOUNT_PROJECT_REVENUE_RULE",
         "FOLDER",
         "FULFILLMENT_REQUEST",
@@ -4102,7 +4104,6 @@ export const TYPINGS: Typings = {
         "LABEL",
         "LONGTEXT",
         "MULTISELECT",
-        "PASSPORT",
         "PASSWORD",
         "PERCENT",
         "PHONE",
