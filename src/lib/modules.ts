@@ -13,6 +13,7 @@ export const MODULES: Record<string, string> = {
   "N/crypto/random": "random",
   "N/currency": "currency",
   "N/currentRecord": "currentRecord",
+  "N/dataStore": "dataStore",
   "N/dataset": "dataset",
   "N/datasetLink": "datasetLink",
   "N/documentCapture": "documentCapture",
